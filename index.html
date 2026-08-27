@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+   
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRAID.IO</title>
+    <link rel="stylesheet" href="global.css">
+   
+    
+    
+</head>
+<body>
+
+    <app-preloader id="main-preloader"></app-preloader>
+
+    <div class="container">
+        <app-header>
+            <!-- Вставляем компактный логотип с бликом -->
+            <app-logo slot="logo"></app-logo>
+            
+            <nav-bar slot="nav" 
+                     cta-text="Let's talk" 
+                     cta-href="#contact"
+                     links='[
+                {"href": "#home", "text": "Home"},
+                {"href": "#process", "text": "Process & Technology"},
+                {"href": "#portfolio", "text": "Portfolio"},
+                {"href": "#dashboard", "text": "Dashboard"},
+                {"href": "#about", "text": "About"},
+                {"href": "#contact", "text": "Contact"}
+            ]'></nav-bar>
+        </app-header>
+        <!-- Теперь ваш HTML чистый и короткий! -->
+        <my-header></my-header>
+        
+        <main id="main-content">
+        
+        </main>
+    </div>
+    <!-- Components global -->
+    <script src="components/app-preloader.js"></script>
+    <script src="components/app-logo.js"></script>
+    <script src="components/app-header.js"></script>
+    <script src="components/nav-bar.js"></script>
+    <!-- Pages -->
+    <!-- -------------------Home -->
+    <script src="pages/home/HomePage.js"></script>
+
+    <script src="pages/home/components/heroBlock.js"></script>
+    <script src="pages/home/components/phoneBlock.js"></script>
+    <script src="pages/home/components/featuresBlock.js"></script>
+    <script src="pages/home/components/sliderClientsBlock.js"></script>
+    <script src="pages/home/components/staticBlock.js"></script>
+
+    <!-- -------------------About -->
+
+    <script src="pages/about/AboutPage.js"></script>
+    <!-- other -->
+
+    <script src="router.js"></script>
+    <script>
+        const preloader = document.getElementById('main-preloader');
+        const mainContent = document.getElementById('main-content');
+
+       
+        preloader.addEventListener('preloader-complete', () => {
+            
+            
+            
+            mainContent.classList.add('is-visible');
+        });
+    </script>
+</body>
+</html>
+

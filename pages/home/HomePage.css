@@ -1,0 +1,64 @@
+/* Общие стили страницы */
+.home-page {
+    padding: 0px 0;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Hero секция: 3 колонки (Hero | Phone | Features) */
+.hero-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr 20%;
+    gap: 60px;
+    align-items: start;
+    padding: 0 20px;
+}
+
+/* Trusted секция */
+.trusted-section {
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+/* Stats секция */
+.stats-section {
+    padding: 0 20px;
+}
+
+/* === АДАПТАЦИЯ ПОД ПЛАНШЕТЫ И МОБИЛЬНЫЕ === */
+@media (max-width: 1024px) {
+    .hero-section {
+        grid-template-columns: 1fr 1fr; /* 2 колонки */
+        gap: 40px;
+    }
+    
+    .phone-showcase {
+        grid-column: span 2; /* Телефон на всю ширину */
+        justify-self: center;
+    }
+}
+
+@media (max-width: 768px) {
+    .home-page {
+        padding: 40px 0;
+    }
+    
+    .hero-section {
+        grid-template-columns: 1fr; /* 1 колонка */
+        gap: 40px;
+        margin-bottom: 60px;
+    }
+    
+    .phone-showcase {
+        grid-column: auto;
+    }
+    
+    .trusted-section,
+    .stats-section {
+        margin-bottom: 60px;
+    }
+}

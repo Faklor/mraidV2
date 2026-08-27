@@ -1,0 +1,94 @@
+.trusted-section {
+    text-align: left; /* Выравниваем всё по левому краю */
+    padding: 0 20px;
+}
+
+.trusted-section h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 48px;
+    margin-left: 0; /* Убираем отступ слева */
+}
+
+.logos-grid {
+    display: flex;
+    justify-content: center; /* Выравниваем по левому краю */
+    align-items: center;
+    gap: 48px;
+    flex-wrap: wrap;
+    opacity: 0.6;
+}
+
+.logo-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px; /* Фиксированная высота для всех логотипов */
+    transition: all 0.3s ease;
+    filter: grayscale(100%); /* Делаем логотипы черно-белыми */
+    opacity: 0.7;
+}
+
+.logo-item img {
+    max-height: 100%;
+    max-width: 150px; /* Максимальная ширина логотипа */
+    width: auto;
+    object-fit: contain; /* Сохраняем пропорции */
+    transition: all 0.3s ease;
+}
+
+.logo-item:hover {
+    filter: grayscale(0%); /* Возвращаем цвет при наведении */
+    opacity: 1;
+    transform: scale(1.05); /* Легкое увеличение */
+}
+
+/* Адаптация для планшетов и мобильных */
+@media (max-width: 1024px) {
+    .logos-grid {
+        gap: 32px;
+    }
+    
+    .logo-item {
+        height: 50px;
+    }
+    
+    .logo-item img {
+        max-width: 120px;
+    }
+}
+
+@media (max-width: 768px) {
+    .trusted-section h2 {
+        font-size: 1.25rem;
+        margin-bottom: 32px;
+    }
+    
+    .logos-grid {
+        gap: 24px;
+        justify-content: center; /* На мобильных центрируем для красоты */
+    }
+    
+    .logo-item {
+        height: 40px;
+    }
+    
+    .logo-item img {
+        max-width: 100px;
+    }
+}
+
+@media (max-width: 480px) {
+    .logos-grid {
+        gap: 16px;
+    }
+    
+    .logo-item {
+        height: 35px;
+    }
+    
+    .logo-item img {
+        max-width: 80px;
+    }
+}

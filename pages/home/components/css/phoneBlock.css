@@ -1,0 +1,149 @@
+/* Обертка всего блока */
+.showcase-wrapper {
+    position: relative;
+    width: 100%;
+    height: auto; /* Увеличили высоту для больших фонов */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /*overflow: hidden;*/
+}
+
+/* Слой 1: Фоновая картинка (УВЕЛИЧЕНА В 2 РАЗА) */
+.bg-looper {
+    position: absolute;
+    top: 80%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 210%; /* Было 100%, теперь 160% */
+    max-width: none;
+    opacity: 1; /* Чуть прозрачнее, чтобы не отвлекала */
+    z-index: 1;
+    pointer-events: none;
+}
+
+/* Слой 2: Блик (УВЕЛИЧЕН В 2 РАЗА) */
+.bg-blick {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; /* Было 100%, теперь 140% */
+    max-width: none;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.6;
+}
+
+/* Слой 3: 3D Контейнер */
+.phone-3d-container {
+    position: relative;
+    z-index: 10;
+    perspective: 1200px;
+    width: 250px; /* Чуть больше рамки для воздуха */
+    height: 480px;
+    cursor: pointer;
+}
+
+.phone-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease-out;
+    animation: tilt3d 8s ease-in-out infinite;
+}
+
+@keyframes tilt3d {
+    0%, 100% { transform: rotateY(0deg); }
+    25% { transform: rotateY(8deg); }
+    75% { transform: rotateY(-8deg); }
+}
+
+/* Экран с игрой (iframe)  */
+.playable-screen {
+    position: absolute;
+    top: 10px;    /* Уменьшили отступ сверху */
+    left: 10px;    /* Уменьшили отступ слева */
+    width: 230px; /* Увеличили ширину */
+    height: 460px; /* Увеличили высоту */
+    background: #000;
+    border-radius: 12px;
+    z-index: 1;
+}
+
+/* Градиентное отражение - должно совпадать с iframe */
+.screen-reflection {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    width: 230px;
+    height: 460px;
+    background: linear-gradient(
+        180deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 20%,
+        transparent 40%,
+        transparent 60%,
+        rgba(0, 0, 0, 0.1) 80%,
+        rgba(0, 0, 0, 0.2) 100%
+    );
+    border-radius: 12px;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.phone-frame-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 3;
+    pointer-events: none;
+}
+/* Индикатор обратного отсчета */
+.inactivity-indicator {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 0, 54, 0.9);
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 20;
+    pointer-events: none;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(255, 0, 54, 0.4);
+}
+
+.inactivity-indicator .countdown {
+    color: #fff;
+    font-weight: 800;
+    font-size: 1rem;
+}
+
+.inactivity-indicator:hover {
+    opacity: 1;
+    visibility: visible;
+}
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .phone-3d-container {
+        width: 200px;
+        height: 384px;
+    }
+    
+    .playable-screen,
+    .screen-reflection {
+        top: 12px;
+        left: 4px;
+        width: 192px;
+        height: 360px;
+    }
+}

@@ -1,0 +1,93 @@
+/* global.css */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scrollbar-width: thin;
+  scrollbar-color: #FF0036 #0D0D0F;
+}
+
+html, body {
+  width: 100%;
+  
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+/* Скрываем стандартный скроллбар и стилизуем свой */
+::-webkit-scrollbar {
+  width: 8px; /* Ширина вертикального скроллбара */
+  height: 8px; /* Высота горизонтального скроллбара */
+}
+
+/* Фон скроллбара (трек) */
+::-webkit-scrollbar-track {
+  background: #0D0D0F; /* Цвет фона страницы */
+  border-radius: 4px;
+}
+
+/* Ползунок скроллбара */
+::-webkit-scrollbar-thumb {
+  background: #FF0036; /* Красный цвет */
+  border-radius: 4px;
+  transition: background 0.3s ease;
+}
+
+/* Ползунок при наведении */
+::-webkit-scrollbar-thumb:hover {
+  background: #cc002b; /* Чуть темнее при наведении */
+}
+
+
+
+body {
+  font-family: system-ui, -apple-system, sans-serif;
+  color: #fff;
+  line-height: 1.6;
+  background-color: #0D0D0F;
+  /* Центрируем весь контент через flexbox */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Центрируем по горизонтали */
+}
+
+main {
+  width: 100%;
+  padding: 40px 0;
+  /* margin: 0 auto; <-- убираем, так как body уже центрирует */
+}
+
+h1 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* === ИДЕАЛЬНЫЙ КОНТЕЙНЕР === */
+.container {
+  width: 100%;
+  max-width: 1920px;
+  /* margin: 0 auto; <-- убираем, body уже центрирует */
+  padding: 0 40px;
+}
+
+/* Адаптация для планшетов и мобильных */
+@media (max-width: 768px) {
+  .container {
+    padding: 0 20px;
+  }
+  
+  main {
+    padding: 30px 0;
+  }
+}
+
+/* На очень больших экранах (4K) */
+@media (min-width: 2560px) {
+  .container {
+    max-width: 2400px; /* Увеличиваем макс. ширину для 4K */
+    padding: 0 60px;   /* Больше воздуха по бокам */
+  }
+}

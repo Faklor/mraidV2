@@ -1,0 +1,65 @@
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 5 колонок в одну линию */
+    gap: 16px; /* Уменьшили отступ */
+}
+
+.stat-item {
+    background: transparent; /* Более прозрачный фон */
+    border: 1px solid rgba(255, 255, 255, 0.08); /* Тонкий border */
+    border-radius: 12px;
+    padding: 24px 12px; /* Уменьшили padding */
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.stat-item:hover {
+    background: rgba(255, 0, 54, 0.08);
+    border-color: rgba(255, 0, 54, 0.3);
+    transform: translateY(-2px);
+}
+
+.stat-number {
+    font-size: 1.75rem; /* Уменьшили размер */
+    font-weight: 800;
+    color: #FF0036;
+    margin-bottom: 8px;
+    display: block;
+}
+
+.stat-label {
+    font-size: 0.85rem; /* Уменьшили размер текста */
+    color: #888;
+    line-height: 1.3;
+    margin: 0;
+}
+
+/* Планшеты: 3 колонки */
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+/* Мобильные: 2 колонки */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+    
+    .stat-number {
+        font-size: 1.5rem;
+    }
+    
+    .stat-label {
+        font-size: 0.8rem;
+    }
+}
+
+/* Очень маленькие экраны: 1 колонка */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}

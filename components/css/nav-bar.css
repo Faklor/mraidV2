@@ -1,0 +1,164 @@
+/* === БАЗОВЫЕ СТИЛИ (ДЕСКТОП) === */
+nav {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+}
+
+a:not(.nav-cta-btn) {
+  text-decoration: none;
+  color: #ffffff;
+  font-weight: 600;
+  font-family: system-ui, -apple-system, sans-serif;
+  font-size: 0.95rem;
+  position: relative;
+  padding: 8px 0;
+  transition: color 0.3s ease;
+  cursor: pointer;
+}
+
+a:not(.nav-cta-btn):hover {
+  color: #FF0036;
+}
+
+a:not(.nav-cta-btn)::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #FF0036;
+  transition: width 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+a:not(.nav-cta-btn):hover::after,
+a:not(.nav-cta-btn).active::after {
+  width: 100%;
+}
+
+a:not(.nav-cta-btn).active {
+  color: #FF0036;
+}
+
+a:not(.nav-cta-btn).active::after {
+  height: 3px;
+  border-radius: 2px;
+}
+
+/* === СТИЛИ КНОПКИ CTA (с текстом и SVG) === */
+.nav-cta-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px; /* Отступ между текстом и стрелкой */
+  padding: 10px 24px;
+  background-color: #FF0036;
+  color: #fff !important;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  text-decoration: none;
+  transition: background-color 0.2s, transform 0.2s;
+  white-space: nowrap;
+  border: none;
+  cursor: pointer;
+}
+
+.nav-cta-btn:hover {
+  background-color: #cc002b;
+  transform: translateY(-2px);
+}
+
+/* Стили для SVG внутри кнопки */
+.nav-cta-btn svg {
+  flex-shrink: 0; /* Запрещаем иконке сжиматься */
+  width: 21px;
+  height: 15px;
+}
+
+.nav-cta-btn svg path {
+  stroke: #ffffff;
+  stroke-width: 1.08428;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+/* Скрываем гамбургер на десктопе */
+.hamburger {
+  display: none;
+}
+
+/* === МОБИЛЬНЫЕ СТИЛИ (до 768px) === */
+@media (max-width: 768px) {
+  .hamburger {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 32px;
+    height: 24px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    z-index: 1002;
+    position: relative;
+  }
+
+  .hamburger span {
+    display: block;
+    width: 100%;
+    height: 2px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  :host(.menu-open) .hamburger span:nth-child(1) {
+    transform: translateY(11px) rotate(45deg);
+  }
+  :host(.menu-open) .hamburger span:nth-child(2) {
+    opacity: 0;
+  }
+  :host(.menu-open) .hamburger span:nth-child(3) {
+    transform: translateY(-11px) rotate(-45deg);
+  }
+
+  nav {
+    position: fixed;
+    inset: 0;
+    background-color: #0D0D0F;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    transform: translateX(100%);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 1001;
+  }
+
+  :host(.menu-open) nav {
+    transform: translateX(0);
+  }
+
+  nav a:not(.nav-cta-btn) {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  nav a:not(.nav-cta-btn)::after {
+    display: none;
+  }
+
+  nav a:not(.nav-cta-btn).active {
+    color: #FF0036;
+  }
+
+  /* Кнопка CTA внутри мобильного меню (чуть крупнее для пальца) */
+  .nav-cta-btn {
+    margin-top: 20px;
+    padding: 16px 32px;
+    font-size: 1.2rem;
+  }
+}

@@ -1,0 +1,79 @@
+.hero-block h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    line-height: 1.2;
+    margin-bottom: 24px;
+    color: #ffffff;
+}
+
+.hero-block h1 span {
+    color: #FF0036;
+}
+
+.hero-block p {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    line-height: 1.6;
+    margin-bottom: 40px;
+    max-width: 480px;
+}
+
+.buttons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 16px 52px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    border: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: #FF0036;
+    color: #ffffff;
+}
+
+.btn-primary:hover {
+    background-color: #cc002b;
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    border: 1px solid #333;
+}
+
+.btn-secondary:hover {
+    background-color: #2a2a2a;
+    border-color: #FF0036;
+}
+
+@media (max-width: 768px) {
+    .hero-block h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-block p {
+        font-size: 1rem;
+    }
+    
+    .buttons {
+        flex-direction: column;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+}

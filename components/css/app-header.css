@@ -1,0 +1,37 @@
+/* components/css/app-header.css */
+
+header {
+  display: flex;
+  justify-content: space-between; /* Лого слева, блок .header-actions справа */
+  align-items: center;
+  padding: 20px 40px;
+  background-color: #0D0D0F;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+/* Группируем меню и кнопку справа */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 48px; /* <-- ВОТ ЭТОТ ОТСТУП между навигацией и кнопкой! */
+}
+
+
+
+.header-btn {
+  padding: 10px 24px;
+  background-color: transparent;
+  color: #fff;
+  border: none;
+ 
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Запрещаем перенос текста внутри кнопки */
+}
+
+
+
