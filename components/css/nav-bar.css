@@ -91,7 +91,7 @@ a:not(.nav-cta-btn).active::after {
 }
 
 /* === МОБИЛЬНЫЕ СТИЛИ (до 768px) === */
-@media (max-width: 768px) {
+@media (max-width: 1200px) {
   .hamburger {
     display: flex;
     flex-direction: column;

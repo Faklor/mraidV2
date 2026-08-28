@@ -8,8 +8,21 @@ class HomePage extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/HomePage.css">
             
+            
+
             <div class="home-page">
                 <!-- Секция 1: Hero + Phone + Features (3 колонки на десктопе) -->
+
+                <div class="bg-looper-wrapper">
+                    <img src="assets/img/looper.png" alt="Background" class="bg-looper">
+                </div>
+
+                <bg-blick></bg-blick>
+                <bg-blick></bg-blick>
+                <bg-blick></bg-blick>
+                <bg-blick></bg-blick>
+
+
                 <section class="hero-section">
                     <div class="hero-content">
                         <hero-block></hero-block>
@@ -30,6 +43,10 @@ class HomePage extends HTMLElement {
                 <!-- Секция 3: Stats Grid (3+2) -->
                 <section class="stats-section">
                     <stats-grid></stats-grid>
+                </section>
+
+                <section class="slider-section">
+                    <top-playables-slider></top-playables-slider>
                 </section>
             </div>
         `;

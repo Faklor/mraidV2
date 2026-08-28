@@ -2,6 +2,7 @@
 .home-page {
     padding: 0px 0;
     animation: fadeIn 0.8s ease-out;
+    position: relative;
 }
 
 @keyframes fadeIn {
@@ -9,7 +10,99 @@
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* Hero секция: 3 колонки (Hero | Phone | Features) */
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Плавное появление слева (для списка фич) */
+@keyframes fadeLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Плавное появление справа (для телефона) */
+@keyframes fadeRight {
+    from {
+        opacity: 0;
+        transform: translateX(40px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0) scale(1);
+    }
+}
+
+/* Плавное появление с увеличением (для логотипов и статистики) */
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* Фирменная плавная кривая (как у Apple) */
+.premium-ease {
+    animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* === ФОН: ФИКСИРОВАННЫЙ, НЕ ДВИГАЕТСЯ ПРИ СКРОЛЛЕ === */
+.bg-looper-wrapper {
+    position: absolute; /* Фиксируем относительно viewport */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    
+    /* Магия для Shadow DOM — создаём новый stacking context */
+    transform: translateZ(0);
+    will-change: transform;
+}
+
+.bg-looper {
+    position: absolute;
+    top: 0%;
+    left: 55%;
+    transform: translateX(-50%);
+    width: 1200px;
+    max-width: 80vw;
+    height: auto;
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Контент выше фона */
+.hero-section,
+.trusted-section,
+.stats-section,
+.slider-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Hero секция: 3 колонки */
 .hero-section {
     display: grid;
     grid-template-columns: 1fr 1fr 20%;
@@ -18,37 +111,47 @@
     padding: 0 20px;
 }
 
-/* Trusted секция */
 .trusted-section {
     margin-bottom: 40px;
     padding: 0 20px;
 }
 
-/* Stats секция */
 .stats-section {
     padding: 0 20px;
 }
 
-/* === АДАПТАЦИЯ ПОД ПЛАНШЕТЫ И МОБИЛЬНЫЕ === */
+/* === АДАПТАЦИЯ === */
 @media (max-width: 1024px) {
     .hero-section {
-        grid-template-columns: 1fr 1fr; /* 2 колонки */
+        grid-template-columns: 1fr 1fr;
         gap: 40px;
     }
     
     .phone-showcase {
-        grid-column: span 2; /* Телефон на всю ширину */
+        grid-column: span 2;
         justify-self: center;
+    }
+    
+    .bg-looper {
+        width: 900px;
     }
 }
 
 @media (max-width: 768px) {
+
+    .bg-looper-wrapper {
+       
+        width: 50vw;
+        height: 100vh;
+        
+    }
+
     .home-page {
-        padding: 40px 0;
+        padding: 0px 0;
     }
     
     .hero-section {
-        grid-template-columns: 1fr; /* 1 колонка */
+        grid-template-columns: 1fr;
         gap: 40px;
         margin-bottom: 60px;
     }
@@ -61,4 +164,11 @@
     .stats-section {
         margin-bottom: 60px;
     }
+    
+    .bg-looper {
+        width: 10nw;
+        top: 80%;
+    }
+
+    
 }

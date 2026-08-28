@@ -8,7 +8,7 @@ class AppLogo extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="components/css/app-logo.css">
             
-            <a href="/" class="logo-container">
+            <h1 class="logo-container">
                 <!-- Обертка для SVG с бликом -->
                 <div class="logo-wrapper">
                     <svg class="logo-svg" width="128" height="95" viewBox="0 0 128 95" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
@@ -73,7 +73,7 @@ class AppLogo extends HTMLElement {
                 </div>
                 
                 <span class="logo-text">MRAID.IO</span>
-            </a>
+            </h1>
         `;
     }
 }

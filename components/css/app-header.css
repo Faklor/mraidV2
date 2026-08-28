@@ -4,7 +4,7 @@ header {
   display: flex;
   justify-content: space-between; /* Лого слева, блок .header-actions справа */
   align-items: center;
-  padding: 20px 40px;
+  padding: 0px 40px;
   background-color: #0D0D0F;
   position: sticky;
   top: 0;
@@ -31,6 +31,13 @@ header {
   display: flex;
   align-items: center;
   white-space: nowrap; /* Запрещаем перенос текста внутри кнопки */
+}
+
+
+@media (max-width: 768px) {
+  header{
+    padding: 0 10px;
+  }
 }
 
 

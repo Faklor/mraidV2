@@ -1,3 +1,23 @@
+/* Roboto Condensed Light (Тонкий/Обычный текст) */
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('assets/fonts/Roboto_Condensed-Light.ttf') format('truetype');
+  font-weight: 300; /* Light обычно соответствует 300 */
+  font-style: normal;
+  font-display: swap; /* Показывает текст сразу, даже если шрифт еще грузится (важно для скорости) */
+}
+
+/* Roboto Condensed Bold (Жирный текст/Заголовки) */
+@font-face {
+  font-family: 'Roboto Condensed';
+  src: url('assets/fonts/Roboto_Condensed-Bold.ttf') format('truetype');
+  font-weight: 700; /* Bold обычно соответствует 700 */
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 /* global.css */
 
 * {
@@ -9,9 +29,12 @@
 }
 
 html, body {
+  font-family: 'Roboto Condensed', system-ui, -apple-system, sans-serif;
+  font-weight: 300; /* По умолчанию используем Light версию */
   width: 100%;
   
 }
+
 
 html {
   scroll-behavior: smooth;
@@ -52,6 +75,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center; /* Центрируем по горизонтали */
+   overflow-x: hidden;
 }
 
 main {
@@ -64,6 +88,8 @@ h1 {
   color: #fff;
   margin-bottom: 20px;
 }
+
+
 
 /* === ИДЕАЛЬНЫЙ КОНТЕЙНЕР === */
 .container {
@@ -80,7 +106,7 @@ h1 {
   }
   
   main {
-    padding: 30px 0;
+    padding: 0px 0;
   }
 }
 

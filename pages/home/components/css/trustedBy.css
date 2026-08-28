@@ -38,11 +38,7 @@
     transition: all 0.3s ease;
 }
 
-.logo-item:hover {
-    filter: grayscale(0%); /* Возвращаем цвет при наведении */
-    opacity: 1;
-    transform: scale(1.05); /* Легкое увеличение */
-}
+
 
 /* Адаптация для планшетов и мобильных */
 @media (max-width: 1024px) {

@@ -45,7 +45,7 @@ class PhoneShowcase extends HTMLElement {
             <link rel="stylesheet" href="pages/home/components/css/phoneBlock.css">
             
             <div class="showcase-wrapper">
-                <img src="assets/img/looper.png" alt="Background" class="bg-looper">
+               
                 <img src="assets/img/main-blick.png" alt="Main Blick" class="bg-blick">
                 
                 <div class="phone-3d-container">

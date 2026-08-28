@@ -70,10 +70,14 @@
     
     .buttons {
         flex-direction: column;
+        width: 100%;
     }
     
     .btn {
         width: 100%;
+        max-width: 100%; /* Ограничиваем максимальную ширину */
+        padding: 14px 24px; /* Уменьшаем padding для мобильных */
         justify-content: center;
+        box-sizing: border-box; /* ВАЖНО: padding включается в ширину */
     }
 }

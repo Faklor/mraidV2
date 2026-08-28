@@ -2,45 +2,33 @@
 .showcase-wrapper {
     position: relative;
     width: 100%;
-    height: auto; /* Увеличили высоту для больших фонов */
+    height: auto;
     display: flex;
     justify-content: center;
     align-items: center;
-    /*overflow: hidden;*/
-}
-
-/* Слой 1: Фоновая картинка (УВЕЛИЧЕНА В 2 РАЗА) */
-.bg-looper {
-    position: absolute;
-    top: 80%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 210%; /* Было 100%, теперь 160% */
-    max-width: none;
-    opacity: 1; /* Чуть прозрачнее, чтобы не отвлекала */
+    /* УБРАЛИ overflow: hidden — теперь картинка не обрезается */
     z-index: 1;
-    pointer-events: none;
 }
 
-/* Слой 2: Блик (УВЕЛИЧЕН В 2 РАЗА) */
+
+/* Остальные стили остаются без изменений */
 .bg-blick {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100%; /* Было 100%, теперь 140% */
+    width: 100%;
     max-width: none;
     z-index: 2;
     pointer-events: none;
     opacity: 0.6;
 }
 
-/* Слой 3: 3D Контейнер */
 .phone-3d-container {
     position: relative;
     z-index: 10;
     perspective: 1200px;
-    width: 250px; /* Чуть больше рамки для воздуха */
+    width: 250px;
     height: 480px;
     cursor: pointer;
 }
@@ -60,19 +48,17 @@
     75% { transform: rotateY(-8deg); }
 }
 
-/* Экран с игрой (iframe)  */
 .playable-screen {
     position: absolute;
-    top: 10px;    /* Уменьшили отступ сверху */
-    left: 10px;    /* Уменьшили отступ слева */
-    width: 230px; /* Увеличили ширину */
-    height: 460px; /* Увеличили высоту */
+    top: 10px;
+    left: 10px;
+    width: 230px;
+    height: 460px;
     background: #000;
     border-radius: 12px;
     z-index: 1;
 }
 
-/* Градиентное отражение - должно совпадать с iframe */
 .screen-reflection {
     position: absolute;
     top: 10px;
@@ -102,7 +88,7 @@
     z-index: 3;
     pointer-events: none;
 }
-/* Индикатор обратного отсчета */
+
 .inactivity-indicator {
     position: absolute;
     top: 20px;
@@ -132,8 +118,12 @@
     opacity: 1;
     visibility: visible;
 }
-/* Адаптация для мобильных */
+
 @media (max-width: 768px) {
+    .bg-looper {
+        width: 200%;
+    }
+    
     .phone-3d-container {
         width: 200px;
         height: 384px;

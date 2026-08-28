@@ -12,6 +12,7 @@
 </head>
 <body>
 
+    
     <app-preloader id="main-preloader"></app-preloader>
 
     <div class="container">
@@ -37,12 +38,16 @@
         <main id="main-content">
         
         </main>
+
+        <app-footer></app-footer>
     </div>
     <!-- Components global -->
+     <script src="components/bg-blick.js"></script> 
     <script src="components/app-preloader.js"></script>
     <script src="components/app-logo.js"></script>
     <script src="components/app-header.js"></script>
     <script src="components/nav-bar.js"></script>
+    <script src="components/app-footer.js"></script>
     <!-- Pages -->
     <!-- -------------------Home -->
     <script src="pages/home/HomePage.js"></script>
@@ -52,6 +57,7 @@
     <script src="pages/home/components/featuresBlock.js"></script>
     <script src="pages/home/components/sliderClientsBlock.js"></script>
     <script src="pages/home/components/staticBlock.js"></script>
+    <script src="pages/home/components/topPlayablesSlider.js"></script>
 
     <!-- -------------------About -->
 
@@ -60,15 +66,30 @@
 
     <script src="router.js"></script>
     <script>
-        const preloader = document.getElementById('main-preloader');
-        const mainContent = document.getElementById('main-content');
+       const ENABLE_PRELOADER = false; 
 
-       
-        preloader.addEventListener('preloader-complete', () => {
-            
-            
-            
-            mainContent.classList.add('is-visible');
+        document.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('main-preloader');
+            const mainContent = document.getElementById('main-content');
+
+            if (!ENABLE_PRELOADER) {
+                // Если прелоадер выключен:
+                if (preloader) {
+                    preloader.style.display = 'none'; // Скрываем его, чтобы не мешал
+                    // или preloader.remove(); чтобы полностью удалить из DOM
+                }
+                if (mainContent) {
+                    mainContent.classList.add('is-visible'); // Сразу показываем контент
+                }
+                return; // Прерываем выполнение, чтобы не вешать лишние слушатели
+            }
+
+            // Если прелоадер включен (стандартная логика)
+            if (preloader && mainContent) {
+                preloader.addEventListener('preloader-complete', () => {
+                    mainContent.classList.add('is-visible');
+                });
+            }
         });
     </script>
 </body>
