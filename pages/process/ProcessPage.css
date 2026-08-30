@@ -1,0 +1,86 @@
+/* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
+.process-page {
+    padding: 20px 0 0px 0;
+    animation: fadeIn 0.8s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* === ВЕРХНЯЯ ЧАСТЬ: ЗАГОЛОВОК + ОПИСАНИЕ === */
+.process-header {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    margin-bottom: 80px;
+    padding: 0 20px;
+}
+
+.process-title h1 {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1.2;
+    color: #ffffff;
+    margin: 0;
+}
+
+.process-title h1 span {
+    color: #FF0036;
+}
+
+.process-description p {
+    font-size: 1.1rem;
+    color: #a0a0a0;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* === СЕКЦИЯ ШАГОВ: 6 КОЛОНОК === */
+.process-steps {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    padding: 0 20px;
+}
+
+/* === АДАПТАЦИЯ === */
+@media (max-width: 1440px) {
+    .process-steps {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .process-header {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+    
+    .process-title h1 {
+        font-size: 2.5rem;
+    }
+    
+    .process-steps {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .process-page {
+        padding: 20px 0;
+    }
+    
+    .process-title h1 {
+        font-size: 2rem;
+    }
+    
+    .process-description p {
+        font-size: 1rem;
+    }
+    
+    .process-steps {
+        grid-template-columns: 1fr;
+    }
+}

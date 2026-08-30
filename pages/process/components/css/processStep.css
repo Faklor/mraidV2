@@ -1,0 +1,115 @@
+.steps-row {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 20px;
+    padding: 0 20px;
+    position: relative;
+    margin-bottom: 40px;
+}
+
+/* Пунктирная линия */
+.dashed-line {
+    position: absolute;
+    top: 24px;
+    left: 60px;
+    right: 60px;
+    height: 2px;
+    border-top: 2px dashed rgba(255, 255, 255, 0.2);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Карточка шага */
+.step-card {
+    position: relative;
+    background: #131313;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    padding: 24px 20px 20px;
+    z-index: 1;
+    transition: all 0.3s ease;
+}
+
+
+/* Красный кружок с иконкой */
+.step-icon-wrapper {
+    position: absolute;
+    top: -24px;
+    left: 20px;
+    width: 48px;
+    height: 48px;
+    background: #FF0036;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 4px solid #0D0D0F;
+    z-index: 2;
+}
+
+.step-icon {
+    width: 24px;
+    height: 24px;
+    filter: brightness(0) invert(1);
+}
+
+/* Номер шага */
+.step-number {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: rgba(255, 255, 255, 0.3);
+}
+
+/* Заголовок красным */
+.step-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #FF0036;
+    margin: 0 0 12px;
+    padding-top: 8px;
+}
+
+/* Описание */
+.step-description {
+    font-size: 0.9rem;
+    color: #a0a0a0;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Адаптация */
+@media (max-width: 1440px) {
+    .steps-row {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .dashed-line {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .steps-row {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+    
+    .step-card {
+        padding: 32px 20px 20px;
+    }
+    
+    .step-icon-wrapper {
+        top: -20px;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+    }
+    
+    .step-icon {
+        width: 20px;
+        height: 20px;
+    }
+}
