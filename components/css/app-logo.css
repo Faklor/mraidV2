@@ -9,7 +9,8 @@
   align-items: center;
   gap: 12px;
   text-decoration: none;
-}
+  font-family: 'Roboto Condensed';
+} 
 
 /* Обертка для SVG */
 .logo-wrapper {
@@ -53,13 +54,15 @@
 }
 
 .logo-text {
-  font-size: 24px;
-  font-weight: 800;
+  font-size: 32px;
+  font-weight: 600;
   color: #ffffff;
-  letter-spacing: 1px;
+  letter-spacing: 2px;
   transition: color 0.3s ease;
   position: relative;
   overflow: hidden;
+  padding: 1px 0 0 0;
+  text-align: center;
 }
 
 /* Блик на тексте */
