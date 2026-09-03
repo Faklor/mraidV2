@@ -3,8 +3,9 @@
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    padding: 0 20px;
+    padding: 0 120px;
     margin-bottom: 60px;
+    font-size: 'RobotoMedium';
 }
 
 /* === КАРТОЧКА === */
@@ -19,10 +20,7 @@
     transition: all 0.3s ease;
 }
 
-.price-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(255, 0, 54, 0.3);
-}
+
 
 /* === ПОПУЛЯРНАЯ КАРТОЧКА === */
 .price-card.popular {
@@ -124,6 +122,7 @@
     .price-cards-row {
         grid-template-columns: 1fr;
         gap: 24px;
+        padding: 0 20px;
     }
     
     .price-card {

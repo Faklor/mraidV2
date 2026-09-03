@@ -1,0 +1,168 @@
+/* === СЕКЦИЯ WHAT WE BUILD === */
+.portfolio-build-section {
+    padding: 40px 120px;
+    font-size: 'RobotoMedium';
+}
+
+.build-header {
+    margin-bottom: 28px;
+}
+
+.build-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+/* === СЕТКА КАРТОЧЕК === */
+.build-cards {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+/* === ОТДЕЛЬНАЯ КАРТОЧКА === */
+.build-card {
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.4s ease;
+    height: 100%;
+}
+
+
+/* === ЗАГОЛОВОК КАРТОЧКИ === */
+.build-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0px 0 0px;
+    line-height: 1.3;
+    min-height: 80px;
+}
+
+/* === КОНТЕЙНЕР ИЗОБРАЖЕНИЯ === */
+.build-image {
+    width: 100%;
+    height: 300px;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    position: relative; /* Для позиционирования блика */
+    background: #0D0D0F; /* Фон под картинкой */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* === БЛИК НА ФОНЕ === */
+.build-blick {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(1.5); /* УВЕЛИЧИЛИ В 1.5 РАЗА */
+    width: 100%; /* ШИРЕ КОНТЕЙНЕРА */
+    height: 50%; /* ВЫШЕ КОНТЕЙНЕРА */
+    background-image: url('../../../../assets/img/main-blick.png');
+    background-size: cover; /* ЗАПОЛНЯЕТ ВСЁ ПРОСТРАНСТВО */
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.5; /* ЧУТЬ ПРОЗРАЧНЕЕ, ЧТОБЫ НЕ ЗАБИВАЛ */
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* === ОСНОВНАЯ КАРТИНКА === */
+.portfolio-inner-img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain; /* Картинка вписывается целиком */
+    z-index: 1; /* Поверх блика */
+    position: relative;
+    transition: transform 0.5s ease;
+}
+
+
+
+/* === ОПИСАНИЕ === */
+.build-description {
+    font-size: 0.95rem;
+    color: #888;
+    line-height: 1.6;
+    margin: 0 0 24px;
+    flex: 1;
+}
+
+/* === ССЫЛКА "SEE MORE" === */
+.build-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: #FF0036;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: auto;
+}
+
+.build-link:hover {
+    gap: 12px;
+    color: #ff1a4a;
+}
+
+.build-link svg {
+    transition: transform 0.3s ease;
+}
+
+.build-link:hover svg {
+    transform: translateX(4px);
+}
+
+/* === АДАПТАЦИЯ === */
+@media (max-width: 1440px) {
+    .build-cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 1024px) {
+    .build-cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    
+    .build-header h2 {
+        font-size: 2rem;
+    }
+    
+    .build-image {
+        height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .portfolio-build-section {
+        padding: 60px 20px;
+    }
+    
+    .build-cards {
+        grid-template-columns: 1fr;
+        gap: 80px;
+    }
+    
+    .build-header h2 {
+        font-size: 1.8rem;
+    }
+    
+    .build-title {
+        font-size: 1.5rem;
+        min-height: auto;
+    }
+    
+    .build-image {
+        height: 350px;
+    }
+}

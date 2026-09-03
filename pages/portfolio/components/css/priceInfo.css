@@ -3,8 +3,9 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
-    padding: 0 20px;
+    padding: 0 120px;
     margin-bottom: 60px;
+    font-size: 'RobotoMedium';
 }
 
 /* === КАРТОЧКА === */
@@ -106,8 +107,8 @@
 .info-btn {
     display: inline-block;
     padding: 14px 32px;
-    background: #ffffff;
-    color: #FF0036;
+    background: #FF0034;
+    color: #fff;
     text-decoration: none;
     font-weight: 600;
     font-size: 0.95rem;
@@ -121,6 +122,7 @@
 /* === АДАПТАЦИЯ === */
 @media (max-width: 1024px) {
     .price-info-row {
+        padding: 0 20px;
         grid-template-columns: 1fr;
         gap: 24px;
     }

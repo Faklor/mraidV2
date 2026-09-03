@@ -1,6 +1,6 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .portfolio-page {
-    padding: 60px 0 80px;
+    padding: 10px 0 10px;
     animation: fadeIn 0.8s ease-out;
     
     font-size: 'RobotoMedium';
@@ -14,7 +14,7 @@
 /* === ЗАГОЛОВОК === */
 .portfolio-header {
     text-align: start;
-    padding: 0 25px;
+    padding: 0 120px;
     margin-bottom: 20px;
 }
 
@@ -23,7 +23,7 @@
 /* === АДАПТАЦИЯ === */
 @media (max-width: 768px) {
     .portfolio-page {
-        padding: 40px 0;
+        padding: 10px 0 10px;
     }
     
     .portfolio-header h1 {
@@ -36,5 +36,6 @@
     
     .portfolio-header {
         margin-bottom: 40px;
+         padding: 0 20px;
     }
 }

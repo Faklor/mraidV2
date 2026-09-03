@@ -9,7 +9,7 @@
   align-items: center;
   gap: 12px;
   text-decoration: none;
-  font-family: 'Roboto Condensed';
+  font-size: 'RobotoMedium';
 } 
 
 /* Обертка для SVG */
@@ -61,7 +61,7 @@
   transition: color 0.3s ease;
   position: relative;
   overflow: hidden;
-  padding: 1px 0 0 0;
+  padding: 0px 0 0 0;
   text-align: center;
 }
 

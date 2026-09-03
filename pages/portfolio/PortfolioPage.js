@@ -9,6 +9,13 @@ class PortfolioPage extends HTMLElement {
             <link rel="stylesheet" href="pages/portfolio/portfolioPage.css">
             
             <div class="portfolio-page">
+
+                <!-- Слайдер с фильтрами -->
+                <portfolio-slider></portfolio-slider>
+
+                <!-- Buildinfo -->
+                <portfolio-build></portfolio-build>
+
                 <!-- Заголовок страницы -->
                 <section class="portfolio-header">
                     <h1>Packages & Pricing</h1>
