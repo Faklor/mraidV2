@@ -1,0 +1,366 @@
+/* === СЕКЦИЯ FEATURES === */
+.dashboard-features {
+    padding: 100px 40px;
+    background: #0D0D0F;
+    font-family: 'RobotoMedium';
+}
+
+.features-heading {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 48px;
+}
+
+/* === ОСНОВНОЙ КОНТЕЙНЕР === */
+.features-container {
+    display: grid;
+    grid-template-columns: 400px 1fr;
+    gap: 40px;
+    align-items: stretch; /* ОДИНАКОВАЯ ВЫСОТА ОБЕИХ КОЛОНОК */
+}
+
+/* === СПИСОК ФИЧ (ЛЕВАЯ КОЛОНКА) === */
+.features-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    height: 100%; /* РАСТЯГИВАЕМ НА ВСЮ ВЫСОТУ */
+    align-self: stretch; /* ДОПОЛНИТЕЛЬНО РАСТЯГИВАЕМ */
+}
+
+/* Распределяем элементы списка равномерно по высоте */
+.feature-item {
+    flex: 1; /* Каждый элемент занимает равную часть высоты */
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 24px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.feature-item:hover {
+    background: rgba(255, 255, 255, 0.05);
+    border-color: rgba(255, 255, 255, 0.15);
+    transform: translateX(4px);
+}
+
+.feature-item.active {
+    background: rgba(255, 0, 54, 0.1);
+    border: 1px solid rgba(255, 0, 54, 0.4);
+    box-shadow: 0 0 24px rgba(255, 0, 54, 0.2);
+}
+
+.feature-icon-wrapper {
+    width: 48px;
+    height: 48px;
+    flex-shrink: 0;
+}
+
+.feature-icon {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.feature-item.active .feature-icon {
+    opacity: 1;
+    filter: brightness(0) invert(37%) sepia(96%) saturate(7490%) hue-rotate(357deg) brightness(95%) contrast(101%);
+}
+
+.feature-text {
+    flex: 1;
+}
+
+.feature-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 0 0 4px;
+}
+
+.feature-subtitle {
+    font-size: 0.85rem;
+    color: #888;
+    margin: 0;
+    line-height: 1.4;
+}
+
+.feature-item.active .feature-title {
+    color: #FF0036;
+}
+
+/* === ПРАВАЯ ПАНЕЛЬ (ТЕКСТ + ВИДЕО) === */
+.feature-panel {
+    display: flex;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%; /* ОДИНАКОВАЯ ВЫСОТА С ЛЕВОЙ КОЛОНКОЙ */
+}
+
+/* === ТЕКСТОВЫЙ БЛОК === */
+.feature-content {
+    flex: 0 0 320px;
+    padding: 40px 32px;
+    border-right: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.content-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 16px;
+    line-height: 1.2;
+}
+
+.content-description {
+    font-size: 1rem;
+    color: #888;
+    line-height: 1.6;
+    margin: 0 0 24px;
+}
+
+.content-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.content-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    font-size: 0.95rem;
+    color: #ffffff;
+    font-weight: 500;
+    line-height: 1.4;
+}
+
+.content-list li svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+/* === БЛОК С ВИДЕО === */
+.video-wrapper {
+    flex: 1;
+    position: relative;
+    background: #1a1a1a;
+    min-width: 0;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.feature-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: 20px;
+}
+
+/* === КНОПКА PLAY === */
+.play-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80px;
+    height: 80px;
+    background: rgba(255, 0, 54, 0.9);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 5;
+}
+
+.video-wrapper.paused .play-overlay {
+    opacity: 1;
+}
+
+.play-overlay:hover {
+    background: #FF0036;
+    transform: translate(-50%, -50%) scale(1.1);
+}
+
+.play-overlay svg {
+    width: 52px;
+    height: 52px;
+    fill: white;
+    margin-left: 0px;
+}
+
+/* === КОНТРОЛЫ ВИДЕО === */
+.video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+    padding: 20px 16px 16px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.video-wrapper:hover .video-controls {
+    opacity: 1;
+}
+
+.control-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 2px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: #FF0036;
+    width: 0%;
+    transition: width 0.1s linear;
+}
+
+.control-buttons {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    color: #ffffff;
+    cursor: pointer;
+    padding: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+}
+
+.control-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: #FF0036;
+}
+
+.control-btn svg {
+    width: 20px;
+    height: 20px;
+}
+
+.time-display {
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-family: monospace;
+    min-width: 100px;
+    text-align: right;
+}
+
+/* === АДАПТАЦИЯ === */
+@media (max-width: 1200px) {
+    .features-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .feature-panel {
+        flex-direction: column;
+    }
+    
+    .feature-content {
+        flex: none;
+        border-right: none;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 32px;
+    }
+    
+    .video-wrapper {
+        min-height: 400px;
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard-features {
+        padding: 60px 20px;
+    }
+    
+    .features-heading {
+        font-size: 2rem;
+    }
+    
+    .features-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    
+    .feature-item {
+        flex: 1;
+        min-width: 200px;
+    }
+    
+    .feature-content {
+        padding: 24px;
+    }
+    
+    .content-title {
+        font-size: 1.4rem;
+    }
+    
+    .content-description {
+        font-size: 0.9rem;
+    }
+    
+    .content-list li {
+        font-size: 0.85rem;
+    }
+    
+    .video-wrapper {
+        min-height: 250px;
+    }
+}
+
+@media (max-width: 480px) {
+    .features-list {
+        flex-direction: column;
+    }
+    
+    .feature-item {
+        min-width: auto;
+    }
+}
