@@ -11,6 +11,7 @@ class DashboardPage extends HTMLElement {
             <div class="dashboard-page">
                 <dashboard-showcase></dashboard-showcase>
                 <dashboard-features></dashboard-features>
+                <dashboard-info></dashboard-info>
             </div>
         `;
     }

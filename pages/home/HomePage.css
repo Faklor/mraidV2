@@ -3,6 +3,7 @@
     padding: 0px 0;
     animation: fadeIn 0.8s ease-out;
     position: relative;
+    font-family: 'RobotoMedium';
 }
 
 @keyframes fadeIn {

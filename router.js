@@ -7,7 +7,6 @@ const routes = {
     '#pricing': 'page-pricing',
     '#portfolio': 'page-portfolio',
     '#dashboard': 'page-dashboard',
-    '#about': 'page-about',
     '#contact': 'page-contact'
 };
 
