@@ -44,7 +44,6 @@ class NavBar extends HTMLElement {
         // Закрытие меню при клике на любую ссылку или кнопку внутри него
         const nav = this.shadowRoot.querySelector('nav');
         nav.addEventListener('click', (e) => {
-            // Проверяем, был ли клик по ссылке (включая span или svg внутри ссылки)
             const targetLink = e.target.closest('a');
             if (targetLink) {
                 this.classList.remove('menu-open');
@@ -53,9 +52,13 @@ class NavBar extends HTMLElement {
 
         setTimeout(() => {
             this.setActiveLink();
+            this.updateCTAVisibility();
         }, 0);
 
-        window.addEventListener('hashchange', () => this.setActiveLink());
+        window.addEventListener('hashchange', () => {
+            this.setActiveLink();
+            this.updateCTAVisibility();
+        });
     }
 
     setActiveLink() {
@@ -63,7 +66,6 @@ class NavBar extends HTMLElement {
         const currentHash = window.location.hash === '' ? '#home' : window.location.hash;
         
         links.forEach(link => {
-            // Не подсвечиваем кнопку CTA как активную ссылку страницы
             if (link.classList.contains('nav-cta-btn')) return;
 
             const href = link.getAttribute('href');
@@ -73,6 +75,22 @@ class NavBar extends HTMLElement {
                 link.classList.remove('active');
             }
         });
+    }
+
+    // === НОВЫЙ МЕТОД: Скрытие/показ кнопки CTA ===
+    updateCTAVisibility() {
+        const ctaBtn = this.shadowRoot.querySelector('.nav-cta-btn');
+        if (!ctaBtn) return;
+
+        const currentHash = window.location.hash === '' ? '#home' : window.location.hash;
+        const ctaHref = ctaBtn.getAttribute('href');
+
+        // Если текущая страница совпадает с href кнопки CTA — скрываем её
+        if (currentHash === ctaHref) {
+            ctaBtn.style.display = 'none';
+        } else {
+            ctaBtn.style.display = 'inline-flex';
+        }
     }
 }
 

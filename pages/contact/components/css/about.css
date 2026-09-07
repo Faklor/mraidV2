@@ -1,17 +1,16 @@
 /* === СЕКЦИЯ CONTACT === */
 .about-contact {
-    padding: 0px 40px;
+    padding: 20px 40px;
     background: #0D0D0F;
     font-family: 'RobotoMedium', sans-serif;
 }
 
 .contact-container {
     width: 100%;
-    margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 60px;
-    align-items: stretch; /* РАСТЯГИВАЕМ ОБА БЛОКА ПО ВЫСОТЕ */
+    gap: 45px; /* СРЕДНЕЕ между 60px и 30px */
+    align-items: stretch;
 }
 
 /* === ЛЕВАЯ ЧАСТЬ === */
@@ -19,14 +18,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    height: 100%; /* РАСТЯГИВАЕМ НА ВСЮ ВЫСОТУ */
+    height: 100%;
 }
 
 .contact-title {
     font-size: 3.5rem;
     font-weight: 800;
     color: #ffffff;
-    margin: 0 0 24px;
+    margin: 0 0 18px; /* СРЕДНЕЕ между 24px и 12px */
     line-height: 1.1;
     letter-spacing: -0.02em;
 }
@@ -38,20 +37,22 @@
 .contact-subtitle {
     font-size: 1.1rem;
     color: #888;
-    line-height: 1.6;
-    margin: 0 0 40px;
+    line-height: 1.5;
+    margin: 0 0 28px; /* СРЕДНЕЕ между 40px и 16px */
 }
 
 .team-photo {
     width: 100%;
     border-radius: 16px;
     overflow: hidden;
-    margin-top: auto; /* Прижимаем фото к низу если нужно */
+    margin-top: auto;
+    max-height: 480px; /* СРЕДНЕЕ ограничение */
 }
 
 .team-photo img {
     width: 100%;
-    height: auto;
+    height: 100%;
+    object-fit: cover;
     display: block;
 }
 
@@ -59,16 +60,16 @@
 .contact-right {
     position: relative;
     width: 100%;
-    height: 100%; /* РАСТЯГИВАЕМ НА ВСЮ ВЫСОТУ */
+    height: 100%;
 }
 
 .form-wrapper {
     width: 100%;
-    height: 100%; /* РАСТЯГИВАЕМ НА ВСЮ ВЫСОТУ */
+    height: 100%;
     background: #111114;
     border: 1px solid #FF0036;
     border-radius: 16px;
-    padding: 40px;
+    padding: 30px; /* СРЕДНЕЕ между 40px и 20px */
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -78,33 +79,33 @@
     font-size: 2rem;
     font-weight: 700;
     color: #ffffff;
-    margin: 0 0 32px;
+    margin: 0 0 24px; /* СРЕДНЕЕ между 32px и 20px */
 }
 
 /* === ФОРМА === */
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 15px; /* СРЕДНЕЕ между 20px и 10px */
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 16px;
+    gap: 14px; /* СРЕДНЕЕ между 16px и 12px */
 }
 
 .form-group {
     display: flex;
     flex-direction: column;
-    min-width: 0; /* ВАЖНО: предотвращает выход grid-элементов за границы */
+    min-width: 0;
 }
 
 .form-input,
 .form-textarea {
     width: 100%;
-    box-sizing: border-box; /* ВАЖНО: padding и border включены в 100% ширины */
-    padding: 16px 20px;
+    box-sizing: border-box;
+    padding: 13px 17px; /* СРЕДНЕЕ между 16px 20px и 10px 14px */
     background: #1a1a1e;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
@@ -132,14 +133,14 @@
 }
 
 .form-textarea {
-    min-height: 140px;
+    min-height: 105px; /* СРЕДНЕЕ между 140px и 70px */
     resize: vertical;
 }
 
 .char-counter {
     position: absolute;
-    bottom: 12px;
-    right: 16px;
+    bottom: 10px;
+    right: 14px;
     font-size: 0.8rem;
     color: #666;
     pointer-events: none;
@@ -147,13 +148,13 @@
 
 /* === ЧЕКБОКС === */
 .form-checkbox {
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .checkbox-label {
     display: flex;
-    align-items: flex-start; /* Выравнивание по верху, если текст длинный */
-    gap: 12px;
+    align-items: flex-start;
+    gap: 11px;
     cursor: pointer;
     user-select: none;
 }
@@ -163,9 +164,9 @@
 }
 
 .checkbox-custom {
-    width: 22px;
-    height: 22px;
-    min-width: 22px;
+    width: 21px;
+    height: 21px;
+    min-width: 21px;
     background: #1a1a1e;
     border: 2px solid rgba(255, 255, 255, 0.2);
     border-radius: 4px;
@@ -183,8 +184,8 @@
 
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
     content: '';
-    width: 6px;
-    height: 10px;
+    width: 5px;
+    height: 9px;
     border: solid white;
     border-width: 0 2px 2px 0;
     transform: rotate(45deg);
@@ -212,20 +213,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 12px;
+    gap: 11px;
     width: 100%;
     box-sizing: border-box;
-    padding: 18px 32px;
+    padding: 15px 28px; /* СРЕДНЕЕ между 18px 32px и 12px 24px */
     background: #FF0036;
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    font-size: 1.1rem;
+    font-size: 1.05rem; /* СРЕДНЕЕ между 1.1rem и 1rem */
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
     transition: all 0.3s ease;
-    margin-top: 8px;
+    margin-top: 5px;
 }
 
 .submit-btn:hover {
@@ -235,6 +236,8 @@
 }
 
 .submit-btn svg {
+    width: 22px;
+    height: 22px;
     transition: transform 0.3s ease;
 }
 
@@ -247,31 +250,31 @@
     width: 100%;
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
-    margin: 24px 0;
+    margin: 18px 0; /* СРЕДНЕЕ между 24px и 12px */
 }
 
 /* === ПРЯМОЙ КОНТАКТ === */
 .direct-contact {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 9px; /* СРЕДНЕЕ между 12px и 6px */
 }
 
 .direct-title {
-    font-size: 0.95rem;
+    font-size: 0.93rem; /* СРЕДНЕЕ между 0.95rem и 0.9rem */
     color: #888;
-    margin: 0 0 4px;
+    margin: 0 0 2px;
 }
 
 .direct-link {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 9px;
     color: #888;
     text-decoration: none;
-    font-size: 0.9rem;
+    font-size: 0.88rem; /* СРЕДНЕЕ между 0.9rem и 0.85rem */
     transition: color 0.3s ease;
-    word-break: break-all; /* Чтобы длинные ссылки не ломали верстку на мобильных */
+    word-break: break-all;
 }
 
 .direct-link:hover {
@@ -286,17 +289,17 @@
 @media (max-width: 1200px) {
     .contact-container {
         grid-template-columns: 1fr;
-        gap: 40px;
+        gap: 35px;
     }
     
-    .contact-title {
-        font-size: 3rem;
+    .team-photo {
+        max-height: 400px;
     }
 }
 
 @media (max-width: 768px) {
     .about-contact {
-        padding: 60px 20px;
+        padding: 50px 20px;
     }
     
     .contact-title {
@@ -319,9 +322,8 @@
         grid-template-columns: 1fr;
     }
     
-    .submit-btn {
-        font-size: 1rem;
-        padding: 16px 24px;
+    .team-photo {
+        max-height: 300px;
     }
 }
 
@@ -331,11 +333,10 @@
     }
     
     .form-wrapper {
-        padding: 20px;
+        padding: 18px;
     }
     
-    .form-input,
-    .form-textarea {
-        padding: 14px 16px;
+    .team-photo {
+        max-height: 250px;
     }
 }

@@ -318,13 +318,7 @@ class DashboardFeatures extends HTMLElement {
             }
         });
 
-        // Автоплей при загрузке
-        setTimeout(() => {
-            video.play().catch(() => {
-                videoWrapper.classList.add('paused');
-                playOverlay.style.display = 'flex';
-            });
-        }, 100);
+        
 
         // Fullscreen
         const fullscreenBtn = this.shadowRoot.querySelector('.fullscreen-btn');
@@ -352,10 +346,7 @@ class DashboardFeatures extends HTMLElement {
             });
         }
 
-        // Двойной клик по видео тоже разворачивает
-        video.addEventListener('dblclick', () => {
-            fullscreenBtn.click();
-        });
+       
     }
 
     // === ОБНОВЛЕНИЕ КНОПКИ PLAY/PAUSE ===

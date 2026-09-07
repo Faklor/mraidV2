@@ -1,6 +1,6 @@
 /* Общие стили страницы */
 .home-page {
-    padding: 0px 0;
+    padding: 20px 0;
     animation: fadeIn 0.8s ease-out;
     position: relative;
     font-family: 'RobotoMedium';
