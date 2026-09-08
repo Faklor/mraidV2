@@ -6,7 +6,7 @@ class PortfolioPage extends HTMLElement {
 
     connectedCallback() {
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/portfolio/portfolioPage.css">
+            <link rel="stylesheet" href="pages/portfolio/PortfolioPage.css">
             
             <div class="portfolio-page">
 
