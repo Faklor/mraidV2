@@ -6,7 +6,7 @@ class AboutPage extends HTMLElement {
 
     connectedCallback() {
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/contact/css/aboutPage.css">
+            <link rel="stylesheet" href="pages/contact/ContactPage.css">
             
             <div class="contact-page">
                 <about-contact></about-contact>

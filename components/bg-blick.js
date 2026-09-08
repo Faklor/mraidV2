@@ -5,25 +5,29 @@ class BgBlick extends HTMLElement {
     }
 
     connectedCallback() {
-        // Генерируем рандомные позиции
-        const top = Math.floor(Math.random() * 80) + 10; // 10% - 90%
-        const left = Math.floor(Math.random() * 80) + 10; // 10% - 90%
-        const size = Math.floor(Math.random() * 300) + 200; // 200px - 500px
-        const opacity = (Math.random() * 0.3 + 0.1).toFixed(2); // 0.1 - 0.4
-        const delay = Math.floor(Math.random() * 5); // 0s - 5s задержка анимации
+        // Читаем атрибуты из HTML. Если их нет, берем значения по умолчанию
+        const top = this.getAttribute('top') || '50%';
+        const left = this.getAttribute('left') || '50%';
+        const size = this.getAttribute('size') || '300px';
+        const opacity = this.getAttribute('opacity') || '0.2';
+        const delay = this.getAttribute('delay') || '0s';
+        
+        // Вычисляем пиковую прозрачность для анимации (на 0.15 больше, но не больше 0.6)
+        const opacityNum = parseFloat(opacity);
+        const peakOpacity = Math.min(opacityNum + 0.15, 0.6).toFixed(2);
 
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
                     position: absolute;
-                    top: ${top}%;
-                    left: ${left}%;
-                    width: ${size}px;
-                    height: ${size}px;
+                    top: ${top};
+                    left: ${left};
+                    width: ${size};
+                    height: ${size};
                     z-index: 0;
                     pointer-events: none;
                     opacity: ${opacity};
-                    animation: blickPulse 8s ease-in-out ${delay}s infinite;
+                    animation: blickPulse 8s ease-in-out ${delay} infinite;
                 }
 
                 img {
@@ -38,16 +42,17 @@ class BgBlick extends HTMLElement {
                         transform: scale(1);
                     }
                     50% {
-                        opacity: ${Math.min(parseFloat(opacity) + 0.1, 0.5).toFixed(2)};
+                        opacity: ${peakOpacity};
                         transform: scale(1.1);
                     }
                 }
 
-                /* На мобильных делаем меньше */
+                /* На мобильных устройствах уменьшаем все блики в 2 раза */
                 @media (max-width: 768px) {
                     :host {
-                        width: ${size * 0.5}px;
-                        height: ${size * 0.5}px;
+                        transform-origin: center;
+                        /* Используем scale, чтобы не ломать строковые значения типа '20vw' */
+                        transform: scale(0.5) !important; 
                     }
                 }
             </style>

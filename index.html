@@ -17,6 +17,9 @@
     <app-preloader id="main-preloader"></app-preloader>
 
     <div class="container">
+        
+        
+
         <app-header>
             <!-- Вставляем компактный логотип с бликом -->
             <app-logo slot="logo"></app-logo>
@@ -35,8 +38,37 @@
         <!-- Теперь ваш HTML чистый и короткий! -->
         <my-header></my-header>
         
-        <main id="main-content">
-        
+        <!-- <main id="main-content">
+            
+        </main> -->
+
+        <main id="main-content" class="landing-main">
+            
+            <!-- 1. HOME -->
+            <section id="home" class="landing-section">
+                <page-home></page-home>
+            </section>
+
+            <!-- 2. PROCESS -->
+            <section id="process" class="landing-section">
+                <page-process></page-process>
+            </section>
+
+            <!-- 3. PORTFOLIO -->
+            <section id="portfolio" class="landing-section">
+                <page-portfolio></page-portfolio>
+            </section>
+
+            <!-- 4. DASHBOARD -->
+            <section id="dashboard" class="landing-section">
+                <page-dashboard></page-dashboard>
+            </section>
+
+            <!-- 5. CONTACT -->
+            <section id="contact" class="landing-section">
+                <page-contact></page-contact>
+            </section>
+
         </main>
 
         <app-footer></app-footer>
@@ -51,6 +83,11 @@
     <script src="components/nav-bar.js"></script>
     <script src="components/app-footer.js"></script>
     <!-- Pages -->
+
+   
+
+
+    
     <!-- -------------------Home -->
     <script src="pages/home/HomePage.js"></script>
 
@@ -97,7 +134,7 @@
 
     <!-- other -->
 
-    <script src="router.js"></script>
+    <!-- <script src="router.js"></script> -->
     <script>
        const ENABLE_PRELOADER = false; 
 

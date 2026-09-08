@@ -1,10 +1,11 @@
 /* === СЕКЦИЯ WHAT WE BUILD === */
 .portfolio-build-section {
-    padding: 40px 120px;
+    padding: 40px 40px;
     font-size: 'RobotoMedium';
 }
 
 .build-header {
+    padding-left: 10px;
     margin-bottom: 28px;
 }
 

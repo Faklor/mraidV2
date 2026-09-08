@@ -23,6 +23,7 @@ class AboutContact extends HTMLElement {
                         </p>
                         <div class="team-photo">
                             <img src="assets/img/about/team.png" alt="Our team">
+                            
                         </div>
                     </div>
 

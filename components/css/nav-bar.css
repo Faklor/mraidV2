@@ -46,29 +46,37 @@ a:not(.nav-cta-btn).active::after {
   border-radius: 2px;
 }
 
-/* === СТИЛИ КНОПКИ CTA (с текстом и SVG) === */
 .nav-cta-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px; /* Отступ между текстом и стрелкой */
-  padding: 10px 24px;
-  background-color: #FF0036;
-  color: #fff !important;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 0.95rem;
-  font-family: system-ui, -apple-system, sans-serif;
-  text-decoration: none;
-  transition: background-color 0.2s, transform 0.2s;
-  white-space: nowrap;
-  border: none;
-  cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background-color: #FF0036;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    border-radius: 8px;
+    white-space: nowrap;
+    
+    /* ВАЖНО: Свойства для плавной анимации */
+    transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease, background-color 0.2s;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
 }
 
 .nav-cta-btn:hover {
-  background-color: #cc002b;
-  transform: translateY(-2px);
+    background-color: #cc002b;
+    transform: translateY(-2px);
+}
+
+/* === СОСТОЯНИЕ СКРЫТИЯ (ПЛАВНОЕ) === */
+.nav-cta-btn.is-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px); /* Легкий сдвиг вверх при исчезновении */
+    pointer-events: none; /* Чтобы скрытая кнопка не перехватывала клики */
 }
 
 /* Стили для SVG внутри кнопки */

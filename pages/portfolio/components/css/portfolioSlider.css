@@ -1,6 +1,6 @@
 /* === СЕКЦИЯ ПОРТФОЛИО === */
 .portfolio-slider-section {
-    padding: 20px 0 40px; /* УМЕНЬШЕНО с 20px 0 60px */
+    padding: 20px 0 0px; /* УМЕНЬШЕНО с 20px 0 60px */
     animation: fadeIn 0.8s ease-out;
     font-family: 'RobotoMedium', sans-serif;
 }
@@ -15,7 +15,7 @@
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    padding: 0 120px;
+    padding: 0 40px;
     margin-bottom: 24px; /* УМЕНЬШЕНО с 32px */
 }
 
@@ -48,7 +48,7 @@
 }
 
 .filter-group {
-    padding: 0 80px;
+    padding: 0 0px;
     margin-bottom: 12px; /* УМЕНЬШЕНО с 14px */
 }
 

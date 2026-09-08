@@ -1,6 +1,8 @@
+/* === СЕКЦИЯ TRUSTED BY === */
 .trusted-section {
-    text-align: left; /* Выравниваем всё по левому краю */
+    text-align: left;
     padding: 0 20px;
+    overflow: hidden;
 }
 
 .trusted-section h2 {
@@ -8,41 +10,69 @@
     font-weight: 600;
     color: #ffffff;
     margin-bottom: 48px;
-    margin-left: 0; /* Убираем отступ слева */
+    margin-left: 0;
 }
 
-.logos-grid {
+/* === КОНТЕЙНЕР БЕГУЩЕЙ СТРОКИ === */
+.marquee-container {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 10%,
+        black 90%,
+        transparent 100%
+    );
+}
+
+/* === ТРЕК С ЛОГОТИПАМИ === */
+.marquee-track {
     display: flex;
-    justify-content: center; /* Выравниваем по левому краю */
-    align-items: center;
     gap: 48px;
-    flex-wrap: wrap;
-    opacity: 0.6;
+    width: max-content;
+    /* УБРАНО: animation: marquee 30s linear infinite; */
+    /* УБРАНО: transition */
+    will-change: transform; /* Оптимизация производительности */
 }
 
+/* === ЛОГОТИП === */
 .logo-item {
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 30px; /* Фиксированная высота для всех логотипов */
+    height: 30px;
+    flex-shrink: 0;
     transition: all 0.3s ease;
-    filter: grayscale(100%); /* Делаем логотипы черно-белыми */
+    filter: grayscale(100%);
     opacity: 0.7;
+}
+
+.logo-item:hover {
+    filter: grayscale(0%);
+    opacity: 1;
+    transform: scale(1.1);
 }
 
 .logo-item img {
     max-height: 100%;
-    max-width: 150px; /* Максимальная ширина логотипа */
+    max-width: 150px;
     width: auto;
-    object-fit: contain; /* Сохраняем пропорции */
+    object-fit: contain;
     transition: all 0.3s ease;
 }
 
-
-
-/* Адаптация для планшетов и мобильных */
+/* === АДАПТАЦИЯ === */
 @media (max-width: 1024px) {
-    .logos-grid {
+    .marquee-track {
         gap: 32px;
     }
     
@@ -61,9 +91,8 @@
         margin-bottom: 32px;
     }
     
-    .logos-grid {
+    .marquee-track {
         gap: 24px;
-        justify-content: center; /* На мобильных центрируем для красоты */
     }
     
     .logo-item {
@@ -76,7 +105,7 @@
 }
 
 @media (max-width: 480px) {
-    .logos-grid {
+    .marquee-track {
         gap: 16px;
     }
     

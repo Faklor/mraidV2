@@ -12,7 +12,6 @@ class NavBar extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="components/css/nav-bar.css">
             
-            <!-- Кнопка гамбургер (она же крестик при открытии) -->
             <button class="hamburger" aria-label="Открыть меню">
                 <span></span>
                 <span></span>
@@ -21,10 +20,9 @@ class NavBar extends HTMLElement {
 
             <nav>
                 ${linksData.map(link => `
-                    <a href="${link.href}">${link.text}</a>
+                    <a href="${link.href}" class="nav-link">${link.text}</a>
                 `).join('')}
                 
-                <!-- Кнопка действия с текстом и SVG стрелкой -->
                 <a href="${ctaHref}" class="nav-cta-btn">
                     <span>${ctaText}</span>
                     <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -35,62 +33,89 @@ class NavBar extends HTMLElement {
         `;
 
         const hamburger = this.shadowRoot.querySelector('.hamburger');
-
-        // Открытие/закрытие меню
         hamburger.addEventListener('click', () => {
             this.classList.toggle('menu-open');
         });
 
-        // Закрытие меню при клике на любую ссылку или кнопку внутри него
         const nav = this.shadowRoot.querySelector('nav');
         nav.addEventListener('click', (e) => {
             const targetLink = e.target.closest('a');
             if (targetLink) {
                 this.classList.remove('menu-open');
+                // Плавный скролл обрабатывается CSS (scroll-behavior: smooth)
             }
         });
 
-        setTimeout(() => {
-            this.setActiveLink();
-            this.updateCTAVisibility();
-        }, 0);
+        // Первоначальная проверка видимости кнопки
+        this.updateCTAVisibility();
 
+        // Следим за изменением хеша в URL (кнопки назад/вперед или ручной ввод)
         window.addEventListener('hashchange', () => {
-            this.setActiveLink();
             this.updateCTAVisibility();
         });
+
+        // Запускаем надежный Scroll Spy
+        this.setupScrollSpy();
     }
 
-    setActiveLink() {
-        const links = this.shadowRoot.querySelectorAll('a');
-        const currentHash = window.location.hash === '' ? '#home' : window.location.hash;
-        
-        links.forEach(link => {
-            if (link.classList.contains('nav-cta-btn')) return;
-
-            const href = link.getAttribute('href');
-            if (href === currentHash) {
-                link.classList.add('active');
-            } else {
-                link.classList.remove('active');
-            }
-        });
-    }
-
-    // === НОВЫЙ МЕТОД: Скрытие/показ кнопки CTA ===
+    // === ПЛАВНОЕ СКРЫТИЕ/ПОКАЗ КНОПКИ ===
     updateCTAVisibility() {
         const ctaBtn = this.shadowRoot.querySelector('.nav-cta-btn');
         if (!ctaBtn) return;
 
-        const currentHash = window.location.hash === '' ? '#home' : window.location.hash;
+        const currentHash = window.location.hash || '#home';
         const ctaHref = ctaBtn.getAttribute('href');
 
-        // Если текущая страница совпадает с href кнопки CTA — скрываем её
         if (currentHash === ctaHref) {
-            ctaBtn.style.display = 'none';
+            ctaBtn.classList.add('is-hidden');
         } else {
-            ctaBtn.style.display = 'inline-flex';
+            ctaBtn.classList.remove('is-hidden');
         }
+    }
+
+    // === НАДЕЖНЫЙ SCROLL SPY ===
+    setupScrollSpy() {
+        const sections = document.querySelectorAll('.landing-section');
+        const navLinks = this.shadowRoot.querySelectorAll('.nav-link');
+        const ctaBtn = this.shadowRoot.querySelector('.nav-cta-btn');
+        const ctaHref = ctaBtn ? ctaBtn.getAttribute('href') : '#contact';
+
+        // УЛУЧШЕННЫЙ rootMargin: 
+        // -80px сверху (чтобы игнорировать фиксированную шапку)
+        // -60% снизу (чтобы секция считалась активной, когда она в верхней части экрана)
+        const observerOptions = {
+            root: null,
+            rootMargin: '-80px 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            // Находим секцию, которая сейчас пересекает нашу "зону"
+            const activeEntry = entries.find(entry => entry.isIntersecting);
+
+            if (activeEntry) {
+                const activeId = activeEntry.target.getAttribute('id');
+
+                // 1. Обновляем активные ссылки в меню
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${activeId}`) {
+                        link.classList.add('active');
+                    }
+                });
+
+                // 2. Плавно скрываем/показываем кнопку CTA при скролле
+                if (ctaBtn) {
+                    if (`#${activeId}` === ctaHref) {
+                        ctaBtn.classList.add('is-hidden');
+                    } else {
+                        ctaBtn.classList.remove('is-hidden');
+                    }
+                }
+            }
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
     }
 }
 

@@ -2,6 +2,8 @@ class AppHeader extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        // Привязываем контекст this для корректного удаления слушателя
+        this.handleScroll = this.handleScroll.bind(this);
     }
 
     connectedCallback() {
@@ -22,6 +24,28 @@ class AppHeader extends HTMLElement {
                 </div>
             </header>
         `;
+
+        // Проверяем положение скролла сразу при загрузке (на случай перезагрузки страницы не в начале)
+        this.handleScroll();
+
+        // Добавляем слушатель скролла
+        window.addEventListener('scroll', this.handleScroll);
+    }
+
+    // Метод обработки скролла
+    handleScroll() {
+        const header = this.shadowRoot.querySelector('header');
+        // Если прокрутили больше чем на 50px, добавляем класс
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    }
+
+    // Обязательно удаляем слушатель при удалении компонента со страницы
+    disconnectedCallback() {
+        window.removeEventListener('scroll', this.handleScroll);
     }
 }
 
