@@ -17,10 +17,7 @@ class HomePage extends HTMLElement {
                     <img src="assets/img/looper.png" alt="Background" class="bg-looper">
                 </div>
 
-                <bg-blick></bg-blick>
-                <bg-blick></bg-blick>
-                <bg-blick></bg-blick>
-                <bg-blick></bg-blick>
+                
 
 
                 <section class="hero-section">

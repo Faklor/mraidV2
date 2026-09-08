@@ -16,32 +16,27 @@
     z-index: 10;
 }
 
-/* 1. БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ БЛОКОВ (Статичные, без анимации перехода) */
+/* 1. БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ БЛОКОВ */
 .feature-item {
     display: flex;
     align-items: center;
     gap: 12px; 
     padding: 16px 20px;
-     background-color: #1a1a1a;
+    background-color: #111113;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
     position: relative; 
-    /* Убрали отсюда cursor и transition */
 }
 
-/* 2. СТИЛИ ТОЛЬКО ДЛЯ ИНТЕРАКТИВНЫХ БЛОКОВ (с тултипом) */
+/* 2. СТИЛИ ДЛЯ ИНТЕРАКТИВНЫХ БЛОКОВ (с тултипом) */
 .feature-item.has-tooltip {
-    cursor: help;
+    cursor: default; /* Убираем cursor: help с всего блока */
     transition: all 0.3s ease;
 }
 
-.feature-item.has-tooltip:hover {
-     background-color: #1a1a1a;
-    border-color: #FF0036;
-    transform: translateX(8px);
-}
 
-/* 3. ИКОНКА: плавает всегда (для красоты), но реагирует на наведение только если есть тултип */
+
+/* 3. ИКОНКА: плавает всегда */
 .feature-item > svg:first-child {
     flex-shrink: 0;
     width: 30px;
@@ -49,7 +44,6 @@
     animation: gentleFloat 5s ease-in-out infinite; 
 }
 
-/* Реакция иконки на наведение ТОЛЬКО у интерактивных блоков */
 .feature-item.has-tooltip > svg:first-child {
     transition: transform 0.3s ease, filter 0.3s ease;
 }
@@ -66,18 +60,23 @@
     color: #ffffff;
 }
 
-/* Иконка подсказки */
+/* === 4. ИКОНКА ВОПРОСА И ТУЛТИП (ГЛАВНОЕ ИЗМЕНЕНИЕ) === */
+
 .tooltip-icon {
     flex-shrink: 0;
     width: 16px;
     height: 16px;
-    cursor: help;
-    opacity: 0.5;
-    transition: opacity 0.3s ease;
+    cursor: help; /* Курсор-вопрос только на самой иконке */
+    opacity: 0.8;
+    transition: all 0.3s ease;
+    margin-left: auto; /* Прижимает иконку вопроса вправо, если текст длинный */
 }
 
-.feature-item.has-tooltip:hover .tooltip-icon {
+/* Подсветка иконки вопроса ТОЛЬКО при наведении на неё */
+.tooltip-icon:hover {
     opacity: 1;
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 6px rgba(255, 0, 54, 0.8));
 }
 
 /* Сама подсказка */
@@ -99,7 +98,9 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
-    pointer-events: none;
+    
+    /* ВАЖНО: разрешаем мышке "заходить" на текст подсказки, чтобы она не исчезала */
+    pointer-events: auto; 
 }
 
 .tooltip-text::before {
@@ -115,13 +116,16 @@
     border-top: 6px solid #1a1a1a;
 }
 
-/* Показываем подсказку только при наведении на интерактивный блок */
-.feature-item.has-tooltip:hover .tooltip-text {
+/* === МАГИЯ ЗДЕСЬ === */
+/* Показываем подсказку ТОЛЬКО если наведена мышь на иконку вопроса (~) ИЛИ на саму подсказку */
+.feature-item .tooltip-icon:hover ~ .tooltip-text,
+.feature-item .tooltip-text:hover {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
 }
 
+/* Адаптация для мобильных */
 @media (max-width: 768px) {
     .feature-item {
         padding: 14px 16px;
@@ -137,8 +141,9 @@
     
     .tooltip-text {
         white-space: normal;
-        max-width: 250px;
+        max-width: 220px;
         text-align: center;
         left: 50%;
+        bottom: calc(100% + 8px);
     }
 }

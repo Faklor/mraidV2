@@ -20,30 +20,34 @@ class PhoneShowcase extends HTMLElement {
         } while (randomPl === this.lastPlayable && 5 > 1);
         
         this.lastPlayable = randomPl;
+        
+        // Пути от корня сайта (../../../ поднимает из components в корень)
         const playableSrc = `assets/playables/pl${randomPl}/index.html`;
+        const previewSrc = `assets/playables/pl${randomPl}/preview.jpg`;
         
         const iframe = this.shadowRoot.querySelector('.playable-screen');
+        const preloaderBg = this.shadowRoot.querySelector('.preloader-bg');
         const preloader = this.shadowRoot.querySelector('.preloader');
 
         if (iframe) {
-            // Показываем прелоадер перед сменой src
             if (preloader) preloader.classList.remove('hidden');
             
-            // Меняем src
+            // Меняем картинку фона ПЕРЕД загрузкой iframe
+            if (preloaderBg) preloaderBg.src = previewSrc;
+            
             iframe.src = playableSrc;
             
-            // Когда iframe загрузится, скрываем прелоадер
             iframe.onload = () => {
                 if (preloader) preloader.classList.add('hidden');
             };
         } else {
-            this.renderHTML(playableSrc);
+            this.renderHTML(playableSrc, previewSrc);
         }
         
         this.resetInactivityTimer();
     }
 
-    renderHTML(playableSrc) {
+    renderHTML(playableSrc, previewSrc) {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/components/css/phoneBlock.css">
             
@@ -52,8 +56,9 @@ class PhoneShowcase extends HTMLElement {
                 
                 <div class="phone-3d-container">
                     <div class="phone-inner">
-                        <!-- ПРЕЛОАДЕР -->
+                        <!-- ПРЕЛОАДЕР С ОБЫЧНОЙ КАРТИНКОЙ -->
                         <div class="preloader">
+                            <img src="${previewSrc}" alt="Preview" class="preloader-bg">
                             <div class="spinner"></div>
                         </div>
                         
@@ -69,7 +74,6 @@ class PhoneShowcase extends HTMLElement {
             </div>
         `;
         
-        // После рендера нужно заново навесить обработчик загрузки для первого iframe
         const iframe = this.shadowRoot.querySelector('.playable-screen');
         const preloader = this.shadowRoot.querySelector('.preloader');
         if (iframe && preloader) {

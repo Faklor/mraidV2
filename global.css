@@ -127,7 +127,6 @@ h1 {
   max-width: 1920px;
   /* margin: 0 auto; <-- убираем, body уже центрирует */
   padding: 0 40px;
-  position: relative;
   
 }
 

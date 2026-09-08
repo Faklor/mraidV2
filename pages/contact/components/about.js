@@ -53,7 +53,7 @@ class AboutContact extends HTMLElement {
                                 
                                 <div class="form-checkbox">
                                     <label class="checkbox-label" for="terms">
-                                        <input type="checkbox" id="terms" name="terms" required>
+                                        <input type="checkbox" id="terms" name="terms" checked required>
                                         <span class="checkbox-custom"></span>
                                         <span class="checkbox-text">I agree to the <a href="#" class="terms-link">Terms and Conditions</a>*</span>
                                     </label>

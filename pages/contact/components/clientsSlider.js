@@ -200,7 +200,7 @@ class ClientsSlider extends HTMLElement {
                 this.currentSlide = 0;
             }
             updateSlider();
-        }, 6000);
+        }, 10000);
     }
 }
 

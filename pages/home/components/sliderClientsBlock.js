@@ -4,7 +4,7 @@ class TrustedBy extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.animationId = null;
         this.position = 0;
-        this.speed = 0.5; // Скорость прокрутки (пикселей за кадр)
+        this.speed = 0.3; // Скорость прокрутки (пикселей за кадр)
     }
 
     // Функция перемешивания массива (Fisher-Yates shuffle)

@@ -6,9 +6,9 @@ class StatsGrid extends HTMLElement {
 
     connectedCallback() {
         const stats = [
-            { number: '1000+', label: 'Playable ads developed' },
-            { number: '12+', label: 'Years of experience' },
-            { number: '100+', label: 'Happy clients' },
+            { number: '3000+', label: 'Playable ads developed' },
+            { number: '8+', label: 'Years of experience' },
+            { number: '300+', label: 'Happy clients' },
             { number: 'Global', label: 'Top game studios & brands' },
             { number: 'Full-Cycle', label: 'From concept to support' }
         ];

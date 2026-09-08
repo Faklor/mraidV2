@@ -5,58 +5,37 @@ class BgBlick extends HTMLElement {
     }
 
     connectedCallback() {
-        // Читаем атрибуты, если их нет — берем безопасные значения по умолчанию
+        // Позиция и прозрачность
         const top = this.getAttribute('top') || '50%';
         const left = this.getAttribute('left') || '50%';
-        const size = this.getAttribute('size') || '300px';
         const opacity = this.getAttribute('opacity') || '0.2';
-        const delay = this.getAttribute('delay') || '0s';
-        
-        const opacityNum = parseFloat(opacity);
-        const peakOpacity = Math.min(opacityNum + 0.15, 0.6).toFixed(2);
+
+        // Умная логика размеров:
+        // 1. Если заданы width и height, берем их.
+        // 2. Если нет, берем атрибут size.
+        // 3. Если нет и его, ставим дефолт 300px.
+        const size = this.getAttribute('size') || '300px';
+        const width = this.getAttribute('width') || size;
+        const height = this.getAttribute('height') || width; // Если height не задан, делаем квадратным
 
         this.shadowRoot.innerHTML = `
             <style>
-                :host {
+                .blick-inner {
                     position: absolute;
                     top: ${top};
                     left: ${left};
-                    width: ${size};
-                    height: ${size};
-                    z-index: 0;
-                    pointer-events: none;
-                }
-
-                .blick-inner {
-                    width: 100%;
-                    height: 100%;
+                    width: ${width};
+                    height: ${height};
                     opacity: ${opacity};
-                    animation: blickPulse 8s ease-in-out ${delay} infinite;
+                    pointer-events: none; /* Блик не мешает кликам */
+                    z-index: 0;
                 }
 
                 .blick-inner img {
-                    width: 100%;
-                    height: 100%;
+                    width: 100%;   /* Картинка всегда заполняет заданный width */
+                    height: 100%;  /* Картинка всегда заполняет заданный height */
                     object-fit: contain;
-                }
-
-                @keyframes blickPulse {
-                    0%, 100% {
-                        opacity: ${opacity};
-                        transform: scale(1);
-                    }
-                    50% {
-                        opacity: ${peakOpacity};
-                        transform: scale(1.1);
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    :host {
-                        /* На мобильных просто уменьшаем масштаб всего элемента */
-                        transform: scale(0.5);
-                        transform-origin: center;
-                    }
+                    display: block; /* Убирает микро-отступы снизу у картинок */
                 }
             </style>
             <div class="blick-inner">
