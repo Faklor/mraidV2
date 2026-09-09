@@ -24,7 +24,7 @@ class ProcessPlatforms extends HTMLElement {
             { name: 'Mintegral', logo: 'assets/img/process/platforms/mintegral.png' },
             { name: 'AppLovin', logo: 'assets/img/process/platforms/applovin.png' }
         ];
-
+ 
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/process/components/css/processPlatform.css">
             

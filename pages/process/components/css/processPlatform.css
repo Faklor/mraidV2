@@ -18,29 +18,29 @@
 
 /* Сетка логотипов */
 .platforms-grid {
-    display: grid;
-    grid-template-columns: repeat(8, 1fr);
-    gap: 0px;
-    align-items: center;
+    display: flex;
+    flex-wrap: wrap; 
+    justify-content: space-between; 
+    align-items: center; 
+    gap: 24px 50px; 
+    padding: 20px 0;
 }
 
-/* Отдельный логотип */
+/* Отдельный элемент логотипа - БЕЗ фиксированной ширины */
 .platform-item {
     display: flex;
-    justify-content: start;
-    align-items: start;
-    padding: 5px 0px;
+    justify-content: center;
+    align-items: center;
     transition: all 0.3s ease;
     opacity: 0.6;
 }
-
 
 
 .platform-logo {
     max-width: 100%;
     height: auto;
     max-height: 40px;
-    filter: grayscale(100%) brightness(0) invert(1); /* Делаем все логотипы белыми */
+    filter: grayscale(100%) brightness(0) invert(1); 
     opacity: 0.7;
     transition: all 0.3s ease;
 }
@@ -81,12 +81,11 @@
     }
     
     .platforms-grid {
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
+        gap: 18px 28px;
     }
     
-    .platform-item {
-        padding: 12px;
+    .platform-logo {
+        max-height: 36px;
     }
     
     .platform-logo {
@@ -95,8 +94,13 @@
 }
 
 @media (max-width: 480px) {
-    .platforms-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+   .platforms-grid {
+        gap: 14px 20px;
+        
+    }
+    
+    .platform-logo {
+        max-height: 28px;
+        align-items: center;
     }
 }
