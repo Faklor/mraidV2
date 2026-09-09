@@ -10,7 +10,7 @@ class HeroBlock extends HTMLElement {
             
             <div class="hero-block">
                 <h1>Developing playables that people <span>want to play</span></h1>
-                <p>We are a technical partner for game studios and brands. 1000+ playable ads developed with precision, optimized for every platform and ad network.</p>
+                <p>We are a technical partner for game studios and brands. 3000+ playable ads developed with precision, optimized for every platform and ad network.</p>
                 
                 <div class="buttons">
                     <a href="#contact" class="btn btn-primary">Contact us</a>

@@ -12,7 +12,7 @@ class ProcessContact extends HTMLElement {
             },
             {
                 icon: 'assets/img/process/contact/con2.png',
-                title: '1000+ playables delivered'
+                title: '3000+ playables delivered'
             },
             {
                 icon: 'assets/img/process/contact/con3.png',

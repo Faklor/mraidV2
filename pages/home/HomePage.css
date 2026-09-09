@@ -1,9 +1,10 @@
-/* Общие стили страницы */
+/* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .home-page {
+    position: relative; /* Важно: делает эту секцию "якорем" для абсолютного фона */
     padding: 20px 0;
     animation: fadeIn 0.8s ease-out;
-    position: relative;
-    font-family: 'RobotoMedium';
+    font-family: 'RobotoMedium', sans-serif;
+    overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */
 }
 
 @keyframes fadeIn {
@@ -12,98 +13,66 @@
 }
 
 @keyframes fadeUp {
-    from {
-        opacity: 0;
-        transform: translateY(40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
-/* Плавное появление слева (для списка фич) */
 @keyframes fadeLeft {
-    from {
-        opacity: 0;
-        transform: translateX(-40px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+    from { opacity: 0; transform: translateX(-40px); }
+    to { opacity: 1; transform: translateX(0); }
 }
 
-/* Плавное появление справа (для телефона) */
 @keyframes fadeRight {
-    from {
-        opacity: 0;
-        transform: translateX(40px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0) scale(1);
-    }
+    from { opacity: 0; transform: translateX(40px) scale(0.95); }
+    to { opacity: 1; transform: translateX(0) scale(1); }
 }
 
-/* Плавное появление с увеличением (для логотипов и статистики) */
 @keyframes scaleIn {
-    from {
-        opacity: 0;
-        transform: scale(0.9);
-    }
-    to {
-        opacity: 1;
-        transform: scale(1);
-    }
+    from { opacity: 0; transform: scale(0.9); }
+    to { opacity: 1; transform: scale(1); }
 }
 
-/* Фирменная плавная кривая (как у Apple) */
 .premium-ease {
     animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* === ФОН: ФИКСИРОВАННЫЙ, НЕ ДВИГАЕТСЯ ПРИ СКРОЛЛЕ === */
+/* === ФОН: CANVAS СЕТКА (ЕДИНЫЙ ЧИСТЫЙ БЛОК) === */
 .bg-looper-wrapper {
-    position: absolute; /* Фиксируем относительно viewport */
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    position: absolute;
+    top: 5%;
+    left: 28%;
+    /* width: 100vw;
+    height: 100vh; */
     z-index: 0;
     pointer-events: none;
     overflow: hidden;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
+    background: #0D0D0F;
+}
+
+#network-canvas {
+    /* Задай нужный размер отображения здесь */
+    width: 1100px;  /* например, чуть больше телефона */
+    height: auto;  /* сохранит пропорции */
     
-    /* Магия для Shadow DOM — создаём новый stacking context */
-    transform: translateZ(0);
-    will-change: transform;
+    /* Или если хочешь на весь экран: */
+    /* width: 100%; */
+    /* height: 100%; */
+    /* object-fit: contain; */
 }
 
-.bg-looper {
-    position: absolute;
-    top: 0%;
-    left: 55%;
-    transform: translateX(-50%);
-    width: 1200px;
-    max-width: 80vw;
-    height: auto;
-    opacity: 0.7;
-    pointer-events: none;
-}
-
-/* Контент выше фона */
+/* === КОНТЕНТ ВЫШЕ ФОНА === */
 .hero-section,
 .trusted-section,
 .stats-section,
 .slider-section {
     position: relative;
-    z-index: 1;
+    z-index: 1; /* Гарантированно выше, чем z-index: 0 у фона */
 }
 
-/* Hero секция: 3 колонки */
+/* === HERO СЕКЦИЯ: 3 КОЛОНКИ === */
 .hero-section {
     display: grid;
     grid-template-columns: 1fr 1fr 20%;
@@ -132,23 +101,11 @@
         grid-column: span 2;
         justify-self: center;
     }
-    
-    .bg-looper {
-        width: 900px;
-    }
 }
 
 @media (max-width: 768px) {
-
-    .bg-looper-wrapper {
-       
-        width: 50vw;
-        height: 100vh;
-        
-    }
-
     .home-page {
-        padding: 0px 0;
+        padding: 0;
     }
     
     .hero-section {
@@ -165,11 +122,4 @@
     .stats-section {
         margin-bottom: 60px;
     }
-    
-    .bg-looper {
-        width: 10nw;
-        top: 80%;
-    }
-
-    
 }
