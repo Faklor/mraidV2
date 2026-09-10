@@ -1,7 +1,7 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .home-page {
     position: relative; /* Важно: делает эту секцию "якорем" для абсолютного фона */
-    padding: 20px 0;
+    padding: 20px 0 50px 0;
     animation: fadeIn 0.8s ease-out;
     font-family: 'RobotoMedium', sans-serif;
     overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */

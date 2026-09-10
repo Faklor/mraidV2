@@ -23,7 +23,12 @@ class TopPlayablesSlider extends HTMLElement {
             <div class="slider-section">
                 <div class="slider-header">
                     <h2>Top performing playables</h2>
-                    <a href="#portfolio" class="see-more">See more <span class="arrow">→</span></a>
+                    <a href="#portfolio" class="see-more">See more <span class="arrow">
+                    <svg width="40" height="35" viewBox="0 0 40 35" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M22.2125 32.5751L37.5 17.2875L22.2125 2M37.5 17.2875H2" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+
+                    </span></a>
                 </div>
 
                 <div class="slider-container">
@@ -51,7 +56,7 @@ class TopPlayablesSlider extends HTMLElement {
 
                     <button class="slider-btn next-btn" aria-label="Next">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M9 18L15 12L9 6" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                         </svg>
                     </button>
                 </div>

@@ -12,7 +12,7 @@ class ProcessPage extends HTMLElement {
                 <!-- Заголовок страницы -->
                 <section class="process-header">
                     <div class="process-title">
-                        <h1>AI isn't our shortcut<br>It's our production <span>advantage</span></h1>
+                        <h1><span>AI</span> isn't our shortcut<br>It's our production <span>advantage</span></h1>
                     </div>
                     <div class="process-description">
                         <p>From the first idea to the final build, AI is integrated into our workflow—helping our team move faster, explore more creative directions and deliver better playables</p>

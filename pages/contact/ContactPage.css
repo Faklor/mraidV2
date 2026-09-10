@@ -1,5 +1,6 @@
 /* === СТРАНИЦА ABOUT === */
 .contact-page {
+    padding: 0 0 50px 0;
     min-height: 100vh;
     background: #0D0D0F;
     font-family: 'RobotoMedium';

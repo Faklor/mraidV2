@@ -7,12 +7,12 @@ class PriceInfo extends HTMLElement {
     connectedCallback() {
         // Пути к картинкам
         const icons = {
-            idea: 'assets/img/process/idea.svg',
-            game: 'assets/img/process/game.svg',
-            art: 'assets/img/process/art.svg',
-            dev: 'assets/img/process/dev.svg',
-            testing: 'assets/img/process/testing.svg',
-            support: 'assets/img/process/support.svg'
+            idea: 'assets/img/portfolio/info/cube.png',
+            game: 'assets/img/portfolio/info/game.png',
+            art: 'assets/img/portfolio/info/art.png',
+            dev: 'assets/img/portfolio/info/panel.png',
+            testing: 'assets/img/portfolio/info/time.png',
+            support: 'assets/img/portfolio/info/cube-time.png'
         };
 
         const infoCards = [

@@ -1,6 +1,6 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .portfolio-page {
-    padding: 10px 0 10px;
+    padding: 10px 0 50px 10px;
     animation: fadeIn 0.8s ease-out;
     
     font-size: 'RobotoMedium';

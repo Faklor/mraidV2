@@ -1,7 +1,8 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .process-page {
-    padding: 20px 0 0px 0;
+    padding: 20px 0 50px 0;
     animation: fadeIn 0.8s ease-out;
+    font-family: "RobotoMedium";
 }
 
 @keyframes fadeIn {
@@ -32,10 +33,12 @@
 }
 
 .process-description p {
-    font-size: 1.1rem;
+    font-size: 28px;
     color: #a0a0a0;
-    line-height: 1.6;
+    line-height: 1.1;
     margin: 0;
+    text-align: justify;
+
 }
 
 /* === СЕКЦИЯ ШАГОВ: 6 КОЛОНОК === */

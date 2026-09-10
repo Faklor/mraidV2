@@ -5,12 +5,12 @@
 
 .tech-container {
     display: grid;
-    grid-template-columns: 1.5fr 1fr;
+    grid-template-columns: 1.5fr 0.6fr;
     gap: 40px;
-    background: #1a1a1a;
+    background: #19191B;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 20px 28px;
+    padding: 30px 28px;
     position: relative;
 }
 
@@ -29,8 +29,8 @@
 }
 
 .tech-header h3 {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: 32px;
+    font-weight: 300;
     color: #ffffff;
     margin: 0;
 }
@@ -40,7 +40,7 @@
     align-items: center;
     gap: 8px;
     color: #a0a0a0;
-    font-size: 0.95rem;
+    font-size: 28px;
 }
 
 .tech-subtitle svg {
@@ -59,27 +59,24 @@
 .tech-item {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     transition: all 0.3s ease;
 }
 
 
 
 .tech-logo {
-    width: 32px;
-    height: 32px;
+    width: 40px;
+    height: auto;
     object-fit: contain;
    
     transition: all 0.3s ease;
 }
 
-.tech-item:hover .tech-logo {
-    opacity: 1;
-    filter: none; /* При наведении показываем оригинальный цвет */
-}
+
 
 .tech-name {
-    font-size: 0.95rem;
+    font-size: 24px;
     color: #ffffff;
     font-weight: 500;
 }
@@ -87,11 +84,11 @@
 /* === ВЕРТИКАЛЬНЫЙ РАЗДЕЛИТЕЛЬ === */
 .tech-divider {
     position: absolute;
-    left: 60%;
-    top: 40px;
-    bottom: 40px;
+    left: 69%;
+    top: 20px;
+    bottom: 20px;
     width: 1px;
-    background: rgba(255, 255, 255, 0.1);
+     background: linear-gradient(180deg,rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 100%);
 }
 
 /* === ПРАВАЯ ЧАСТЬ === */
@@ -109,7 +106,7 @@
 }
 
 .ai-title{
-
+    text-align: start;
 }
 
 /* AI-инструменты */
@@ -117,7 +114,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 24px;
-    justify-content: center;
+    justify-content: start;
 }
 
 .ai-tool-item {

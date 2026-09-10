@@ -63,7 +63,7 @@
     height: 24px;
     object-fit: contain;
     flex-shrink: 0;
-    filter: brightness(0) saturate(100%) invert(21%) sepia(95%) saturate(7490%) hue-rotate(357deg) brightness(95%) contrast(101%); /* Красный цвет #FF0036 */
+     
 }
 
 .info-card.cta-card .info-icon {

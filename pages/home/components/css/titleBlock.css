@@ -1,5 +1,5 @@
 .hero-block h1 {
-    font-size: 3rem;
+    font-size: 52px;
     font-weight: 800;
     line-height: 1.2;
     margin-bottom: 24px;
@@ -11,21 +11,35 @@
 }
 
 .hero-block p {
-    font-size: 1.1rem;
-    color: #a0a0a0;
+    font-size: 20px;
+    color: #c2c2c2;
     line-height: 1.6;
     margin-bottom: 40px;
     max-width: 480px;
 }
 
 .buttons {
+    --btn-width: 280px;    /* ← МЕНЯЙ ЭТО ЗНАЧЕНИЕ для контроля ширины */
+    --btn-height: 56px;    /* ← МЕНЯЙ ЭТО ЗНАЧЕНИЕ для контроля высоты */
+    
     display: flex;
     gap: 16px;
     flex-wrap: wrap;
+    max-width: 700px;
 }
 
 .btn {
-    padding: 16px 52px;
+    /* Фиксированные размеры */
+    width: var(--btn-width);
+    height: var(--btn-height);
+    
+    /* Центрирование содержимого */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    
+    padding: 0 24px;
     border-radius: 8px;
     font-weight: 600;
     font-size: 1rem;
@@ -33,9 +47,13 @@
     transition: all 0.3s ease;
     cursor: pointer;
     border: none;
-    display: inline-flex;
-    align-items: center;
     gap: 8px;
+    box-sizing: border-box;
+    
+    /* Защита от переноса текста */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn-primary {
@@ -69,15 +87,18 @@
     }
     
     .buttons {
+        /* На мобильных можно задать другую ширину */
+        --btn-width: 100%;
+        --btn-height: 52px;
+        
         flex-direction: column;
         width: 100%;
     }
     
     .btn {
         width: 100%;
-        max-width: 100%; /* Ограничиваем максимальную ширину */
-        padding: 14px 24px; /* Уменьшаем padding для мобильных */
+        max-width: 100%;
+        padding: 0 24px;
         justify-content: center;
-        box-sizing: border-box; /* ВАЖНО: padding включается в ширину */
     }
 }

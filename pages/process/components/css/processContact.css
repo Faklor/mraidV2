@@ -35,7 +35,7 @@
 
 .contact-content h2 {
     font-size: 52px;
-    font-weight: 700;
+    font-weight: 300;
     color: #ffffff;
     margin: 0 0 12px;
     line-height: 1.2;
@@ -43,7 +43,7 @@
 
 .contact-content p {
     font-size: 28px;
-    color: #ffffff;
+    color: #a0a0a0;
     margin: 0 0 24px;
     line-height: 1.5;
 }
@@ -85,6 +85,8 @@
     position: relative;
 }
 
+
+
 .feature-icon {
     width: auto;
     height: 48px;
@@ -99,7 +101,7 @@
 .contact-feature p {
     font-size: 24px;
     color: #ffffff;
-    line-height: 1.4;
+    line-height: 1.1;
     margin: 0;
 }
 
@@ -111,8 +113,9 @@
     transform: translateY(-50%);
     width: 1px;
     height: 100%;
+    padding: 40px 0;
     background: #ffffff;
-    background: linear-gradient(180deg,rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 1) 50%, rgba(255, 255, 255, 0.3) 100%);
+    background: linear-gradient(180deg,rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.3) 50%, rgba(255, 255, 255, 0.1) 100%);
 }
 
 /* === АДАПТАЦИЯ === */

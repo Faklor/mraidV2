@@ -22,7 +22,7 @@ class PortfolioPage extends HTMLElement {
                 </section>
 
                 <!-- Ряд 1: Карточки с ценами (используем price-cards) -->
-                <price-cards></price-cards>
+                <price-cards ></price-cards>
 
                 <!-- Ряд 2: Информационные карточки (используем price-info) -->
                 <price-info></price-info>

@@ -2,15 +2,48 @@ class AboutContact extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
+        this.currentPlan = null;
+        // Привязываем метод к контексту, чтобы можно было удалить слушатель
+        this.handlePlanChange = this.handlePlanChange.bind(this);
     }
 
     connectedCallback() {
+        // Слушаем изменения тарифа от компонента PriceCards
+        window.addEventListener('planChanged', this.handlePlanChange);
+        this.render();
+    }
+
+    disconnectedCallback() {
+        // Убираем слушатель при удалении компонента (защита от утечек памяти)
+        window.removeEventListener('planChanged', this.handlePlanChange);
+    }
+
+    // Метод для обновления тарифа "на лету"
+    handlePlanChange(event) {
+        this.currentPlan = event.detail;
+        this.render(); // Перерисовываем компонент с новым тарифом
+    }
+
+    render() {
+        // Проверяем localStorage ИЛИ используем уже установленный currentPlan
+        const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+        
+        // Дефолтный план теперь полностью совпадает с "3 Playables pack"
+        const defaultPlan = {
+            title: '3 Playables pack',
+            price: '$1,499',
+            oldPrice: '$2,500',
+            icon: 'assets/img/portfolio/price/price3.png'
+        };
+        
+        this.currentPlan = this.currentPlan || storedPlan || defaultPlan;
+        const plan = this.currentPlan;
+
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/contact/components/css/about.css">
             
-            <section class="about-contact">
+            <section class="about-contact" id="contact">
                 <div class="contact-container">
-                    <!-- Левая часть: заголовок + фото -->
                     <div class="contact-left">
                         <h1 class="contact-title">
                             Let's build your next<br>
@@ -23,14 +56,26 @@ class AboutContact extends HTMLElement {
                         </p>
                         <div class="team-photo">
                             <img src="assets/img/about/team.png" alt="Our team">
-                            
                         </div>
                     </div>
 
-                    <!-- Правая часть: форма -->
                     <div class="contact-right">
                         <div class="form-wrapper">
                             <h2 class="form-title">Send us a message</h2>
+                            
+                            <div class="selected-package">
+                                <div class="package-header">
+                                    <div class="package-icon">
+                                        <img src="${plan.icon}" alt="${plan.title}">
+                                    </div>
+                                    <div class="package-info">
+                                        <span class="package-label">Selected package</span>
+                                        <h3 class="package-name">${plan.title}</h3>
+                                        <span class="package-price">From ${plan.price}</span>
+                                    </div>
+                                    <button class="change-package-btn" type="button">Change</button>
+                                </div>
+                            </div>
                             
                             <form class="contact-form" id="contactForm">
                                 <div class="form-row">
@@ -92,6 +137,26 @@ class AboutContact extends HTMLElement {
         `;
 
         this.initForm();
+        this.initPackageSelector();
+    }
+
+    initPackageSelector() {
+        const changeBtn = this.shadowRoot.querySelector('.change-package-btn');
+        
+        if (changeBtn) {
+            changeBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                
+                window.location.hash = 'pricing-section';
+                
+                
+                window.dispatchEvent(new CustomEvent('scroll-to-pricing', {
+                    bubbles: true,
+                    composed: true
+                }));
+            });
+        }
     }
 
     initForm() {
@@ -108,8 +173,26 @@ class AboutContact extends HTMLElement {
         if (form) {
             form.addEventListener('submit', (e) => {
                 e.preventDefault();
-                console.log('Form submitted');
-                // Здесь можно добавить реальную отправку через fetch или EmailJS
+                
+                const formData = new FormData(form);
+                const data = {
+                    name: formData.get('name'),
+                    company: formData.get('company'),
+                    email: formData.get('email'),
+                    message: formData.get('message'),
+                    selectedPackage: this.currentPlan
+                };
+                
+                console.log('Form data to send:', data);
+                
+                // Очистка и сообщение
+                localStorage.removeItem('selectedPlan');
+                alert('Thank you! We will contact you within 24 hours.');
+                form.reset();
+                
+                // Сброс к дефолтному плану после отправки
+                this.currentPlan = null;
+                this.render();
             });
         }
     }
