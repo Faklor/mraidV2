@@ -5,30 +5,25 @@ class AboutContact extends HTMLElement {
         this.currentPlan = null;
         this.handlePlanChange = this.handlePlanChange.bind(this);
         
-        // Состояние для работы с капчей
+        // Состояние для капчи
         this.captchaRequired = false;
         this.captchaWidgetId = null;
         this.hcaptchaLoading = null;
         this.captchaErrorCount = 0;
+
+        // Привязываем методы капчи к контексту класса (как в оригинальном main.js, но безопаснее для Shadow DOM)
+        this.onCaptchaSolved = this.onCaptchaSolved.bind(this);
+        this.onCaptchaExpired = this.onCaptchaExpired.bind(this);
+        this.onCaptchaError = this.onCaptchaError.bind(this);
     }
 
     connectedCallback() {
         window.addEventListener('planChanged', this.handlePlanChange);
-        
-        // Глобальный колбэк для hCaptcha (требуется для explicit render)
-        window.mraidCaptchaSolved = (token) => {
-            this.captchaErrorCount = 0;
-            this.showCaptchaNote('');
-            this.submitFormData(token);
-        };
-
         this.render();
     }
 
     disconnectedCallback() {
         window.removeEventListener('planChanged', this.handlePlanChange);
-        // Очищаем глобальный колбэк при удалении компонента
-        delete window.mraidCaptchaSolved;
     }
 
     handlePlanChange(event) {
@@ -110,7 +105,7 @@ class AboutContact extends HTMLElement {
                                 
                                 <div class="form-error" role="alert"></div>
                                 
-                                <!-- Контейнер для виджета hCaptcha -->
+                                <!-- Контейнер для hCaptcha -->
                                 <div id="contact-captcha" style="display: none; margin-bottom: 15px;"></div>
                                 <div class="captcha-note" role="alert" style="color: #ff4444; font-size: 0.9rem; margin-bottom: 10px; min-height: 20px;"></div>
                                 
@@ -166,10 +161,7 @@ class AboutContact extends HTMLElement {
             changeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 window.location.hash = 'pricing-section';
-                window.dispatchEvent(new CustomEvent('scroll-to-pricing', {
-                    bubbles: true,
-                    composed: true
-                }));
+                window.dispatchEvent(new CustomEvent('scroll-to-pricing', { bubbles: true, composed: true }));
             });
         }
 
@@ -205,11 +197,13 @@ class AboutContact extends HTMLElement {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
+            // 1. Honeypot
             if (honeypotInput && honeypotInput.value) {
                 this.showThanks(form);
                 return;
             }
 
+            // 2. Валидация
             let invalidFields = [];
             if (!nameInput.value.trim()) invalidFields.push('Name');
             if (!emailInput.value.trim() || !emailInput.validity.valid) invalidFields.push('Email');
@@ -222,15 +216,15 @@ class AboutContact extends HTMLElement {
             }
             if (errorEl) errorEl.textContent = '';
 
-            // === ИСПРАВЛЕННАЯ ЛОГИКА ПРОВЕРКИ КАПЧИ ===
+            // 3. Логика капчи (идентична main.js, но с защитой от null)
             if (this.captchaRequired && window.hcaptcha) {
-                // Если виджет не отрисовался (ID равен null), пытаемся отрисовать его снова
+                // ЖЕЛЕЗНАЯ ЗАЩИТА: если виджет не отрисовался, не вызываем getResponse, а пытаемся отрисовать снова
                 if (this.captchaWidgetId === null) {
-                    this.showCaptchaNote('Captcha widget failed to load. Retrying... Please wait a second and click Send again.');
+                    this.showCaptchaNote('Captcha widget blocked. Retrying... Please click "Send Message" again.');
                     this.renderCaptcha();
                     return; 
                 }
-
+                
                 const token = window.hcaptcha.getResponse(this.captchaWidgetId);
                 if (!token) {
                     this.showCaptchaNote('Please complete the captcha.');
@@ -263,11 +257,7 @@ class AboutContact extends HTMLElement {
         params.append('source', window.location.hostname);
         params.append('v', '2');
         if (planTitle) params.append('plan', planTitle);
-        
-        // Если есть токен капчи, добавляем его в запрос
-        if (captchaToken) {
-            params.append('hcaptcha', captchaToken);
-        }
+        if (captchaToken) params.append('hcaptcha', captchaToken);
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'Sending…';
@@ -282,7 +272,6 @@ class AboutContact extends HTMLElement {
             if (xhr.status === 200) {
                 this.showThanks(this.shadowRoot.querySelector('#contactForm'));
             } else if (xhr.status === 428 || (xhr.responseText && xhr.responseText.includes('captcha_required'))) {
-                // Сервер требует капчу
                 this.captchaRequired = true;
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
@@ -294,7 +283,6 @@ class AboutContact extends HTMLElement {
                     this.showCaptchaNote('Captcha failed to load. Please reload the page or write to sales@mraid.io.');
                 });
             } else if (xhr.status === 400) {
-                // Ошибка проверки капчи
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
                 if (window.hcaptcha && this.captchaWidgetId !== null) {
@@ -302,7 +290,6 @@ class AboutContact extends HTMLElement {
                 }
                 this.showCaptchaNote('Captcha check failed, please try again.');
             } else {
-                // Другие ошибки сервера
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
                 if (errorEl) errorEl.textContent = 'Something went wrong. Please try again or write to sales@mraid.io.';
@@ -318,7 +305,6 @@ class AboutContact extends HTMLElement {
         xhr.send(params.toString());
     }
 
-    // Динамическая загрузка скрипта hCaptcha
     loadHcaptcha() {
         if (window.hcaptcha) return Promise.resolve();
         if (this.hcaptchaLoading) return this.hcaptchaLoading;
@@ -337,8 +323,7 @@ class AboutContact extends HTMLElement {
         return this.hcaptchaLoading;
     }
 
-    // Отрисовка виджета капчи
-   renderCaptcha() {
+    renderCaptcha() {
         const container = this.shadowRoot.getElementById('contact-captcha');
         if (container) container.style.display = 'block';
 
@@ -349,24 +334,41 @@ class AboutContact extends HTMLElement {
 
         if (this.captchaWidgetId === null) {
             try {
+                // Используем привязанные методы класса вместо строк (как в оригинальном main.js)
                 this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
                     sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
-                    callback: 'mraidCaptchaSolved',
-                    'expired-callback': () => {
-                        this.showCaptchaNote('Captcha has expired, please confirm it again.');
-                    },
-                    'error-callback': (err) => {
-                        console.error('hCaptcha render error:', err); // <-- Теперь мы увидим точную ошибку в консоли
-                        this.captchaErrorCount++;
-                        if (this.captchaErrorCount >= 2) {
-                            this.showCaptchaNote('Captcha failed to load (Domain not allowed?). Please reload or write to sales@mraid.io.');
-                        }
-                    }
+                    callback: this.onCaptchaSolved,
+                    'expired-callback': this.onCaptchaExpired,
+                    'error-callback': this.onCaptchaError
                 });
             } catch (e) {
-                console.error('Exception during hCaptcha render:', e);
+                console.error('[hCaptcha] Exception during render:', e);
                 this.showCaptchaNote('Could not render captcha. Check console for details.');
             }
+        }
+    }
+
+    // === Методы-колбэки для hCaptcha ===
+    onCaptchaSolved(token) {
+        this.captchaErrorCount = 0;
+        this.showCaptchaNote('');
+        this.submitFormData(token);
+    }
+
+    onCaptchaExpired() {
+        this.showCaptchaNote('Captcha has expired, please confirm it again.');
+    }
+
+    onCaptchaError(error) {
+        this.captchaErrorCount++;
+        console.error('[hCaptcha] Render error:', error); // <-- ЭТО ПОКАЖЕТ ПРИЧИНУ В КОНСОЛИ
+        
+        if (window.hcaptcha && this.captchaWidgetId !== null) {
+            window.hcaptcha.reset(this.captchaWidgetId);
+        }
+        
+        if (this.captchaErrorCount >= 1) {
+            this.showCaptchaNote('Captcha blocked: Domain "' + window.location.hostname + '" is likely not allowed in hCaptcha settings.');
         }
     }
 
@@ -384,8 +386,6 @@ class AboutContact extends HTMLElement {
         
         localStorage.removeItem('selectedPlan');
         this.currentPlan = null;
-        
-        // Сброс состояния капчи для возможных будущих использований
         this.captchaRequired = false;
         this.captchaWidgetId = null;
     }
