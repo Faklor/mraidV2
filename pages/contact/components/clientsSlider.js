@@ -3,92 +3,55 @@ class ClientsSlider extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.currentSlide = 0;
+        this.autoPlayInterval = null;
     }
 
     connectedCallback() {
+        
         const testimonials = [
             {
-                text: 'MRAID.IO consistently delivers high-quality playables with great attention to detail. The team is fast, flexible and easy to work with.',
-                name: 'Sarah T.',
-                position: 'Marketing Lead',
-                logo: 'assets/img/clients/applovin.png'
+                text: "Thanks for your help! I've got a chance to check it and thank you for updating a lot of things the way we wanted.",
+                logo: 'assets/img/clients/yallaplay.png'
             },
             {
-                text: 'Working with MRAID.IO has transformed our user acquisition strategy. Their playables consistently outperform our previous creatives.',
-                name: 'Michael R.',
-                position: 'Head of UA',
-                logo: 'assets/img/clients/bbc.png'
+                text: "Thanks for this. We're now making a few variations. Overall this video looks great. We would like to use this process going forward.",
+                logo: 'assets/img/clients/fusebox.png'
             },
             {
-                text: 'The creativity and technical excellence of MRAID.IO team is unmatched. They truly understand what makes users engage.',
-                name: 'Emma L.',
-                position: 'Creative Director',
-                logo: 'assets/img/clients/disney.png'
+                text: "Thank you for your effort. It's turned out to be a really nice playable. The assets are clear, the movement and gameplay are good.",
+                logo: 'assets/img/clients/yallaplay.png'
             },
             {
-                text: 'Exceptional quality and professionalism. MRAID.IO delivered beyond our expectations and helped us achieve record CPIs.',
-                name: 'David K.',
-                position: 'Product Manager',
-                logo: 'assets/img/clients/goodjob.png'
+                text: "Looks great and the client loves it, so thank you for that.",
+                logo: 'assets/img/clients/venatus.png'
             },
             {
-                text: 'The team at MRAID.IO is incredibly talented. They bring fresh ideas and execute them flawlessly every time.',
-                name: 'Lisa M.',
-                position: 'Marketing Director',
-                logo: 'assets/img/clients/jam-city.png'
+                text: "First of all thanks for the storyboard, it's really good for understanding the flow.",
+                logo: 'assets/img/clients/yallaplay.png'
             },
             {
-                text: 'Best playable ads we have ever used. The conversion rates speak for themselves. Highly recommend MRAID.IO!',
-                name: 'James P.',
-                position: 'Growth Manager',
-                logo: 'assets/img/clients/kabam.png'
+                text: "Thank you very much. We can proceed with the builds now. I want to keep working with you since we've already set the core mechanics.",
+                logo: 'assets/img/clients/tale-monster.png'
             },
             {
-                text: 'MRAID.IO understands the gaming market deeply. Their playables feel natural and drive real results for our campaigns.',
-                name: 'Anna S.',
-                position: 'UA Specialist',
-                logo: 'assets/img/clients/kama-games.png'
+                text: "Thanks for the version! It's already really fun to play!",
+                logo: 'assets/img/clients/kefir.png'
             },
             {
-                text: 'Outstanding work ethic and creative vision. MRAID.IO has become our go-to partner for all playable ad production.',
-                name: 'Robert H.',
-                position: 'CEO',
-                logo: 'assets/img/clients/lionsgate.png'
-            },
-            {
-                text: 'The attention to detail and quality of work is impressive. MRAID.IO consistently delivers playables that convert.',
-                name: 'Sophie W.',
-                position: 'Marketing Lead',
-                logo: 'assets/img/clients/marvel.png'
-            },
-            {
-                text: 'Fantastic experience from start to finish. The team is responsive, creative, and delivers on time every single time.',
-                name: 'Tom B.',
-                position: 'Product Owner',
-                logo: 'assets/img/clients/mg.png'
-            },
-            {
-                text: 'MRAID.IO has revolutionized our approach to user acquisition. Their playables are simply the best in the industry.',
-                name: 'Rachel G.',
-                position: 'Head of Marketing',
-                logo: 'assets/img/clients/paramount.png'
-            },
-            {
-                text: 'Professional, creative, and results-driven. MRAID.IO has exceeded our expectations on every project we have done together.',
-                name: 'Chris D.',
-                position: 'Studio Director',
-                logo: 'assets/img/clients/scopely.png'
-            },
-            {
-                text: 'The quality and innovation MRAID.IO brings to the table is remarkable. They are true experts in playable ad creation.',
-                name: 'Nina F.',
-                position: 'Creative Lead',
-                logo: 'assets/img/clients/ubisoft.png'
+                text: "That's great. The animations add a lot! Nice work! Approved.",
+                logo: 'assets/img/clients/game-story.png'
             }
         ];
 
         this.testimonials = testimonials;
         this.renderSlider();
+    }
+
+    disconnectedCallback() {
+       
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+        }
     }
 
     renderSlider() {
@@ -113,15 +76,11 @@ class ClientsSlider extends HTMLElement {
                                         <div class="quote-icon">
                                             <img src="assets/img/about/clients-icon.png" alt="Quote">
                                         </div>
-                                        <p class="testimonial-text">${testimonial.text}</p>
+                                        <p class="testimonial-text">"${testimonial.text}"</p>
                                     </div>
                                     <div class="testimonial-author">
-                                        <div class="author-info">
-                                            <div class="author-name">${testimonial.name}</div>
-                                            <div class="author-position">${testimonial.position}</div>
-                                        </div>
                                         <div class="author-logo">
-                                            <img src="${testimonial.logo}" alt="${testimonial.name}">
+                                            <img src="${testimonial.logo}" alt="Client Logo">
                                         </div>
                                     </div>
                                 </div>
@@ -163,44 +122,49 @@ class ClientsSlider extends HTMLElement {
                 dot.classList.toggle('active', index === this.currentSlide);
             });
 
-            // Сдвигаем трек
-            if (track) {
-                const cardWidth = cards[0]?.offsetWidth || 0;
-                const gap = 24;
+            if (track && cards[0]) {
+                const cardWidth = cards[0].offsetWidth;
+                const gap = 24; 
                 track.style.transform = `translateX(-${this.currentSlide * (cardWidth + gap)}px)`;
             }
         };
 
+        
         prevBtn?.addEventListener('click', () => {
-            if (this.currentSlide > 0) {
-                this.currentSlide--;
-                updateSlider();
-            }
+            this.currentSlide = this.currentSlide > 0 ? this.currentSlide - 1 : this.testimonials.length - 1;
+            updateSlider();
+            this.resetAutoPlay(updateSlider);
         });
 
         nextBtn?.addEventListener('click', () => {
-            if (this.currentSlide < this.testimonials.length - 1) {
-                this.currentSlide++;
-                updateSlider();
-            }
+            this.currentSlide = this.currentSlide < this.testimonials.length - 1 ? this.currentSlide + 1 : 0;
+            updateSlider();
+            this.resetAutoPlay(updateSlider);
         });
 
         dots.forEach((dot) => {
             dot.addEventListener('click', () => {
                 this.currentSlide = parseInt(dot.dataset.index);
                 updateSlider();
+                this.resetAutoPlay(updateSlider);
             });
         });
 
-        // Автопрокрутка
-        setInterval(() => {
-            if (this.currentSlide < this.testimonials.length - 1) {
-                this.currentSlide++;
-            } else {
-                this.currentSlide = 0;
-            }
+        this.startAutoPlay(updateSlider);
+    }
+
+    startAutoPlay(updateSlider) {
+        this.autoPlayInterval = setInterval(() => {
+            this.currentSlide = this.currentSlide < this.testimonials.length - 1 ? this.currentSlide + 1 : 0;
             updateSlider();
-        }, 10000);
+        }, 6000); 
+    }
+
+    resetAutoPlay(updateSlider) {
+        if (this.autoPlayInterval) {
+            clearInterval(this.autoPlayInterval);
+        }
+        this.startAutoPlay(updateSlider);
     }
 }
 

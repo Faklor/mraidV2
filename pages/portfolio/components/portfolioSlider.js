@@ -1,135 +1,135 @@
 const portfolioData = [
-  // === PUZZLE ===
-  { title: "Farm Match", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/farm-match" },
-  { title: "Candy Crush", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/candy-crush" },
-  { title: "Block Puzzle", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/block-puzzle" },
-  { title: "Jewel Blast", category: "puzzle", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jewel-blast" },
-  { title: "Gem Drop", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/gem-drop" },
-  { title: "Logic Blocks", category: "puzzle", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/logic-blocks" },
-  { title: "Color Sort", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/color-sort" },
-  { title: "Tile Master", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tile-master" },
-  { title: "Brain Teaser", category: "puzzle", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brain-teaser" },
-  { title: "Crystal Connect", category: "puzzle", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/crystal-connect" },
+  // === Puzzle & logic ===
+  { title: "Farm Match", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/farm-match" },
+  { title: "Candy Crush", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/candy-crush" },
+  { title: "Block Puzzle & logic", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/block-puzzle" },
+  { title: "Jewel Blast", category: "Puzzle & logic", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jewel-blast" },
+  { title: "Gem Drop", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/gem-drop" },
+  { title: "Logic Blocks", category: "Puzzle & logic", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/logic-blocks" },
+  { title: "Color Sort", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/color-sort" },
+  { title: "Tile Master", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tile-master" },
+  { title: "Brain Teaser", category: "Puzzle & logic", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brain-teaser" },
+  { title: "Crystal Connect", category: "Puzzle & logic", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/crystal-connect" },
 
-  // === CASUAL ===
-  { title: "Merge Dragons", category: "casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-dragons" },
-  { title: "Idle Farm", category: "casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/idle-farm" },
-  { title: "Bubble Pop", category: "casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bubble-pop" },
-  { title: "Merge Mansion", category: "casual", mechanic: "merge", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-mansion" },
-  { title: "Tap Tap Heroes", category: "casual", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tap-tap-heroes" },
-  { title: "Candy Swipe", category: "casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/candy-swipe" },
-  { title: "Idle Miner", category: "casual", mechanic: "merge", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/idle-miner" },
-  { title: "Bubble Shooter", category: "casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bubble-shooter" },
-  { title: "Merge Cats", category: "casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-cats" },
-  { title: "Relax Puzzle", category: "casual", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/relax-puzzle" },
+  // === Casual & hyper casual ===
+  { title: "Merge Dragons", category: "Casual & hyper casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-dragons" },
+  { title: "Idle Farm", category: "Casual & hyper casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/idle-farm" },
+  { title: "Bubble Pop", category: "Casual & hyper casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bubble-pop" },
+  { title: "Merge Mansion", category: "Casual & hyper casual", mechanic: "merge", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-mansion" },
+  { title: "Tap Tap Heroes", category: "Casual & hyper casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tap-tap-heroes" },
+  { title: "Candy Swipe", category: "Casual & hyper casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/candy-swipe" },
+  { title: "Idle Miner", category: "Casual & hyper casual", mechanic: "merge", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/idle-miner" },
+  { title: "Bubble Shooter", category: "Casual & hyper casual", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bubble-shooter" },
+  { title: "Merge Cats", category: "Casual & hyper casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/merge-cats" },
+  { title: "Relax Puzzle", category: "Casual & hyper casual", mechanic: "merge", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/relax-puzzle" },
 
-  // === ADVENTURE ===
-  { title: "Hidden City", category: "adventure", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/hidden-city" },
-  { title: "Mystery Manor", category: "adventure", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/mystery-manor" },
-  { title: "Treasure Hunt", category: "adventure", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/treasure-hunt" },
-  { title: "Lost Temple", category: "adventure", mechanic: "hidden", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/lost-temple" },
-  { title: "Jungle Quest", category: "adventure", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jungle-quest" },
-  { title: "Pirate Cove", category: "adventure", mechanic: "hidden", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pirate-cove" },
-  { title: "Ancient Ruins", category: "adventure", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/ancient-ruins" },
-  { title: "Desert Explorer", category: "adventure", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/desert-explorer" },
-  { title: "Secret Island", category: "adventure", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/secret-island" },
-  { title: "Mountain Climb", category: "adventure", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/mountain-climb" },
+  // === Brand & physical products ===
+  { title: "Hidden City", category: "Brand & physical products", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/hidden-city" },
+  { title: "Mystery Manor", category: "Brand & physical products", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/mystery-manor" },
+  { title: "Treasure Hunt", category: "Brand & physical products", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/treasure-hunt" },
+  { title: "Lost Temple", category: "Brand & physical products", mechanic: "hidden", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/lost-temple" },
+  { title: "Jungle Quest", category: "Brand & physical products", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jungle-quest" },
+  { title: "Pirate Cove", category: "Brand & physical products", mechanic: "hidden", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pirate-cove" },
+  { title: "Ancient Ruins", category: "Brand & physical products", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/ancient-ruins" },
+  { title: "Desert Explorer", category: "Brand & physical products", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/desert-explorer" },
+  { title: "Secret Island", category: "Brand & physical products", mechanic: "hidden", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/secret-island" },
+  { title: "Mountain Climb", category: "Brand & physical products", mechanic: "hidden", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/mountain-climb" },
 
-  // === CARDS ===
-  { title: "Solitaire", category: "cards", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/solitaire" },
-  { title: "Poker Stars", category: "cards", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/poker-stars" },
-  { title: "Blackjack Pro", category: "cards", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/blackjack-pro" },
-  { title: "Card Sort", category: "cards", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/card-sort" },
-  { title: "Uno Blast", category: "cards", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/uno-blast" },
-  { title: "Spider Solitaire", category: "cards", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/spider-solitaire" },
-  { title: "Memory Match", category: "cards", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/memory-match" },
-  { title: "Texas Holdem", category: "cards", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/texas-holdem" },
-  { title: "Card Castle", category: "cards", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/card-castle" },
-  { title: "Royal Flush", category: "cards", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/royal-flush" },
+  // === RPG & strategy ===
+  { title: "Solitaire", category: "RPG & strategy", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/solitaire" },
+  { title: "Poker Stars", category: "RPG & strategy", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/poker-stars" },
+  { title: "Blackjack Pro", category: "RPG & strategy", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/blackjack-pro" },
+  { title: "Card Sort", category: "RPG & strategy", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/card-sort" },
+  { title: "Uno Blast", category: "RPG & strategy", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/uno-blast" },
+  { title: "Spider Solitaire", category: "RPG & strategy", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/spider-solitaire" },
+  { title: "Memory Match", category: "RPG & strategy", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/memory-match" },
+  { title: "Texas Holdem", category: "RPG & strategy", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/texas-holdem" },
+  { title: "Card Castle", category: "RPG & strategy", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/card-castle" },
+  { title: "Royal Flush", category: "RPG & strategy", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/royal-flush" },
 
-  // === WORDS ===
-  { title: "Word Cookies", category: "words", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-cookies" },
-  { title: "Crossword King", category: "words", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/crossword-king" },
-  { title: "Word Connect", category: "words", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-connect" },
-  { title: "Letter Fall", category: "words", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/letter-fall" },
-  { title: "Word Search Pro", category: "words", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-search-pro" },
-  { title: "Anagram Master", category: "words", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/anagram-master" },
-  { title: "Word Scramble", category: "words", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-scramble" },
-  { title: "Daily Crossword", category: "words", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/daily-crossword" },
-  { title: "Word Tower", category: "words", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-tower" },
-  { title: "Spell Bound", category: "words", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/spell-bound" },
+  // === Video & audio ===
+  { title: "Word Cookies", category: "Video & audio", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-cookies" },
+  { title: "Crossword King", category: "Video & audio", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/crossword-king" },
+  { title: "Word Connect", category: "Video & audio", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-connect" },
+  { title: "Letter Fall", category: "Video & audio", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/letter-fall" },
+  { title: "Word Search Pro", category: "Video & audio", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-search-pro" },
+  { title: "Anagram Master", category: "Video & audio", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/anagram-master" },
+  { title: "Word Scramble", category: "Video & audio", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-scramble" },
+  { title: "Daily Crossword", category: "Video & audio", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/daily-crossword" },
+  { title: "Word Tower", category: "Video & audio", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/word-tower" },
+  { title: "Spell Bound", category: "Video & audio", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/spell-bound" },
 
-  // === RPG ===
-  { title: "RPG Quest", category: "rpg", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/rpg-quest" },
-  { title: "Dragon Slayer", category: "rpg", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dragon-slayer" },
-  { title: "Hero's Journey", category: "rpg", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/heros-journey" },
-  { title: "Dungeon Crawl", category: "rpg", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dungeon-crawl" },
-  { title: "Magic Tower", category: "rpg", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/magic-tower" },
-  { title: "Knight's Honor", category: "rpg", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/knights-honor" },
-  { title: "Elf Archer", category: "rpg", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/elf-archer" },
-  { title: "Dark Souls Lite", category: "rpg", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dark-souls-lite" },
-  { title: "Castle Defense", category: "rpg", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/castle-defense" },
-  { title: "Legend of Heroes", category: "rpg", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/legend-of-heroes" },
+  // === Casino & gambling ===
+  { title: "RPG Quest", category: "Casino & gambling", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/rpg-quest" },
+  { title: "Dragon Slayer", category: "Casino & gambling", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dragon-slayer" },
+  { title: "Hero's Journey", category: "Casino & gambling", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/heros-journey" },
+  { title: "Dungeon Crawl", category: "Casino & gambling", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dungeon-crawl" },
+  { title: "Magic Tower", category: "Casino & gambling", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/magic-tower" },
+  { title: "Knight's Honor", category: "Casino & gambling", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/knights-honor" },
+  { title: "Elf Archer", category: "Casino & gambling", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/elf-archer" },
+  { title: "Dark Souls Lite", category: "Casino & gambling", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/dark-souls-lite" },
+  { title: "Castle Defense", category: "Casino & gambling", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/castle-defense" },
+  { title: "Legend of Heroes", category: "Casino & gambling", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/legend-of-heroes" },
 
-  // === CASINO ===
-  { title: "Casino Slots", category: "casino", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/casino-slots" },
-  { title: "Vegas Night", category: "casino", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/vegas-night" },
-  { title: "Roulette Master", category: "casino", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/roulette-master" },
-  { title: "Lucky Dice", category: "casino", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/lucky-dice" },
-  { title: "Jackpot Spin", category: "casino", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jackpot-spin" },
-  { title: "Poker Royale", category: "casino", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/poker-royale" },
-  { title: "Slot Machine Deluxe", category: "casino", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/slot-machine-deluxe" },
-  { title: "Baccarat Pro", category: "casino", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/baccarat-pro" },
-  { title: "Wheel of Fortune", category: "casino", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/wheel-of-fortune" },
-  { title: "High Roller", category: "casino", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/high-roller" },
+  // === Sports & racing ===
+  { title: "Casino Slots", category: "Sports & racing", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/casino-slots" },
+  { title: "Vegas Night", category: "Sports & racing", mechanic: "pairs", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/vegas-night" },
+  { title: "Roulette Master", category: "Sports & racing", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/roulette-master" },
+  { title: "Lucky Dice", category: "Sports & racing", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/lucky-dice" },
+  { title: "Jackpot Spin", category: "Sports & racing", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/jackpot-spin" },
+  { title: "Poker Royale", category: "Sports & racing", mechanic: "pairs", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/poker-royale" },
+  { title: "Slot Machine Deluxe", category: "Sports & racing", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/slot-machine-deluxe" },
+  { title: "Baccarat Pro", category: "Sports & racing", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/baccarat-pro" },
+  { title: "Wheel of Fortune", category: "Sports & racing", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/wheel-of-fortune" },
+  { title: "High Roller", category: "Sports & racing", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/high-roller" },
 
-  // === SPORTS ===
-  { title: "Racing Pro", category: "sports", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/racing-pro" },
-  { title: "Soccer Stars", category: "sports", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/soccer-stars" },
-  { title: "Basketball Shoot", category: "sports", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/basketball-shoot" },
-  { title: "Golf Master", category: "sports", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/golf-master" },
-  { title: "Tennis Ace", category: "sports", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tennis-ace" },
-  { title: "Football Manager", category: "sports", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/football-manager" },
-  { title: "Skateboard King", category: "sports", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/skateboard-king" },
-  { title: "Bowling Strike", category: "sports", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bowling-strike" },
-  { title: "Drift Racing", category: "sports", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/drift-racing" },
-  { title: "Olympic Dash", category: "sports", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/olympic-dash" },
+  // === Arcade & action ===
+  { title: "Racing Pro", category: "Arcade & action", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/racing-pro" },
+  { title: "Soccer Stars", category: "Arcade & action", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/soccer-stars" },
+  { title: "Basketball Shoot", category: "Arcade & action", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/basketball-shoot" },
+  { title: "Golf Master", category: "Arcade & action", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/golf-master" },
+  { title: "Tennis Ace", category: "Arcade & action", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tennis-ace" },
+  { title: "Football Manager", category: "Arcade & action", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/football-manager" },
+  { title: "Skateboard King", category: "Arcade & action", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/skateboard-king" },
+  { title: "Bowling Strike", category: "Arcade & action", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/bowling-strike" },
+  { title: "Drift Racing", category: "Arcade & action", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/drift-racing" },
+  { title: "Olympic Dash", category: "Arcade & action", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/olympic-dash" },
 
-  // === ARCADE ===
-  { title: "Arcade Shooter", category: "arcade", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/arcade-shooter" },
-  { title: "Ninja Jump", category: "arcade", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/ninja-jump" },
-  { title: "Space Invaders", category: "arcade", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/space-invaders" },
-  { title: "Pac-Man Clone", category: "arcade", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pac-man-clone" },
-  { title: "Brick Breaker", category: "arcade", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brick-breaker" },
-  { title: "Snake Classic", category: "arcade", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/snake-classic" },
-  { title: "Flappy Fly", category: "arcade", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/flappy-fly" },
-  { title: "Tetris Block", category: "arcade", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tetris-block" },
-  { title: "Pinball Wizard", category: "arcade", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pinball-wizard" },
-  { title: "Retro Racer", category: "arcade", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/retro-racer" },
+  // === Words & quiz ===
+  { title: "Arcade Shooter", category: "Words & quiz", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/arcade-shooter" },
+  { title: "Ninja Jump", category: "Words & quiz", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/ninja-jump" },
+  { title: "Space Invaders", category: "Words & quiz", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/space-invaders" },
+  { title: "Pac-Man Clone", category: "Words & quiz", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pac-man-clone" },
+  { title: "Brick Breaker", category: "Words & quiz", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brick-breaker" },
+  { title: "Snake Classic", category: "Words & quiz", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/snake-classic" },
+  { title: "Flappy Fly", category: "Words & quiz", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/flappy-fly" },
+  { title: "Tetris Block", category: "Words & quiz", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tetris-block" },
+  { title: "Pinball Wizard", category: "Words & quiz", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/pinball-wizard" },
+  { title: "Retro Racer", category: "Words & quiz", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/retro-racer" },
 
-  // === BRAND ===
-  { title: "Brand Match", category: "brand", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brand-match" },
-  { title: "Logo Quiz", category: "brand", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/logo-quiz" },
-  { title: "Product Sort", category: "brand", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/product-sort" },
-  { title: "Cola Challenge", category: "brand", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/cola-challenge" },
-  { title: "Sneaker Drop", category: "brand", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/sneaker-drop" },
-  { title: "Car Brand Guess", category: "brand", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/car-brand-guess" },
-  { title: "Fast Food Frenzy", category: "brand", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/fast-food-frenzy" },
-  { title: "Tech Gadget Match", category: "brand", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tech-gadget-match" },
-  { title: "Fashion Sort", category: "brand", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/fashion-sort" },
-  { title: "Movie Poster Match", category: "brand", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/movie-poster-match" },
+  // === Cards ===
+  { title: "Brand Match", category: "Cards", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/brand-match" },
+  { title: "Logo Quiz", category: "Cards", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/logo-quiz" },
+  { title: "Product Sort", category: "Cards", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/product-sort" },
+  { title: "Cola Challenge", category: "Cards", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/cola-challenge" },
+  { title: "Sneaker Drop", category: "Cards", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/sneaker-drop" },
+  { title: "Car Brand Guess", category: "Cards", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/car-brand-guess" },
+  { title: "Fast Food Frenzy", category: "Cards", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/fast-food-frenzy" },
+  { title: "Tech Gadget Match", category: "Cards", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tech-gadget-match" },
+  { title: "Fashion Sort", category: "Cards", mechanic: "sort", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/fashion-sort" },
+  { title: "Movie Poster Match", category: "Cards", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/movie-poster-match" },
 
-  // === VIDEO ===
-  { title: "Interactive Ad", category: "video", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/interactive-ad" },
-  { title: "Video Quiz", category: "video", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/video-quiz" },
-  { title: "Movie Trivia", category: "video", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/movie-trivia" },
-  { title: "Streamer Challenge", category: "video", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/streamer-challenge" },
-  { title: "Clip Sort", category: "video", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/clip-sort" },
-  { title: "Music Video Match", category: "video", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/music-video-match" },
-  { title: "TV Show Guess", category: "video", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tv-show-guess" },
-  { title: "Viral Video Sort", category: "video", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/viral-video-sort" },
-  { title: "Cinema Puzzle", category: "video", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/cinema-puzzle" },
-  { title: "Director's Cut", category: "video", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/directors-cut" }
+  // === Adventure ===
+  { title: "Interactive Ad", category: "Adventure", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/interactive-ad" },
+  { title: "Video Quiz", category: "Adventure", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/video-quiz" },
+  { title: "Movie Trivia", category: "Adventure", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/movie-trivia" },
+  { title: "Streamer Challenge", category: "Adventure", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/streamer-challenge" },
+  { title: "Clip Sort", category: "Adventure", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/clip-sort" },
+  { title: "Music Video Match", category: "Adventure", mechanic: "match3", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/music-video-match" },
+  { title: "TV Show Guess", category: "Adventure", mechanic: "puzzle", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/tv-show-guess" },
+  { title: "Viral Video Sort", category: "Adventure", mechanic: "sort", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/viral-video-sort" },
+  { title: "Cinema Puzzle", category: "Adventure", mechanic: "puzzle", dimension: "3d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/viral-video-sort" },
+  { title: "Director's Cut", category: "Adventure", mechanic: "match3", dimension: "2d", image: "assets/img/portfolio/ex_slider.png", link: "https://mraid.io/projects/directors-cut" }
 ];
 
 class PortfolioSlider extends HTMLElement {
@@ -244,7 +244,10 @@ class PortfolioSlider extends HTMLElement {
                 </div>
                 <div class="filter-section">
                     <div class="filter-group">
-                        <span class="filter-label">Categories</span>
+                            <span class="filter-label">
+                                <img src="assets/img/portfolio/categories.png" alt="Categories" class="filter-icon">
+                                Categories
+                            </span>
                         <div class="filter-buttons">
                             ${this.uniqueCategories.map(cat => `
                                 <button class="filter-btn ${cat === this.currentCategory ? 'active' : ''}" data-type="category" data-value="${cat}">
@@ -253,9 +256,13 @@ class PortfolioSlider extends HTMLElement {
                             `).join('')}
                         </div>
                     </div>
+                    <hr class="line-after-categories"/>
                     <div class="filter-row">
                         <div class="filter-group mechanics-group">
-                            <span class="filter-label">Mechanics</span>
+                                <span class="filter-label">
+                                    <img src="assets/img/portfolio/mechanics.png" alt="Mechanics" class="filter-icon">
+                                    Mechanics
+                                </span>
                             <div class="filter-buttons">
                                 ${this.uniqueMechanics.map(mech => `
                                     <button class="filter-btn ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
