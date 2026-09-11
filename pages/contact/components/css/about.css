@@ -314,6 +314,7 @@
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 24px;
+    animation: fadeIn 0.4s ease-out; /* Плавное появление */
 }
 
 .package-header {
@@ -361,6 +362,25 @@
     color: #FF0034;
     font-weight: 300;
 }
+.package-actions {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+/* Кнопка Clear */
+.clear-package-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 6px;
+    color: #888;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
 
 .change-package-btn {
     flex-shrink: 0;
@@ -380,6 +400,38 @@
     border-color: #FF0034;
     color: #FF0034;
     background: rgba(255, 0, 54, 0.05);
+}
+
+
+.clear-package-btn:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+}
+
+/* Кнопка Change */
+.change-package-btn {
+    padding: 8px 16px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    white-space: nowrap;
+}
+
+.change-package-btn:hover {
+    border-color: #FF0034;
+    color: #FF0034;
+    background: rgba(255, 0, 54, 0.05);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* === АДАПТАЦИЯ === */
