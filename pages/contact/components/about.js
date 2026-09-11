@@ -19,6 +19,24 @@ class AboutContact extends HTMLElement {
 
     connectedCallback() {
         window.addEventListener('planChanged', this.handlePlanChange);
+        
+        // Закрытие модалки по клику на backdrop
+        setTimeout(() => {
+            const modal = document.getElementById('hcaptcha-modal');
+            if (modal) {
+                modal.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('hcaptcha-modal-backdrop')) {
+                        // Не закрываем, если капча еще не решена
+                        if (!this.captchaWidgetId || !window.hcaptcha?.getResponse(this.captchaWidgetId)) {
+                            alert('Please complete the captcha before closing.');
+                            return;
+                        }
+                        modal.style.display = 'none';
+                    }
+                });
+            }
+        }, 100);
+        
         this.render();
     }
 
@@ -310,10 +328,20 @@ class AboutContact extends HTMLElement {
         if (this.hcaptchaLoading) return this.hcaptchaLoading;
         
         this.hcaptchaLoading = new Promise((resolve, reject) => {
+            // Создаем глобальный колбэк для загрузки API
+            window.onLoadCallback = () => {
+                console.log('[hCaptcha] API загружен!');
+                resolve();
+            };
+            
             const s = document.createElement('script');
-            s.src = 'https://js.hcaptcha.com/1/api.js?render=explicit';
+            // ДОБАВЛЯЕМ onload=onLoadCallback
+            s.src = 'https://js.hcaptcha.com/1/api.js?onload=onLoadCallback&render=explicit';
             s.async = true;
-            s.onload = () => resolve();
+            s.defer = true;
+            s.onload = () => {
+                console.log('[hCaptcha] Скрипт загружен, ждем API...');
+            };
             s.onerror = () => {
                 this.hcaptchaLoading = null;
                 reject(new Error('hcaptcha load failed'));
@@ -324,46 +352,42 @@ class AboutContact extends HTMLElement {
     }
 
     renderCaptcha() {
-        // Находим глобальный контейнер
-        const container = document.getElementById('hcaptcha-global-container');
+        // Показываем модальное окно
+        const modal = document.getElementById('hcaptcha-modal');
+        const container = document.getElementById('hcaptcha-widget-container');
         
-        if (!container) {
-            console.error('[hCaptcha] Глобальный контейнер не найден!');
+        if (!modal || !container) {
+            console.error('[hCaptcha] Модальное окно или контейнер не найдены!');
             return;
         }
 
-        // Показываем контейнер и позиционируем его ВНУТРИ нашей формы
-        const formWrapper = this.shadowRoot.querySelector('.form-wrapper');
-        if (formWrapper) {
-            const rect = formWrapper.getBoundingClientRect();
-            container.style.position = 'fixed';
-            container.style.left = rect.left + 30 + 'px'; // Отступ как в форме
-            container.style.top = rect.top + 350 + 'px'; // Позиция после textarea
-            container.style.width = rect.width - 60 + 'px';
-            container.style.zIndex = '1000';
-            container.style.display = 'block';
-            container.style.background = '#111114';
-            container.style.padding = '15px';
-            container.style.borderRadius = '8px';
-            container.style.border = '1px solid rgba(255, 0, 54, 0.3)';
-        }
+        // Показываем модалку
+        modal.style.display = 'flex';
+        console.log('[hCaptcha] Модальное окно открыто');
 
+        // Проверяем, что API загружен
         if (!window.hcaptcha) {
-            this.showCaptchaNote('Captcha script failed to load.');
+            console.log('[hCaptcha] API еще не загружен, загружаем...');
+            this.loadHcaptcha().then(() => {
+                this.renderCaptcha();
+            });
             return;
         }
 
+        // Рендерим виджет только если еще не создан
         if (this.captchaWidgetId === null) {
             try {
+                console.log('[hCaptcha] Рендерим виджет в модальном окне...');
                 this.captchaWidgetId = window.hcaptcha.render(container, {
                     sitekey: '7520fd58-5574-45a4-9246-4da25390e316',
                     callback: this.onCaptchaSolved,
                     'expired-callback': this.onCaptchaExpired,
-                    'error-callback': this.onCaptchaError
+                    'error-callback': this.onCaptchaError,
+                    'theme': 'dark'
                 });
-                console.log('[hCaptcha] ✅ Widget создан!');
+                console.log('[hCaptcha] ✅ Виджет создан! ID:', this.captchaWidgetId);
             } catch (e) {
-                console.error('[hCaptcha] Render error:', e);
+                console.error('[hCaptcha] ❌ Ошибка render:', e);
             }
         }
     }
@@ -398,11 +422,13 @@ class AboutContact extends HTMLElement {
     }
 
     showThanks(form) {
-        
-        const captchaContainer = document.getElementById('hcaptcha-global-container');
-        if (captchaContainer) {
-            captchaContainer.style.display = 'none';
-            captchaContainer.innerHTML = ''; 
+        // Скрываем модальное окно капчи
+        const modal = document.getElementById('hcaptcha-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            // Очищаем контейнер
+            const container = document.getElementById('hcaptcha-widget-container');
+            if (container) container.innerHTML = '';
         }
         
         form.style.display = 'none';

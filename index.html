@@ -96,8 +96,19 @@
 
     <div class="container">
         
-        <div id="hcaptcha-global-container" style="display: none;"></div>
-    
+        <div id="hcaptcha-modal" style="display: none;">
+            <div class="hcaptcha-modal-backdrop"></div>
+            <div class="hcaptcha-modal-content">
+                <div class="hcaptcha-modal-header">
+                    <h3>Security Check</h3>
+                    <button class="hcaptcha-modal-close" onclick="document.getElementById('hcaptcha-modal').style.display='none'">&times;</button>
+                </div>
+                <div class="hcaptcha-modal-body">
+                    <div id="hcaptcha-widget-container"></div>
+                </div>
+                <p class="hcaptcha-modal-hint">Please complete the captcha to continue</p>
+            </div>
+        </div>
 
         <app-header>
             <!-- Вставляем компактный логотип с бликом -->
