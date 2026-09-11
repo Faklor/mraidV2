@@ -20,24 +20,38 @@ class AboutContact extends HTMLElement {
     connectedCallback() {
         window.addEventListener('planChanged', this.handlePlanChange);
         
-        // Закрытие модалки по клику на backdrop
+        // Закрытие модалки по клику на backdrop или крестик
         setTimeout(() => {
             const modal = document.getElementById('hcaptcha-modal');
+            const closeBtn = modal?.querySelector('.hcaptcha-modal-close');
+            
             if (modal) {
+                // Клик на backdrop
                 modal.addEventListener('click', (e) => {
                     if (e.target.classList.contains('hcaptcha-modal-backdrop')) {
-                        // Не закрываем, если капча еще не решена
-                        if (!this.captchaWidgetId || !window.hcaptcha?.getResponse(this.captchaWidgetId)) {
-                            alert('Please complete the captcha before closing.');
-                            return;
-                        }
-                        modal.style.display = 'none';
+                        this.closeCaptchaModal();
                     }
+                });
+            }
+            
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => {
+                    this.closeCaptchaModal();
                 });
             }
         }, 100);
         
         this.render();
+    }
+
+    closeCaptchaModal() {
+        const modal = document.getElementById('hcaptcha-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            // Сбрасываем виджет, чтобы при следующей попытке он создался заново
+            this.captchaWidgetId = null;
+            console.log('[hCaptcha] Модалка закрыта, виджет сброшен');
+        }
     }
 
     disconnectedCallback() {
@@ -301,12 +315,19 @@ class AboutContact extends HTMLElement {
                     this.showCaptchaNote('Captcha failed to load. Please reload the page or write to sales@mraid.io.');
                 });
             } else if (xhr.status === 400) {
+                console.log('[hCaptcha] Сервер вернул 400 - сбрасываем капчу');
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
-                if (window.hcaptcha && this.captchaWidgetId !== null) {
-                    window.hcaptcha.reset(this.captchaWidgetId);
-                }
-                this.showCaptchaNote('Captcha check failed, please try again.');
+                
+                // Сбрасываем виджет
+                this.captchaWidgetId = null;
+                this.captchaRequired = true;
+                
+                // Показываем модалку снова
+                this.showCaptchaNote('Captcha check failed. Please try again.');
+                setTimeout(() => {
+                    this.renderCaptcha();
+                }, 500);
             } else {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
@@ -352,7 +373,6 @@ class AboutContact extends HTMLElement {
     }
 
     renderCaptcha() {
-        // Показываем модальное окно
         const modal = document.getElementById('hcaptcha-modal');
         const container = document.getElementById('hcaptcha-widget-container');
         
@@ -374,45 +394,54 @@ class AboutContact extends HTMLElement {
             return;
         }
 
-        // Рендерим виджет только если еще не создан
-        if (this.captchaWidgetId === null) {
-            try {
-                console.log('[hCaptcha] Рендерим виджет в модальном окне...');
-                this.captchaWidgetId = window.hcaptcha.render(container, {
-                    sitekey: '7520fd58-5574-45a4-9246-4da25390e316',
-                    callback: this.onCaptchaSolved,
-                    'expired-callback': this.onCaptchaExpired,
-                    'error-callback': this.onCaptchaError,
-                    'theme': 'dark'
-                });
-                console.log('[hCaptcha] ✅ Виджет создан! ID:', this.captchaWidgetId);
-            } catch (e) {
-                console.error('[hCaptcha] ❌ Ошибка render:', e);
-            }
+        // Очищаем контейнер перед рендером
+        container.innerHTML = '';
+        this.captchaWidgetId = null;
+
+        try {
+            console.log('[hCaptcha] Рендерим виджет в модальном окне...');
+            this.captchaWidgetId = window.hcaptcha.render(container, {
+                sitekey: '7520fd58-5574-45a4-9246-4da25390e316',
+                callback: this.onCaptchaSolved,
+                'expired-callback': this.onCaptchaExpired,
+                'error-callback': this.onCaptchaError,
+                'theme': 'dark'
+            });
+            console.log('[hCaptcha] ✅ Виджет создан! ID:', this.captchaWidgetId);
+        } catch (e) {
+            console.error('[hCaptcha] ❌ Ошибка render:', e);
         }
     }
 
     // === Методы-колбэки для hCaptcha ===
     onCaptchaSolved(token) {
+        console.log('[hCaptcha] Капча пройдена! Токен:', token ? token.substring(0, 20) + '...' : 'null');
         this.captchaErrorCount = 0;
         this.showCaptchaNote('');
+        
+        // Закрываем модалку
+        const modal = document.getElementById('hcaptcha-modal');
+        if (modal) modal.style.display = 'none';
+        
+        // Отправляем форму с токеном
         this.submitFormData(token);
     }
 
     onCaptchaExpired() {
-        this.showCaptchaNote('Captcha has expired, please confirm it again.');
+        console.log('[hCaptcha] Токен истёк');
+        this.captchaWidgetId = null;
+        this.showCaptchaNote('Captcha expired. Please try again.');
     }
 
     onCaptchaError(error) {
+        console.error('[hCaptcha] Ошибка:', error);
         this.captchaErrorCount++;
-        console.error('[hCaptcha] Render error:', error); // <-- ЭТО ПОКАЖЕТ ПРИЧИНУ В КОНСОЛИ
         
-        if (window.hcaptcha && this.captchaWidgetId !== null) {
-            window.hcaptcha.reset(this.captchaWidgetId);
-        }
+        // Сбрасываем виджет
+        this.captchaWidgetId = null;
         
-        if (this.captchaErrorCount >= 1) {
-            this.showCaptchaNote('Captcha blocked: Domain "' + window.location.hostname + '" is likely not allowed in hCaptcha settings.');
+        if (this.captchaErrorCount >= 2) {
+            this.showCaptchaNote('Captcha failed. Please reload the page.');
         }
     }
 
@@ -422,13 +451,16 @@ class AboutContact extends HTMLElement {
     }
 
     showThanks(form) {
-        // Скрываем модальное окно капчи
+        // Скрываем модальное окно
         const modal = document.getElementById('hcaptcha-modal');
         if (modal) {
             modal.style.display = 'none';
-            // Очищаем контейнер
-            const container = document.getElementById('hcaptcha-widget-container');
-            if (container) container.innerHTML = '';
+        }
+        
+        // Очищаем контейнер капчи
+        const container = document.getElementById('hcaptcha-widget-container');
+        if (container) {
+            container.innerHTML = '';
         }
         
         form.style.display = 'none';
