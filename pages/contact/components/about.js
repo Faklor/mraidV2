@@ -336,7 +336,8 @@ class AboutContact extends HTMLElement {
             try {
                 // Используем привязанные методы класса вместо строк (как в оригинальном main.js)
                 this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
-                    sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
+                    //sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
+                    sitekey: '7520fd58-5574-45a4-9246-4da25390e316',//myGmail
                     callback: this.onCaptchaSolved,
                     'expired-callback': this.onCaptchaExpired,
                     'error-callback': this.onCaptchaError
