@@ -205,13 +205,11 @@ class AboutContact extends HTMLElement {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // 1. Проверка honeypot (боты заполняют это поле)
             if (honeypotInput && honeypotInput.value) {
                 this.showThanks(form);
                 return;
             }
 
-            // 2. Валидация полей
             let invalidFields = [];
             if (!nameInput.value.trim()) invalidFields.push('Name');
             if (!emailInput.value.trim() || !emailInput.validity.valid) invalidFields.push('Email');
@@ -224,8 +222,15 @@ class AboutContact extends HTMLElement {
             }
             if (errorEl) errorEl.textContent = '';
 
-            // 3. Если капча уже была запрошена ранее, проверяем, решена ли она
+            // === ИСПРАВЛЕННАЯ ЛОГИКА ПРОВЕРКИ КАПЧИ ===
             if (this.captchaRequired && window.hcaptcha) {
+                // Если виджет не отрисовался (ID равен null), пытаемся отрисовать его снова
+                if (this.captchaWidgetId === null) {
+                    this.showCaptchaNote('Captcha widget failed to load. Retrying... Please wait a second and click Send again.');
+                    this.renderCaptcha();
+                    return; 
+                }
+
                 const token = window.hcaptcha.getResponse(this.captchaWidgetId);
                 if (!token) {
                     this.showCaptchaNote('Please complete the captcha.');
@@ -233,7 +238,6 @@ class AboutContact extends HTMLElement {
                 }
                 this.submitFormData(token);
             } else {
-                // Первая попытка отправки без токена капчи
                 this.submitFormData(null);
             }
         });
@@ -334,33 +338,35 @@ class AboutContact extends HTMLElement {
     }
 
     // Отрисовка виджета капчи
-    renderCaptcha() {
+   renderCaptcha() {
         const container = this.shadowRoot.getElementById('contact-captcha');
         if (container) container.style.display = 'block';
 
         if (!window.hcaptcha) {
-            this.showCaptchaNote('Captcha failed to load. Please reload the page.');
+            this.showCaptchaNote('Captcha script failed to load. Please reload the page.');
             return;
         }
 
         if (this.captchaWidgetId === null) {
-            // Sitekey взят из твоего оригинального main.js
-            this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
-                sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
-                callback: 'mraidCaptchaSolved', // Глобальная функция, которую мы объявили в connectedCallback
-                'expired-callback': () => {
-                    this.showCaptchaNote('Captcha has expired, please confirm it again.');
-                },
-                'error-callback': () => {
-                    this.captchaErrorCount++;
-                    if (window.hcaptcha && this.captchaWidgetId !== null) {
-                        window.hcaptcha.reset(this.captchaWidgetId);
+            try {
+                this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
+                    sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
+                    callback: 'mraidCaptchaSolved',
+                    'expired-callback': () => {
+                        this.showCaptchaNote('Captcha has expired, please confirm it again.');
+                    },
+                    'error-callback': (err) => {
+                        console.error('hCaptcha render error:', err); // <-- Теперь мы увидим точную ошибку в консоли
+                        this.captchaErrorCount++;
+                        if (this.captchaErrorCount >= 2) {
+                            this.showCaptchaNote('Captcha failed to load (Domain not allowed?). Please reload or write to sales@mraid.io.');
+                        }
                     }
-                    if (this.captchaErrorCount >= 2) {
-                        this.showCaptchaNote('Captcha failed to load. Please reload the page or write to sales@mraid.io.');
-                    }
-                }
-            });
+                });
+            } catch (e) {
+                console.error('Exception during hCaptcha render:', e);
+                this.showCaptchaNote('Could not render captcha. Check console for details.');
+            }
         }
     }
 
