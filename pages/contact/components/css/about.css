@@ -1,3 +1,16 @@
+/* === УТИЛИТЫ (на случай, если нет в global.css) === */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 /* === СЕКЦИЯ CONTACT === */
 .about-contact {
     padding: 20px 40px;
@@ -9,7 +22,7 @@
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 45px; /* СРЕДНЕЕ между 60px и 30px */
+    gap: 45px;
     align-items: stretch;
 }
 
@@ -25,7 +38,7 @@
     font-size: 3.5rem;
     font-weight: 800;
     color: #ffffff;
-    margin: 0 0 18px; /* СРЕДНЕЕ между 24px и 12px */
+    margin: 0 0 18px;
     line-height: 1.1;
     letter-spacing: -0.02em;
 }
@@ -38,7 +51,7 @@
     font-size: 1.1rem;
     color: #888;
     line-height: 1.5;
-    margin: 0 0 28px; /* СРЕДНЕЕ между 40px и 16px */
+    margin: 0 0 28px;
 }
 
 .team-photo {
@@ -47,9 +60,7 @@
     border-radius: 5px;
     overflow: hidden;
     margin-top: auto;
-    max-height: 480px; 
-
-   
+    max-height: 480px;
 }
 
 .team-photo img {
@@ -57,25 +68,18 @@
     height: 100%;
     object-fit: cover;
     display: block;
-
     transform: scale(0.9);
     transform-origin: center center;
-    
 }
 
-/* Плотная чёрная виньетка ПОВЕРХ картинки */
 .team-photo::after {
     content: '';
     position: absolute;
     inset: 0;
     z-index: 2;
     pointer-events: none;
-    
-    /* ПЛОТНАЯ ВНУТРЕННЯЯ ТЕНЬ СО ВСЕХ СТОРОН */
-    box-shadow: inset 0 0 150px 60px #0D0D0F,inset 0 0 20px 50px #0D0D0F;
+    box-shadow: inset 0 0 150px 60px #0D0D0F, inset 0 0 20px 50px #0D0D0F;
 }
-
-
 
 /* === ПРАВАЯ ЧАСТЬ: ФОРМА === */
 .contact-right {
@@ -90,7 +94,7 @@
     background: #111114;
     border: 1px solid #FF0036;
     border-radius: 16px;
-    padding: 30px; /* СРЕДНЕЕ между 40px и 20px */
+    padding: 30px;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
@@ -100,20 +104,20 @@
     font-size: 2rem;
     font-weight: 600;
     color: #ffffff;
-    margin: 0 0 24px; /* СРЕДНЕЕ между 32px и 20px */
+    margin: 0 0 24px;
 }
 
 /* === ФОРМА === */
 .contact-form {
     display: flex;
     flex-direction: column;
-    gap: 15px; /* СРЕДНЕЕ между 20px и 10px */
+    gap: 15px;
 }
 
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 14px; /* СРЕДНЕЕ между 16px и 12px */
+    gap: 14px;
 }
 
 .form-group {
@@ -126,7 +130,7 @@
 .form-textarea {
     width: 100%;
     box-sizing: border-box;
-    padding: 13px 17px; /* СРЕДНЕЕ между 16px 20px и 10px 14px */
+    padding: 13px 17px;
     background: #1a1a1e;
     border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 8px;
@@ -148,13 +152,12 @@
     background: #1e1e22;
 }
 
-/* Textarea */
 .textarea-group {
     position: relative;
 }
 
 .form-textarea {
-    min-height: 105px; /* СРЕДНЕЕ между 140px и 70px */
+    min-height: 105px;
     resize: vertical;
 }
 
@@ -165,6 +168,30 @@
     font-size: 0.8rem;
     color: #666;
     pointer-events: none;
+}
+
+.message-hint {
+    display: block;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 6px;
+}
+
+/* === ОШИБКИ И УСПЕХ === */
+.form-error {
+    color: #ff4444;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    min-height: 20px; /* Предотвращает прыжок верстки */
+}
+
+.form-thanks {
+    text-align: center;
+    padding: 40px 20px;
+    color: #ffffff;
+    font-size: 1.1rem;
+    line-height: 1.5;
+    animation: fadeIn 0.5s ease-out;
 }
 
 /* === ЧЕКБОКС === */
@@ -218,6 +245,7 @@
     color: #888;
     line-height: 1.4;
     align-self: center;
+    margin-top: 5px;
 }
 
 .terms-link {
@@ -238,12 +266,12 @@
     gap: 11px;
     width: 100%;
     box-sizing: border-box;
-    padding: 15px 28px; /* СРЕДНЕЕ между 18px 32px и 12px 24px */
+    padding: 15px 28px;
     background: #FF0036;
     color: #ffffff;
     border: none;
     border-radius: 8px;
-    font-size: 1.05rem; /* СРЕДНЕЕ между 1.1rem и 1rem */
+    font-size: 1.05rem;
     font-weight: 600;
     font-family: inherit;
     cursor: pointer;
@@ -257,13 +285,20 @@
     box-shadow: 0 8px 24px rgba(255, 0, 54, 0.3);
 }
 
+.submit-btn:disabled {
+    background: #666;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
 .submit-btn svg {
     width: 22px;
     height: 22px;
     transition: transform 0.3s ease;
 }
 
-.submit-btn:hover svg {
+.submit-btn:hover:not(:disabled) svg {
     transform: translateX(4px);
 }
 
@@ -272,18 +307,18 @@
     width: 100%;
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
-    margin: 18px 0; /* СРЕДНЕЕ между 24px и 12px */
+    margin: 18px 0;
 }
 
 /* === ПРЯМОЙ КОНТАКТ === */
 .direct-contact {
     display: flex;
     flex-direction: column;
-    gap: 9px; /* СРЕДНЕЕ между 12px и 6px */
+    gap: 9px;
 }
 
 .direct-title {
-    font-size: 0.93rem; /* СРЕДНЕЕ между 0.95rem и 0.9rem */
+    font-size: 0.93rem;
     color: #888;
     margin: 0 0 2px;
 }
@@ -294,7 +329,7 @@
     gap: 9px;
     color: #888;
     text-decoration: none;
-    font-size: 0.88rem; /* СРЕДНЕЕ между 0.9rem и 0.85rem */
+    font-size: 0.88rem;
     transition: color 0.3s ease;
     word-break: break-all;
 }
@@ -314,7 +349,7 @@
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 24px;
-    animation: fadeIn 0.4s ease-out; /* Плавное появление */
+    animation: fadeIn 0.4s ease-out;
 }
 
 .package-header {
@@ -351,7 +386,7 @@
 
 .package-name {
     font-size: 1rem;
-    font-weight: 300;
+    font-weight: 600; /* Исправлено с 300 на 600 для читаемости */
     color: #ffffff;
     margin: 0 0 4px;
     line-height: 1.3;
@@ -360,56 +395,16 @@
 .package-price {
     font-size: 0.9rem;
     color: #FF0034;
-    font-weight: 300;
+    font-weight: 600; /* Исправлено с 300 на 600 */
 }
+
 .package-actions {
     display: flex;
     gap: 8px;
     flex-shrink: 0;
 }
 
-/* Кнопка Clear */
-.clear-package-btn {
-    padding: 8px 16px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 6px;
-    color: #888;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.change-package-btn {
-    flex-shrink: 0;
-    padding: 8px 16px;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 6px;
-    color: #888;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    white-space: nowrap;
-}
-
-.change-package-btn:hover {
-    border-color: #FF0034;
-    color: #FF0034;
-    background: rgba(255, 0, 54, 0.05);
-}
-
-
-.clear-package-btn:hover {
-    border-color: #ff4444;
-    color: #ff4444;
-    background: rgba(255, 68, 68, 0.05);
-}
-
-/* Кнопка Change */
+.clear-package-btn,
 .change-package-btn {
     padding: 8px 16px;
     background: transparent;
@@ -421,6 +416,12 @@
     cursor: pointer;
     transition: all 0.3s ease;
     white-space: nowrap;
+}
+
+.clear-package-btn:hover {
+    border-color: #ff4444;
+    color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
 }
 
 .change-package-btn:hover {
@@ -440,7 +441,6 @@
         grid-template-columns: 1fr;
         gap: 35px;
     }
-    
     .team-photo {
         max-height: 400px;
     }
@@ -450,55 +450,48 @@
     .about-contact {
         padding: 50px 20px;
     }
-    
     .contact-title {
         font-size: 2.2rem;
     }
-    
     .contact-subtitle {
         font-size: 1rem;
     }
-    
     .form-wrapper {
         padding: 24px;
     }
-    
     .form-title {
         font-size: 1.5rem;
     }
-    
     .form-row {
         grid-template-columns: 1fr;
     }
-    
     .team-photo {
         max-height: 300px;
     }
-
     .package-header {
         flex-wrap: wrap;
     }
-    
     .package-info {
-        width: calc(100% - 64px);
-    }
-    
-    .change-package-btn {
         width: 100%;
-        margin-top: 12px;
+        margin-bottom: 12px;
     }
-
+    .package-actions {
+        width: 100%;
+    }
+    .clear-package-btn,
+    .change-package-btn {
+        flex: 1;
+        text-align: center;
+    }
 }
 
 @media (max-width: 480px) {
     .contact-title {
         font-size: 1.8rem;
     }
-    
     .form-wrapper {
         padding: 18px;
     }
-    
     .team-photo {
         max-height: 250px;
     }

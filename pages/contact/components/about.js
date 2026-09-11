@@ -2,17 +2,33 @@ class AboutContact extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.currentPlan = null; // Изначально null
+        this.currentPlan = null;
         this.handlePlanChange = this.handlePlanChange.bind(this);
+        
+        // Состояние для работы с капчей
+        this.captchaRequired = false;
+        this.captchaWidgetId = null;
+        this.hcaptchaLoading = null;
+        this.captchaErrorCount = 0;
     }
 
     connectedCallback() {
         window.addEventListener('planChanged', this.handlePlanChange);
+        
+        // Глобальный колбэк для hCaptcha (требуется для explicit render)
+        window.mraidCaptchaSolved = (token) => {
+            this.captchaErrorCount = 0;
+            this.showCaptchaNote('');
+            this.submitFormData(token);
+        };
+
         this.render();
     }
 
     disconnectedCallback() {
         window.removeEventListener('planChanged', this.handlePlanChange);
+        // Очищаем глобальный колбэк при удалении компонента
+        delete window.mraidCaptchaSolved;
     }
 
     handlePlanChange(event) {
@@ -22,7 +38,7 @@ class AboutContact extends HTMLElement {
 
     render() {
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
-        this.currentPlan = this.currentPlan || storedPlan || null; // Нет дефолтного плана!
+        this.currentPlan = this.currentPlan || storedPlan || null;
         const plan = this.currentPlan;
 
         this.shadowRoot.innerHTML = `
@@ -49,7 +65,6 @@ class AboutContact extends HTMLElement {
                         <div class="form-wrapper">
                             <h2 class="form-title">Send us a message</h2>
                             
-                            <!-- Блок отображается ТОЛЬКО если выбран план -->
                             ${plan ? `
                             <div class="selected-package">
                                 <div class="package-header">
@@ -72,32 +87,43 @@ class AboutContact extends HTMLElement {
                             <form class="contact-form" id="contactForm">
                                 <div class="form-row">
                                     <div class="form-group">
-                                        <input type="text" id="name" name="name" class="form-input" placeholder="Your name*" required>
+                                        <label class="sr-only" for="name">Name</label>
+                                        <input type="text" id="name" name="name" class="form-input" placeholder="Name:" autocomplete="name" required>
                                     </div>
                                     <div class="form-group">
-                                        <input type="text" id="company" name="company" class="form-input" placeholder="Company">
+                                        <label class="sr-only" for="email">Email</label>
+                                        <input type="email" id="email" name="email" class="form-input" placeholder="Email:" autocomplete="email" inputmode="email" required>
                                     </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <input type="email" id="email" name="email" class="form-input" placeholder="Email*" required>
                                 </div>
                                 
                                 <div class="form-group textarea-group">
-                                    <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your project*" maxlength="500" required></textarea>
+                                    <label class="sr-only" for="message">Message</label>
+                                    <textarea id="message" name="message" class="form-textarea" rows="6" placeholder="Tell us a few words about your project:" minlength="7" required></textarea>
                                     <span class="char-counter">0/500</span>
+                                    <small class="message-hint"></small>
                                 </div>
                                 
+                                <div class="contact-group hp-field" style="display: none;" aria-hidden="true">
+                                    <label for="company-url">Company website</label>
+                                    <input id="company-url" name="company_url" type="text" class="form-control" tabindex="-1" autocomplete="off">
+                                </div>
+                                
+                                <div class="form-error" role="alert"></div>
+                                
+                                <!-- Контейнер для виджета hCaptcha -->
+                                <div id="contact-captcha" style="display: none; margin-bottom: 15px;"></div>
+                                <div class="captcha-note" role="alert" style="color: #ff4444; font-size: 0.9rem; margin-bottom: 10px; min-height: 20px;"></div>
+                                
                                 <div class="form-checkbox">
-                                    <label class="checkbox-label" for="terms">
-                                        <input type="checkbox" id="terms" name="terms" checked required>
+                                    <label class="checkbox-label" for="offer">
+                                        <input type="checkbox" id="offer" name="offer" checked required>
                                         <span class="checkbox-custom"></span>
-                                        <span class="checkbox-text">I agree to the <a href="#" class="terms-link">Terms and Conditions</a>*</span>
+                                        <span class="checkbox-text">Agree with <a href="#" class="terms-link">the terms and conditions</a> *</span>
                                     </label>
                                 </div>
                                 
-                                <button type="submit" class="submit-btn">
-                                    Send message
+                                <button type="submit" id="contact-button" class="submit-btn">
+                                    Send Message
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                                         <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
                                     </svg>
@@ -152,46 +178,210 @@ class AboutContact extends HTMLElement {
                 e.preventDefault();
                 this.currentPlan = null;
                 localStorage.removeItem('selectedPlan');
-                this.render(); // Перерисовываем, блок исчезает
+                this.render();
             });
         }
     }
 
     initForm() {
-        const textarea = this.shadowRoot.querySelector('.form-textarea');
-        const counter = this.shadowRoot.querySelector('.char-counter');
         const form = this.shadowRoot.querySelector('#contactForm');
+        const nameInput = this.shadowRoot.querySelector('#name');
+        const emailInput = this.shadowRoot.querySelector('#email');
+        const messageInput = this.shadowRoot.querySelector('#message');
+        const offerInput = this.shadowRoot.querySelector('#offer');
+        const honeypotInput = this.shadowRoot.querySelector('#company-url');
+        const submitBtn = this.shadowRoot.querySelector('#contact-button');
+        const errorEl = this.shadowRoot.querySelector('.form-error');
+        const counter = this.shadowRoot.querySelector('.char-counter');
 
-        if (textarea && counter) {
-            textarea.addEventListener('input', () => {
-                counter.textContent = `${textarea.value.length}/500`;
+        if (messageInput && counter) {
+            messageInput.addEventListener('input', () => {
+                counter.textContent = `${messageInput.value.length}/500`;
             });
         }
 
-        if (form) {
-            form.addEventListener('submit', (e) => {
-                e.preventDefault();
+        if (!form) return;
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            // 1. Проверка honeypot (боты заполняют это поле)
+            if (honeypotInput && honeypotInput.value) {
+                this.showThanks(form);
+                return;
+            }
+
+            // 2. Валидация полей
+            let invalidFields = [];
+            if (!nameInput.value.trim()) invalidFields.push('Name');
+            if (!emailInput.value.trim() || !emailInput.validity.valid) invalidFields.push('Email');
+            if (!messageInput.value.trim() || messageInput.value.trim().length < 7) invalidFields.push('Message');
+            if (!offerInput.checked) invalidFields.push('Terms and Conditions');
+
+            if (invalidFields.length) {
+                if (errorEl) errorEl.textContent = 'Please fill in correctly: ' + invalidFields.join(', ') + '.';
+                return;
+            }
+            if (errorEl) errorEl.textContent = '';
+
+            // 3. Если капча уже была запрошена ранее, проверяем, решена ли она
+            if (this.captchaRequired && window.hcaptcha) {
+                const token = window.hcaptcha.getResponse(this.captchaWidgetId);
+                if (!token) {
+                    this.showCaptchaNote('Please complete the captcha.');
+                    return;
+                }
+                this.submitFormData(token);
+            } else {
+                // Первая попытка отправки без токена капчи
+                this.submitFormData(null);
+            }
+        });
+    }
+
+    submitFormData(captchaToken) {
+        const nameInput = this.shadowRoot.querySelector('#name');
+        const emailInput = this.shadowRoot.querySelector('#email');
+        const messageInput = this.shadowRoot.querySelector('#message');
+        const honeypotInput = this.shadowRoot.querySelector('#company-url');
+        const submitBtn = this.shadowRoot.querySelector('#contact-button');
+        const errorEl = this.shadowRoot.querySelector('.form-error');
+
+        const gclid = localStorage.getItem('mraid_gclid') || '';
+        const planTitle = this.currentPlan ? this.currentPlan.title : '';
+        
+        const params = new URLSearchParams();
+        params.append('name', nameInput.value.trim());
+        params.append('email', emailInput.value.trim());
+        params.append('message', messageInput.value.trim());
+        params.append('company_url', honeypotInput ? honeypotInput.value : '');
+        params.append('gclid', gclid);
+        params.append('source', window.location.hostname);
+        params.append('v', '2');
+        if (planTitle) params.append('plan', planTitle);
+        
+        // Если есть токен капчи, добавляем его в запрос
+        if (captchaToken) {
+            params.append('hcaptcha', captchaToken);
+        }
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('POST', 'https://dashboard.mraid.io/contact', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+
+        xhr.onreadystatechange = () => {
+            if (xhr.readyState !== 4) return;
+
+            if (xhr.status === 200) {
+                this.showThanks(this.shadowRoot.querySelector('#contactForm'));
+            } else if (xhr.status === 428 || (xhr.responseText && xhr.responseText.includes('captcha_required'))) {
+                // Сервер требует капчу
+                this.captchaRequired = true;
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+                this.showCaptchaNote('Please confirm you are not a robot.');
                 
-                const formData = new FormData(form);
-                const data = {
-                    name: formData.get('name'),
-                    company: formData.get('company'),
-                    email: formData.get('email'),
-                    message: formData.get('message'),
-                    // Отправляем только если план был выбран
-                    selectedPackage: this.currentPlan || null 
-                };
-                
-                console.log('Form data to send:', data);
-                
-                localStorage.removeItem('selectedPlan');
-                alert('Thank you! We will contact you within 24 hours.');
-                form.reset();
-                
-                this.currentPlan = null;
-                this.render();
+                this.loadHcaptcha().then(() => {
+                    this.renderCaptcha();
+                }).catch(() => {
+                    this.showCaptchaNote('Captcha failed to load. Please reload the page or write to sales@mraid.io.');
+                });
+            } else if (xhr.status === 400) {
+                // Ошибка проверки капчи
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+                if (window.hcaptcha && this.captchaWidgetId !== null) {
+                    window.hcaptcha.reset(this.captchaWidgetId);
+                }
+                this.showCaptchaNote('Captcha check failed, please try again.');
+            } else {
+                // Другие ошибки сервера
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Send Message';
+                if (errorEl) errorEl.textContent = 'Something went wrong. Please try again or write to sales@mraid.io.';
+            }
+        };
+
+        xhr.onerror = () => {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Send Message';
+            if (errorEl) errorEl.textContent = 'Connection error. Please check your internet and try again.';
+        };
+
+        xhr.send(params.toString());
+    }
+
+    // Динамическая загрузка скрипта hCaptcha
+    loadHcaptcha() {
+        if (window.hcaptcha) return Promise.resolve();
+        if (this.hcaptchaLoading) return this.hcaptchaLoading;
+        
+        this.hcaptchaLoading = new Promise((resolve, reject) => {
+            const s = document.createElement('script');
+            s.src = 'https://js.hcaptcha.com/1/api.js?render=explicit';
+            s.async = true;
+            s.onload = () => resolve();
+            s.onerror = () => {
+                this.hcaptchaLoading = null;
+                reject(new Error('hcaptcha load failed'));
+            };
+            document.head.appendChild(s);
+        });
+        return this.hcaptchaLoading;
+    }
+
+    // Отрисовка виджета капчи
+    renderCaptcha() {
+        const container = this.shadowRoot.getElementById('contact-captcha');
+        if (container) container.style.display = 'block';
+
+        if (!window.hcaptcha) {
+            this.showCaptchaNote('Captcha failed to load. Please reload the page.');
+            return;
+        }
+
+        if (this.captchaWidgetId === null) {
+            // Sitekey взят из твоего оригинального main.js
+            this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
+                sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
+                callback: 'mraidCaptchaSolved', // Глобальная функция, которую мы объявили в connectedCallback
+                'expired-callback': () => {
+                    this.showCaptchaNote('Captcha has expired, please confirm it again.');
+                },
+                'error-callback': () => {
+                    this.captchaErrorCount++;
+                    if (window.hcaptcha && this.captchaWidgetId !== null) {
+                        window.hcaptcha.reset(this.captchaWidgetId);
+                    }
+                    if (this.captchaErrorCount >= 2) {
+                        this.showCaptchaNote('Captcha failed to load. Please reload the page or write to sales@mraid.io.');
+                    }
+                }
             });
         }
+    }
+
+    showCaptchaNote(html) {
+        const noteEl = this.shadowRoot.querySelector('.captcha-note');
+        if (noteEl) noteEl.innerHTML = html;
+    }
+
+    showThanks(form) {
+        form.style.display = 'none';
+        const thanksMsg = document.createElement('div');
+        thanksMsg.className = 'form-thanks';
+        thanksMsg.innerHTML = '<p>Thanks! Your message has been submitted.<br>We will contact you within 24 hours.</p>';
+        form.parentElement.appendChild(thanksMsg);
+        
+        localStorage.removeItem('selectedPlan');
+        this.currentPlan = null;
+        
+        // Сброс состояния капчи для возможных будущих использований
+        this.captchaRequired = false;
+        this.captchaWidgetId = null;
     }
 }
 

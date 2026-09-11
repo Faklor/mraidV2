@@ -56,6 +56,36 @@
     </script>
     <!-- SEO -->
 
+    <!-- GOOGLE ANALYTICS 4 (GA4) -->
+    <!-- Google Consent Mode & CookieYes (ОБЯЗАТЕЛЬНО для GDPR) -->
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('consent', 'default', {
+            'ad_storage': 'denied',
+            'ad_user_data': 'denied',
+            'ad_personalization': 'denied',
+            'analytics_storage': 'denied',
+            'functionality_storage': 'denied',
+            'personalization_storage': 'denied',
+            'security_storage': 'granted',
+            'wait_for_update': 2000
+        });
+        gtag('set', 'ads_data_redaction', true);
+        gtag('set', 'url_passthrough', true);
+    </script>
+
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-743871971"></script>
+    <script>
+        gtag('js', new Date());
+        gtag('config', 'AW-743871971', {'allow_enhanced_conversions': true});
+        gtag('config', 'G-HQZBPSYH3C');
+    </script>
+
+    <!-- CookieYes Banner -->
+    <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/9a4978d95b4e3ca608b3bf23/script.js" defer></script>
+
    
     
 </head>
@@ -209,6 +239,39 @@
                     mainContent.classList.add('is-visible');
                 });
             }
+        });
+    </script>
+
+    <script>
+        
+        function trackEvent(name, params) {
+            if (typeof window.gtag === 'function') {
+                window.gtag('event', name, params || {});
+            }
+        }
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const sections = document.querySelectorAll('.landing-section');
+            const seenSections = new Set();
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting && !seenSections.has(entry.target.id)) {
+                        seenSections.add(entry.target.id);
+                        trackEvent('section_view', { section: entry.target.id });
+                        
+                        
+                        if (entry.target.id === 'contact') {
+                            trackEvent('form_view');
+                        }
+                    }
+                });
+            }, { threshold: 0.25 }); 
+
+            sections.forEach(section => {
+                if (section.id) observer.observe(section);
+            });
         });
     </script>
     
