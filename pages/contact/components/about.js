@@ -401,7 +401,8 @@ class AboutContact extends HTMLElement {
         try {
             console.log('[hCaptcha] Рендерим виджет в модальном окне...');
             this.captchaWidgetId = window.hcaptcha.render(container, {
-                sitekey: '7520fd58-5574-45a4-9246-4da25390e316',
+                //sitekey: '7520fd58-5574-45a4-9246-4da25390e316', 
+                sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa', //mraid
                 callback: this.onCaptchaSolved,
                 'expired-callback': this.onCaptchaExpired,
                 'error-callback': this.onCaptchaError,

@@ -11,10 +11,13 @@ a:not(.nav-cta-btn) {
   font-weight: 600;
   font-family: system-ui, -apple-system, sans-serif;
   font-size: 0.95rem;
-  position: relative;
+  position: relative; /* ВАЖНО: для позиционирования бейджа */
   padding: 8px 0;
   transition: color 0.3s ease;
   cursor: pointer;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
 }
 
 a:not(.nav-cta-btn):hover {
@@ -46,6 +49,58 @@ a:not(.nav-cta-btn).active::after {
   border-radius: 2px;
 }
 
+/* === БЕЙДЖ-СЧЕТЧИК (как уведомление) === */
+.nav-count {
+  position: absolute;
+  top: -8px;
+  right: -28px;
+  background-color: #FF0036;
+  color: #ffffff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 10px;
+  min-width: 18px;
+  text-align: center;
+  line-height: 1.2;
+  
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  transform: scale(0);
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Показываем бейдж когда есть значение */
+.nav-count.visible {
+  transform: scale(1);
+  opacity: 1;
+}
+
+/* Анимация появления */
+.nav-count.visible {
+  animation: badgePop 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+@keyframes badgePop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* При наведении на ссылку бейдж тоже подсвечивается */
+a:not(.nav-cta-btn):hover .nav-count.visible,
+a:not(.nav-cta-btn).active .nav-count.visible {
+  
+}
+
 .nav-cta-btn {
     display: inline-flex;
     align-items: center;
@@ -58,8 +113,6 @@ a:not(.nav-cta-btn).active::after {
     font-weight: 600;
     border-radius: 8px;
     white-space: nowrap;
-    
-    /* ВАЖНО: Свойства для плавной анимации */
     transition: opacity 0.4s ease, transform 0.4s ease, visibility 0.4s ease, background-color 0.2s;
     opacity: 1;
     visibility: visible;
@@ -71,17 +124,15 @@ a:not(.nav-cta-btn).active::after {
     transform: translateY(-2px);
 }
 
-/* === СОСТОЯНИЕ СКРЫТИЯ (ПЛАВНОЕ) === */
 .nav-cta-btn.is-hidden {
     opacity: 0;
     visibility: hidden;
-    transform: translateY(-10px); /* Легкий сдвиг вверх при исчезновении */
-    pointer-events: none; /* Чтобы скрытая кнопка не перехватывала клики */
+    transform: translateY(-10px);
+    pointer-events: none;
 }
 
-/* Стили для SVG внутри кнопки */
 .nav-cta-btn svg {
-  flex-shrink: 0; /* Запрещаем иконке сжиматься */
+  flex-shrink: 0;
   width: 21px;
   height: 15px;
 }
@@ -93,12 +144,11 @@ a:not(.nav-cta-btn).active::after {
   stroke-linejoin: round;
 }
 
-/* Скрываем гамбургер на десктопе */
 .hamburger {
   display: none;
 }
 
-/* === МОБИЛЬНЫЕ СТИЛИ (до 768px) === */
+/* === МОБИЛЬНЫЕ СТИЛИ (до 1200px) === */
 @media (max-width: 1200px) {
   .hamburger {
     display: flex;
@@ -163,7 +213,34 @@ a:not(.nav-cta-btn).active::after {
     color: #FF0036;
   }
 
-  /* Кнопка CTA внутри мобильного меню (чуть крупнее для пальца) */
+  /* Бейдж на мобильном — крупнее и правее */
+  .nav-count {
+    top: 50%;
+    right: -36px;
+    transform: translateY(-50%) scale(0);
+    font-size: 0.85rem;
+    padding: 3px 8px;
+    min-width: 22px;
+  }
+
+  .nav-count.visible {
+    transform: translateY(-50%) scale(1);
+  }
+
+  @keyframes badgePop {
+    0% {
+      transform: translateY(-50%) scale(0);
+      opacity: 0;
+    }
+    50% {
+      transform: translateY(-50%) scale(1.2);
+    }
+    100% {
+      transform: translateY(-50%) scale(1);
+      opacity: 1;
+    }
+  }
+
   .nav-cta-btn {
     margin-top: 20px;
     padding: 16px 32px;

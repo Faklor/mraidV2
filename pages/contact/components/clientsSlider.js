@@ -3,55 +3,72 @@ class ClientsSlider extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         this.currentSlide = 0;
-        this.autoPlayInterval = null;
     }
 
     connectedCallback() {
-        
         const testimonials = [
             {
-                text: "Thanks for your help! I've got a chance to check it and thank you for updating a lot of things the way we wanted.",
+                text: "Oh my word! I loved that. You guys did a spectacular job! Round 3 is genuinely scary haha.",
+                name: '',
+                position: '',
+                logo: 'assets/img/clients/venatus.png'
+            },
+            {
+                text: "Thanks for your help :raised_hands: I've got a chance to check it and thank you for updating a lot of things the way we wanted.",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/yallaplay.png'
             },
             {
-                text: "Thanks for this. We're now making a few variations. Overall this video looks great. We would like to use this process going forward.",
+                text: "Thanks for this. We're now making a few variations of the 'Keep the cameras on' version. Overall this video looks great. If you have availability to produce more briefs, we would like to use this process going forward.",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/fusebox.png'
             },
             {
                 text: "Thank you for your effort. It's turned out to be a really nice playable. The assets are clear, the movement and gameplay are good.",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/yallaplay.png'
             },
             {
                 text: "Looks great and the client loves it, so thank you for that.",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/venatus.png'
             },
             {
-                text: "First of all thanks for the storyboard, it's really good for understanding the flow.",
+                text: "First of all thanks for the storyboard, it's really good for understanding the flow",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/yallaplay.png'
             },
             {
-                text: "Thank you very much. We can proceed with the builds now. I want to keep working with you since we've already set the core mechanics.",
+                text: "Thank you very much. You're right, I'll make sure the briefs are clearer in the future. We can proceed with the builds now. Also, I want to keep working with you since we've already set the core mechanics. :) Would it be possible to keep the core mechanics in your records so we can directly build different concepts using the same core?",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/tale-monster.png'
             },
             {
                 text: "Thanks for the version! It's already really fun to play!",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/kefir.png'
             },
             {
                 text: "That's great. The animations add a lot! Nice work! Approved.",
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/game-story.png'
-            }
+            },
+            
+
+            
+            
         ];
 
         this.testimonials = testimonials;
         this.renderSlider();
-    }
-
-    disconnectedCallback() {
-       
-        if (this.autoPlayInterval) {
-            clearInterval(this.autoPlayInterval);
-        }
     }
 
     renderSlider() {
@@ -76,11 +93,15 @@ class ClientsSlider extends HTMLElement {
                                         <div class="quote-icon">
                                             <img src="assets/img/about/clients-icon.png" alt="Quote">
                                         </div>
-                                        <p class="testimonial-text">"${testimonial.text}"</p>
+                                        <p class="testimonial-text">${testimonial.text}</p>
                                     </div>
                                     <div class="testimonial-author">
+                                        <div class="author-info">
+                                            <div class="author-name">${testimonial.name}</div>
+                                            <div class="author-position">${testimonial.position}</div>
+                                        </div>
                                         <div class="author-logo">
-                                            <img src="${testimonial.logo}" alt="Client Logo">
+                                            <img src="${testimonial.logo}" alt="${testimonial.name}">
                                         </div>
                                     </div>
                                 </div>
@@ -122,49 +143,44 @@ class ClientsSlider extends HTMLElement {
                 dot.classList.toggle('active', index === this.currentSlide);
             });
 
-            if (track && cards[0]) {
-                const cardWidth = cards[0].offsetWidth;
-                const gap = 24; 
+            // Сдвигаем трек
+            if (track) {
+                const cardWidth = cards[0]?.offsetWidth || 0;
+                const gap = 24;
                 track.style.transform = `translateX(-${this.currentSlide * (cardWidth + gap)}px)`;
             }
         };
 
-        
         prevBtn?.addEventListener('click', () => {
-            this.currentSlide = this.currentSlide > 0 ? this.currentSlide - 1 : this.testimonials.length - 1;
-            updateSlider();
-            this.resetAutoPlay(updateSlider);
+            if (this.currentSlide > 0) {
+                this.currentSlide--;
+                updateSlider();
+            }
         });
 
         nextBtn?.addEventListener('click', () => {
-            this.currentSlide = this.currentSlide < this.testimonials.length - 1 ? this.currentSlide + 1 : 0;
-            updateSlider();
-            this.resetAutoPlay(updateSlider);
+            if (this.currentSlide < this.testimonials.length - 1) {
+                this.currentSlide++;
+                updateSlider();
+            }
         });
 
         dots.forEach((dot) => {
             dot.addEventListener('click', () => {
                 this.currentSlide = parseInt(dot.dataset.index);
                 updateSlider();
-                this.resetAutoPlay(updateSlider);
             });
         });
 
-        this.startAutoPlay(updateSlider);
-    }
-
-    startAutoPlay(updateSlider) {
-        this.autoPlayInterval = setInterval(() => {
-            this.currentSlide = this.currentSlide < this.testimonials.length - 1 ? this.currentSlide + 1 : 0;
+        // Автопрокрутка
+        setInterval(() => {
+            if (this.currentSlide < this.testimonials.length - 1) {
+                this.currentSlide++;
+            } else {
+                this.currentSlide = 0;
+            }
             updateSlider();
-        }, 6000); 
-    }
-
-    resetAutoPlay(updateSlider) {
-        if (this.autoPlayInterval) {
-            clearInterval(this.autoPlayInterval);
-        }
-        this.startAutoPlay(updateSlider);
+        }, 10000);
     }
 }
 

@@ -5,6 +5,39 @@ class NavBar extends HTMLElement {
     }
 
     connectedCallback() {
+        this.renderBase();
+
+        // Слушаем событие от PortfolioSlider с общим количеством проектов
+        window.addEventListener('portfolio-data-loaded', (e) => {
+            this.updatePortfolioCount(e.detail.count);
+        });
+
+        const hamburger = this.shadowRoot.querySelector('.hamburger');
+        hamburger.addEventListener('click', () => {
+            this.classList.toggle('menu-open');
+        });
+
+        const nav = this.shadowRoot.querySelector('nav');
+        nav.addEventListener('click', (e) => {
+            const targetLink = e.target.closest('a');
+            if (targetLink) {
+                this.classList.remove('menu-open');
+            }
+        });
+
+        this.updateCTAVisibility();
+        window.addEventListener('hashchange', () => {
+            this.updateCTAVisibility();
+        });
+
+        this.setupScrollSpy();
+    }
+
+    disconnectedCallback() {
+        window.removeEventListener('portfolio-data-loaded', this.updatePortfolioCount);
+    }
+
+    renderBase() {
         const linksData = JSON.parse(this.getAttribute('links') || '[]');
         const ctaText = this.getAttribute('cta-text') || 'Let\'s talk';
         const ctaHref = this.getAttribute('cta-href') || '#contact';
@@ -19,9 +52,16 @@ class NavBar extends HTMLElement {
             </button>
 
             <nav>
-                ${linksData.map(link => `
-                    <a href="${link.href}" class="nav-link">${link.text}</a>
-                `).join('')}
+                ${linksData.map(link => {
+                    const isPortfolio = link.href === '#portfolio' || link.text.toLowerCase().includes('portfolio');
+                    
+                    return `
+                        <a href="${link.href}" class="nav-link">
+                            ${link.text}
+                            ${isPortfolio ? '<span class="nav-count"></span>' : ''}
+                        </a>
+                    `;
+                }).join('')}
                 
                 <a href="${ctaHref}" class="nav-cta-btn">
                     <span>${ctaText}</span>
@@ -31,34 +71,20 @@ class NavBar extends HTMLElement {
                 </a>
             </nav>
         `;
-
-        const hamburger = this.shadowRoot.querySelector('.hamburger');
-        hamburger.addEventListener('click', () => {
-            this.classList.toggle('menu-open');
-        });
-
-        const nav = this.shadowRoot.querySelector('nav');
-        nav.addEventListener('click', (e) => {
-            const targetLink = e.target.closest('a');
-            if (targetLink) {
-                this.classList.remove('menu-open');
-                // Плавный скролл обрабатывается CSS (scroll-behavior: smooth)
-            }
-        });
-
-        // Первоначальная проверка видимости кнопки
-        this.updateCTAVisibility();
-
-        // Следим за изменением хеша в URL (кнопки назад/вперед или ручной ввод)
-        window.addEventListener('hashchange', () => {
-            this.updateCTAVisibility();
-        });
-
-        // Запускаем надежный Scroll Spy
-        this.setupScrollSpy();
     }
 
-    // === ПЛАВНОЕ СКРЫТИЕ/ПОКАЗ КНОПКИ ===
+    updatePortfolioCount(count) {
+        window.PORTFOLIO_TOTAL_COUNT = count;
+        const countEl = this.shadowRoot.querySelector('.nav-count');
+        if (countEl && count > 0) {
+            countEl.textContent = count;
+            // Добавляем класс visible с небольшой задержкой для анимации
+            setTimeout(() => {
+                countEl.classList.add('visible');
+            }, 100);
+        }
+    }
+
     updateCTAVisibility() {
         const ctaBtn = this.shadowRoot.querySelector('.nav-cta-btn');
         if (!ctaBtn) return;
@@ -73,16 +99,12 @@ class NavBar extends HTMLElement {
         }
     }
 
-    // === НАДЕЖНЫЙ SCROLL SPY ===
     setupScrollSpy() {
         const sections = document.querySelectorAll('.landing-section');
         const navLinks = this.shadowRoot.querySelectorAll('.nav-link');
         const ctaBtn = this.shadowRoot.querySelector('.nav-cta-btn');
         const ctaHref = ctaBtn ? ctaBtn.getAttribute('href') : '#contact';
 
-        // УЛУЧШЕННЫЙ rootMargin: 
-        // -80px сверху (чтобы игнорировать фиксированную шапку)
-        // -60% снизу (чтобы секция считалась активной, когда она в верхней части экрана)
         const observerOptions = {
             root: null,
             rootMargin: '-80px 0px -60% 0px',
@@ -90,13 +112,11 @@ class NavBar extends HTMLElement {
         };
 
         const observer = new IntersectionObserver((entries) => {
-            // Находим секцию, которая сейчас пересекает нашу "зону"
             const activeEntry = entries.find(entry => entry.isIntersecting);
 
             if (activeEntry) {
                 const activeId = activeEntry.target.getAttribute('id');
 
-                // 1. Обновляем активные ссылки в меню
                 navLinks.forEach(link => {
                     link.classList.remove('active');
                     if (link.getAttribute('href') === `#${activeId}`) {
@@ -104,7 +124,6 @@ class NavBar extends HTMLElement {
                     }
                 });
 
-                // 2. Плавно скрываем/показываем кнопку CTA при скролле
                 if (ctaBtn) {
                     if (`#${activeId}` === ctaHref) {
                         ctaBtn.classList.add('is-hidden');
