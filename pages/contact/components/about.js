@@ -324,27 +324,46 @@ class AboutContact extends HTMLElement {
     }
 
     renderCaptcha() {
-        const container = this.shadowRoot.getElementById('contact-captcha');
-        if (container) container.style.display = 'block';
+        // Находим глобальный контейнер
+        const container = document.getElementById('hcaptcha-global-container');
+        
+        if (!container) {
+            console.error('[hCaptcha] Глобальный контейнер не найден!');
+            return;
+        }
+
+        // Показываем контейнер и позиционируем его ВНУТРИ нашей формы
+        const formWrapper = this.shadowRoot.querySelector('.form-wrapper');
+        if (formWrapper) {
+            const rect = formWrapper.getBoundingClientRect();
+            container.style.position = 'fixed';
+            container.style.left = rect.left + 30 + 'px'; // Отступ как в форме
+            container.style.top = rect.top + 350 + 'px'; // Позиция после textarea
+            container.style.width = rect.width - 60 + 'px';
+            container.style.zIndex = '1000';
+            container.style.display = 'block';
+            container.style.background = '#111114';
+            container.style.padding = '15px';
+            container.style.borderRadius = '8px';
+            container.style.border = '1px solid rgba(255, 0, 54, 0.3)';
+        }
 
         if (!window.hcaptcha) {
-            this.showCaptchaNote('Captcha script failed to load. Please reload the page.');
+            this.showCaptchaNote('Captcha script failed to load.');
             return;
         }
 
         if (this.captchaWidgetId === null) {
             try {
-                // Используем привязанные методы класса вместо строк (как в оригинальном main.js)
-                this.captchaWidgetId = window.hcaptcha.render('contact-captcha', {
-                    //sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
-                    sitekey: '7520fd58-5574-45a4-9246-4da25390e316',//myGmail
+                this.captchaWidgetId = window.hcaptcha.render(container, {
+                    sitekey: '7520fd58-5574-45a4-9246-4da25390e316',
                     callback: this.onCaptchaSolved,
                     'expired-callback': this.onCaptchaExpired,
                     'error-callback': this.onCaptchaError
                 });
+                console.log('[hCaptcha] ✅ Widget создан!');
             } catch (e) {
-                console.error('[hCaptcha] Exception during render:', e);
-                this.showCaptchaNote('Could not render captcha. Check console for details.');
+                console.error('[hCaptcha] Render error:', e);
             }
         }
     }
@@ -379,6 +398,13 @@ class AboutContact extends HTMLElement {
     }
 
     showThanks(form) {
+        
+        const captchaContainer = document.getElementById('hcaptcha-global-container');
+        if (captchaContainer) {
+            captchaContainer.style.display = 'none';
+            captchaContainer.innerHTML = ''; 
+        }
+        
         form.style.display = 'none';
         const thanksMsg = document.createElement('div');
         thanksMsg.className = 'form-thanks';
