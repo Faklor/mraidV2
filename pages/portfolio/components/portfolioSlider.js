@@ -40,18 +40,12 @@ class PortfolioSlider extends HTMLElement {
 
             // 2. ИСПОЛЬЗУЕМ flatMap() ЧТОБЫ РАЗВЕРНУТЬ МАССИВЫ И НАЙТИ УНИКАЛЬНЫЕ ЗНАЧЕНИЯ
             this.uniqueCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
-            this.uniqueMechanics = [...new Set(this.allProjects.flatMap(p => p.mechanics))].sort();
-            //this.uniqueDimensions = [...new Set(this.allProjects.map(p => p.dimension))].sort();
-            const allDimensions = [...new Set(this.allProjects.map(p => p.dimension))];
-            this.uniqueDimensions = ['2d',  ...allDimensions.filter(d => d !== '2d' && d !== '3d'),'3d'];
-
-            // И установи 2d как дефолтное значение:
-            this.currentDimension = '2d'; // Всегда 2D по умолчанию
 
             // Устанавливаем фильтры по умолчанию
             this.currentCategory = this.uniqueCategories[0] || '';
-            this.currentMechanic = this.uniqueMechanics[0] || '';
-            this.currentDimension = this.uniqueDimensions[0] || '';
+            
+            // === НОВОЕ: Вычисляем механики и размеры ТОЛЬКО для выбранной категории ===
+            this.updateAvailableFilters();
 
             // Фильтруем массив по дефолтным значениям
             this.applyFilters();
@@ -171,9 +165,9 @@ class PortfolioSlider extends HTMLElement {
                                 <img src="assets/img/portfolio/mechanics.png" alt="Mechanics" class="filter-icon">
                                 Mechanics
                             </span>
-                            <div class="filter-buttons">
+                            <div class="filter-buttons-mechanics">
                                 ${this.uniqueMechanics.map(mech => `
-                                    <button class="filter-btn ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
+                                    <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
                                         ${this.formatLabel(mech)}
                                     </button>
                                 `).join('')}
@@ -184,7 +178,7 @@ class PortfolioSlider extends HTMLElement {
                             <span class="filter-label">&ensp;</span>
                             <div class="filter-buttons dimension-buttons">
                                 ${this.uniqueDimensions.map(dim => `
-                                    <button class="filter-btn dimension-btn ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
+                                    <button class="filter-btn-mechanics dimension-btn ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
                                         ${dim.toUpperCase()}
                                     </button>
                                 `).join('')}
@@ -224,35 +218,56 @@ class PortfolioSlider extends HTMLElement {
     }
 
     initEvents() {
-        this.shadowRoot.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                if (e.target.classList.contains('active')) return;
-                const type = e.target.dataset.type;
-                const value = e.target.dataset.value;
-                const group = e.target.closest('.filter-buttons');
+        // === ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ДЛЯ ВСЕХ КНОПОК ФИЛЬТРОВ ===
+        const filterSection = this.shadowRoot.querySelector('.filter-section');
+        if (filterSection) {
+            filterSection.addEventListener('click', (e) => {
+                const btn = e.target.closest('.filter-btn, .filter-btn-mechanics');
+                if (!btn || btn.classList.contains('active')) return;
                 
-                group.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                e.target.classList.add('active');
+                const type = btn.dataset.type;
+                const value = btn.dataset.value;
+                const group = btn.closest('.filter-buttons, .filter-buttons-mechanics');
+                
+                group.querySelectorAll('.filter-btn, .filter-btn-mechanics').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
 
-                if (type === 'category') this.currentCategory = value;
-                if (type === 'mechanic') this.currentMechanic = value;
-                if (type === 'dimension') this.currentDimension = value;
+                if (type === 'category') {
+                    this.currentCategory = value;
+                    this.updateAvailableFilters('category'); // Пересчитываем всё для новой категории
+                    this.updateFilterButtons();
+                } 
+                else if (type === 'mechanic') {
+                    this.currentMechanic = value;
+                    this.updateAvailableFilters('mechanic'); // Пересчитывает типы, чтобы исключить пустоту
+                    this.updateFilterButtons();
+                } 
+                else if (type === 'dimension') {
+                    this.currentDimension = value;
+                    this.updateAvailableFilters('dimension'); // Пересчитывает механики, чтобы исключить пустоту
+                    this.updateFilterButtons();
+                }
 
                 this.applyFilters();
             });
-        });
+        }
 
+        // === ОСТАЛЬНЫЕ СОБЫТИЯ (слайдер, точки, ресайз) ===
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
 
-        prevBtn.addEventListener('click', () => {
-            if (this.currentIndex > 0) { this.currentIndex--; this.updateSlider(); }
-        });
+        if (prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                if (this.currentIndex > 0) { this.currentIndex--; this.updateSlider(); }
+            });
+        }
 
-        nextBtn.addEventListener('click', () => {
-            const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
-            if (this.currentIndex < maxIndex) { this.currentIndex++; this.updateSlider(); }
-        });
+        if (nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
+                if (this.currentIndex < maxIndex) { this.currentIndex++; this.updateSlider(); }
+            });
+        }
 
         this.shadowRoot.addEventListener('click', (e) => {
             if (e.target.classList.contains('dot')) {
@@ -316,6 +331,66 @@ class PortfolioSlider extends HTMLElement {
         if (nextBtn) {
             nextBtn.style.opacity = this.currentIndex >= maxIndex ? '0.3' : '1';
             nextBtn.style.pointerEvents = this.currentIndex >= maxIndex ? 'none' : 'auto';
+        }
+    }
+
+    // === ОБНОВЛЕНИЕ ДОСТУПНЫХ ФИЛЬТРОВ НА ОСНОВЕ КАТЕГОРИИ ===
+    updateAvailableFilters(changedType = 'category') {
+        
+        let validProjects = this.allProjects.filter(p => 
+            p.categories.includes(this.currentCategory)
+        );
+
+        
+        if (changedType === 'mechanic') {
+            validProjects = validProjects.filter(p => p.mechanics.includes(this.currentMechanic));
+        }
+
+        
+        const availDims = [...new Set(validProjects.map(p => p.dimension))];
+        this.uniqueDimensions = ['2d', ...availDims.filter(d => d !== '2d' && d !== '3d'), '3d'].filter(d => availDims.includes(d));
+
+       
+        if (!this.uniqueDimensions.includes(this.currentDimension)) {
+            this.currentDimension = this.uniqueDimensions[0] || '';
+        }
+
+       
+        validProjects = this.allProjects.filter(p => 
+            p.categories.includes(this.currentCategory) && 
+            p.dimension === this.currentDimension
+        );
+        this.uniqueMechanics = [...new Set(validProjects.flatMap(p => p.mechanics))].sort();
+
+       
+        if (changedType === 'category') {
+            this.currentMechanic = this.uniqueMechanics[0] || '';
+        } 
+        
+        else if (!this.uniqueMechanics.includes(this.currentMechanic)) {
+            this.currentMechanic = this.uniqueMechanics[0] || '';
+        }
+    }
+
+    // === ПЕРЕРИСОВКА КНОПОК МЕХАНИК И DIMENSIONS В DOM ===
+    updateFilterButtons() {
+        const mechContainer = this.shadowRoot.querySelector('.mechanics-group .filter-buttons-mechanics');
+        const dimContainer = this.shadowRoot.querySelector('.dimension-group .dimension-buttons');
+        
+        if (mechContainer) {
+            mechContainer.innerHTML = this.uniqueMechanics.map(mech => `
+                <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
+                    ${this.formatLabel(mech)}
+                </button>
+            `).join('');
+        }
+        
+        if (dimContainer) {
+            dimContainer.innerHTML = this.uniqueDimensions.map(dim => `
+                <button class="filter-btn-mechanics dimension-btn ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
+                    ${dim.toUpperCase()}
+                </button>
+            `).join('');
         }
     }
 }
