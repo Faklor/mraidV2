@@ -5,7 +5,6 @@ class PortfolioSlider extends HTMLElement {
         this.currentIndex = 0;
         this.cardsPerView = 6;
         
-        // Изначально данные пустые, они загрузятся асинхронно
         this.allProjects = [];
         this.uniqueCategories = [];
         this.uniqueMechanics = [];
@@ -18,10 +17,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     async connectedCallback() {
-        // 1. Сначала загружаем данные с сервера
         await this.fetchPortfolioData();
-        
-        // 2. Только после загрузки рендерим слайдер
         this.renderSlider();
     }
 
@@ -32,34 +28,35 @@ class PortfolioSlider extends HTMLElement {
             
             const data = await response.json();
             
-            // Преобразуем данные из API в формат, который понимает наш слайдер
+            // 1. ХРАНИМ КАТЕГОРИИ И МЕХАНИКИ КАК МАССИВЫ
             this.allProjects = data.previews.map(item => ({
                 title: item.project || 'Unknown Project',
-                category: item.categories && item.categories.length > 0 ? item.categories.join(', ') : 'Other',
-                mechanic: item.genres && item.genres.length > 0 ? item.genres.join(', ') : 'Other',
-                dimension: item.formats && item.formats.length > 0 ? item.formats[0].toLowerCase() : '2d',
+                categories: (item.categories && item.categories.length > 0) ? item.categories : ['Other'],
+                mechanics: (item.genres && item.genres.length > 0) ? item.genres : ['Other'],
+                dimension: (item.formats && item.formats.length > 0) ? item.formats[0].toLowerCase() : '2d',
                 image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
                 link: item.url || '#'
             }));
 
-            // Динамическое извлечение уникальных значений для фильтров
-            this.uniqueCategories = [...new Set(this.allProjects.map(p => p.category))].sort();
-            this.uniqueMechanics = [...new Set(this.allProjects.map(p => p.mechanic))].sort();
-            this.uniqueDimensions = [...new Set(this.allProjects.map(p => p.dimension))].sort();
+            // 2. ИСПОЛЬЗУЕМ flatMap() ЧТОБЫ РАЗВЕРНУТЬ МАССИВЫ И НАЙТИ УНИКАЛЬНЫЕ ЗНАЧЕНИЯ
+            this.uniqueCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
+            this.uniqueMechanics = [...new Set(this.allProjects.flatMap(p => p.mechanics))].sort();
+            //this.uniqueDimensions = [...new Set(this.allProjects.map(p => p.dimension))].sort();
+            const allDimensions = [...new Set(this.allProjects.map(p => p.dimension))];
+            this.uniqueDimensions = ['2d',  ...allDimensions.filter(d => d !== '2d' && d !== '3d'),'3d'];
 
-            // Устанавливаем фильтры по умолчанию (первые из отсортированных списков)
+            // И установи 2d как дефолтное значение:
+            this.currentDimension = '2d'; // Всегда 2D по умолчанию
+
+            // Устанавливаем фильтры по умолчанию
             this.currentCategory = this.uniqueCategories[0] || '';
             this.currentMechanic = this.uniqueMechanics[0] || '';
             this.currentDimension = this.uniqueDimensions[0] || '';
 
             // Фильтруем массив по дефолтным значениям
-            this.filteredProjects = this.allProjects.filter(p => 
-                p.category === this.currentCategory &&
-                p.mechanic === this.currentMechanic &&
-                p.dimension === this.currentDimension
-            );
+            this.applyFilters();
 
-            // Сообщаем NavBar, что данные загружены и сколько всего проектов
+            // Сообщаем NavBar о количестве проектов
             window.PORTFOLIO_TOTAL_COUNT = this.allProjects.length;
             window.dispatchEvent(new CustomEvent('portfolio-data-loaded', { 
                 detail: { count: this.allProjects.length } 
@@ -67,7 +64,6 @@ class PortfolioSlider extends HTMLElement {
 
         } catch (error) {
             console.error('Failed to load portfolio data:', error);
-            // В случае ошибки покажем сообщение пользователю
             this.allProjects = [];
             this.filteredProjects = [];
         }
@@ -75,11 +71,14 @@ class PortfolioSlider extends HTMLElement {
 
     // === АНИМИРОВАННАЯ ФИЛЬТРАЦИЯ ===
     applyFilters() {
-        this.filteredProjects = this.allProjects.filter(p => 
-            p.category === this.currentCategory &&
-            p.mechanic === this.currentMechanic &&
-            p.dimension === this.currentDimension
-        );
+        // 3. ПРОВЕРЯЕМ ВХОЖДЕНИЕ (.includes) ВМЕСТО ПОЛНОГО СОВПАДЕНИЯ (===)
+        this.filteredProjects = this.allProjects.filter(p => {
+            const matchCategory = p.categories.includes(this.currentCategory);
+            const matchMechanic = p.mechanics.includes(this.currentMechanic);
+            const matchDimension = p.dimension === this.currentDimension;
+
+            return matchCategory && matchMechanic && matchDimension;
+        });
 
         const track = this.shadowRoot.querySelector('.slider-track');
         const cards = track ? track.querySelectorAll('.slider-card') : [];
@@ -126,7 +125,8 @@ class PortfolioSlider extends HTMLElement {
                 </div>
                 <div class="card-info">
                     <span class="card-title">${p.title}</span>
-                    <span class="card-category">${p.dimension.toUpperCase()} • ${this.formatLabel(p.mechanic)}</span>
+                    <!-- Показываем первую механику из массива для красоты на карточке -->
+                    <span class="card-category">${p.dimension.toUpperCase()} • ${this.formatLabel(p.mechanics[0])}</span>
                 </div>
             </div>
         `).join('');
@@ -139,7 +139,6 @@ class PortfolioSlider extends HTMLElement {
     }
 
     formatLabel(id) {
-        // Делаем первую букву заглавной, остальные строчные, заменяем дефисы на пробелы
         return id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
     }
 
