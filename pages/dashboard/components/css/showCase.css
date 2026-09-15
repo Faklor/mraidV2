@@ -171,11 +171,6 @@
     transition: all 0.3s ease;
 }
 
-.feature-card:hover {
-    background: rgba(255, 255, 255, 0.05);
-    border-color: rgba(255, 0, 54, 0.3);
-    transform: translateY(-3px);
-}
 
 .feature-icon {
     width: 36px;

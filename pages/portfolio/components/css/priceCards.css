@@ -185,6 +185,42 @@
     box-shadow: 0 5px 25px rgba(255, 0, 52, 0.6);
 }
 
+/* === ВЫБРАННАЯ КАРТОЧКА === */
+.price-card.selected-card {
+    border-color: #FF0036;
+    background: #1a1a1e;
+    box-shadow: 0 0 20px rgba(255, 0, 54, 0.1);
+}
+
+/* === КНОПКА "ВЫБРАНО" === */
+.selected-button {
+    width: 100%;
+    padding: 14px 24px;
+    background: #FF0036;
+    border: 2px solid #FF0036;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    cursor: default;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+/* Делаем галочку внутри кнопки "Selected" белой */
+.selected-button svg {
+    width: 20px;
+    height: 20px;
+    color: #ffffff; /* Использует currentColor из родителя */
+}
+
 /* === АДАПТАЦИЯ === */
 @media (max-width: 1440px) {
     .price-cards-row {

@@ -203,6 +203,10 @@ class AboutContact extends HTMLElement {
                 this.currentPlan = null;
                 localStorage.removeItem('selectedPlan');
                 this.render();
+                
+                // === ДОБАВЛЕННАЯ СТРОКА ===
+                // Уведомляем компонент PriceCards, что выбор был сброшен
+                window.dispatchEvent(new CustomEvent('planCleared', { bubbles: true, composed: true }));
             });
         }
     }

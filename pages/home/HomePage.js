@@ -3,7 +3,7 @@ class HomePage extends HTMLElement {
         super();
         this.attachShadow({ mode: 'open' });
         
-       this.networkSVG = `
+        this.networkSVG = `
 <svg width="1174" height="528" viewBox="0 0 1174 528" fill="none" xmlns="http://www.w3.org/2000/svg">
 <line x1="450.665" y1="344.371" x2="367.665" y2="269.371" stroke="white" />
 <line x1="450.739" y1="343.573" x2="558.739" y2="277.573" stroke="white"/>
@@ -258,8 +258,6 @@ class HomePage extends HTMLElement {
 <circle cx="456" cy="220" r="5" fill="#D9D9D9"/>
 <circle cx="199.5" cy="339.5" r="7.5" fill="#D9D9D9"/>
 </svg>
-
-
         `;
         
         this.canvas = null;
@@ -276,6 +274,7 @@ class HomePage extends HTMLElement {
         
         // Переменные для анимации
         this.time = 0;
+        this.timeSeconds = 0; // ВАЖНО: добавлено для новой анимации
         this.lastFrameTime = 0;
     }
 
@@ -308,7 +307,6 @@ class HomePage extends HTMLElement {
         this.parseSVGFromString();
         this.setNaturalSize();
         
-        // Запускаем цикл анимации
         this.lastFrameTime = performance.now();
         this.animate();
     }
@@ -353,7 +351,7 @@ class HomePage extends HTMLElement {
             });
         });
 
-        // 3. Парсим круги и добавляем ОДИН общий sizeFactor для синхронизации ядра и свечения
+        // 3. Парсим круги
         doc.querySelectorAll('circle').forEach(circle => {
             const cx = parseFloat(circle.getAttribute('cx'));
             const cy = parseFloat(circle.getAttribute('cy'));
@@ -366,14 +364,16 @@ class HomePage extends HTMLElement {
                     cy, 
                     r, 
                     fill,
-                    sizeFactor: 0.5 + Math.random(), // От 0.5 до 1.5 (большие и маленькие звезды)
-                    phase: Math.random() * Math.PI * 2, // Уникальная фаза для асинхронной пульсации
-                    speed: 0.5 + Math.random() * 1.5    // Уникальная скорость пульсации
+                    sizeFactor: 0.5 + Math.random(),
+                    phase: Math.random() * Math.PI * 2,
+                    speed: 0.5 + Math.random() * 1.5
                 });
             }
         });
 
-        // 4. Считаем degree
+        // 4. Считаем degree и создаем карту узлов для быстрого поиска
+        const nodeMap = new Map();
+        
         this.edges.forEach(edge => {
             const key1 = `${edge.x1},${edge.y1}`;
             const key2 = `${edge.x2},${edge.y2}`;
@@ -381,9 +381,29 @@ class HomePage extends HTMLElement {
             this.nodeDegree.set(key2, (this.nodeDegree.get(key2) || 0) + 1);
         });
 
-        this.nodes = Array.from(nodeSet).map(str => {
+        // 5. Создаем узлы с параметрами анимации из примера
+        this.nodes = Array.from(nodeSet).map((str, index) => {
             const [x, y] = str.split(',').map(Number);
-            return { x, y, degree: this.nodeDegree.get(str) || 0 };
+            nodeMap.set(str, index); // Сохраняем индекс узла
+            
+            return { 
+                x, 
+                y, 
+                degree: this.nodeDegree.get(str) || 0,
+                // Свойства для анимации "живой сетки"
+                ph: Math.random() * Math.PI * 2,
+                floatAmp: 4.5 + Math.random() * 16.5,
+                floatSpeed: 0.55 + Math.random() * 0.75,
+                floatPhase: Math.random() * Math.PI * 2,
+                floatDir: Math.random() < 0.5 ? -1 : 1,
+                hot: Math.random() < 0.3
+            };
+        });
+
+        // 6. Добавляем индексы узлов в edges, чтобы в animate быстро их находить
+        this.edges.forEach(edge => {
+            edge.nodeIndex1 = nodeMap.get(`${edge.x1},${edge.y1}`);
+            edge.nodeIndex2 = nodeMap.get(`${edge.x2},${edge.y2}`);
         });
     }
 
@@ -395,11 +415,11 @@ class HomePage extends HTMLElement {
     animate(timestamp = 0) {
         if (!this.ctx) return;
         
-        
         const rawDelta = (timestamp - this.lastFrameTime) / 1000;
         this.lastFrameTime = timestamp;
         const normalizedDelta = rawDelta / (1 / 60);
         this.time += normalizedDelta * 0.016;
+        this.timeSeconds += rawDelta; 
         
         const { ctx } = this;
         const width = this.canvas.width;
@@ -407,11 +427,13 @@ class HomePage extends HTMLElement {
 
         ctx.clearRect(0, 0, width, height);
 
-        // === 1. ЛИНИИ  ===
+        const H = height;
+        
         this.edges.forEach(edge => {
             const gradient = ctx.createLinearGradient(edge.x1, edge.y1, edge.x2, edge.y2);
             
             if (edge.isFade) {
+                // === СТАРАЯ ЛОГИКА ДЛЯ FADE (статичная) ===
                 if (edge.isReverse) {
                     gradient.addColorStop(0, 'rgba(13, 13, 15, 0)');
                     gradient.addColorStop(1, 'rgba(255, 26, 0, 0.8)');
@@ -419,59 +441,131 @@ class HomePage extends HTMLElement {
                     gradient.addColorStop(0, 'rgba(255, 26, 0, 0.8)');
                     gradient.addColorStop(1, 'rgba(13, 13, 15, 0)');
                 }
+                
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 1.5;
+                ctx.beginPath();
+                ctx.moveTo(edge.x1, edge.y1);
+                ctx.lineTo(edge.x2, edge.y2);
+                ctx.stroke();
+                
             } else {
+                // === СТАРАЯ ЛОГИКА ГРАДИЕНТА ===
                 gradient.addColorStop(0, 'rgba(255, 26, 0, 0.8)'); 
                 gradient.addColorStop(0.5, 'rgba(119, 0, 2, 0.6)'); 
                 gradient.addColorStop(1, 'rgba(255, 26, 0, 0.8)');
+                
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = 1.2;
+
+                // === НОВАЯ АНИМАЦИЯ (плавание и пульсация) ТОЛЬКО ЗДЕСЬ ===
+                const a = this.nodes[edge.nodeIndex1];
+                const b = this.nodes[edge.nodeIndex2];
+                
+                if (a && b) {
+                    const p = 0.5 + 0.5 * Math.sin(this.timeSeconds * 0.42 + (a.ph + b.ph) * 0.18);
+                    
+                    const perspectiveA = Math.max(0.18, Math.min(1, (a.y - H * 0.68) / (H * 0.72)));
+                    const perspectiveB = Math.max(0.18, Math.min(1, (b.y - H * 0.68) / (H * 0.72)));
+                    
+                    const la = Math.sin(this.timeSeconds * a.floatSpeed * a.floatDir + a.floatPhase) * a.floatAmp * perspectiveA;
+                    const lb = Math.sin(this.timeSeconds * b.floatSpeed * b.floatDir + b.floatPhase) * b.floatAmp * perspectiveB;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(a.x, a.y + la);
+                    ctx.lineTo(b.x, b.y + lb);
+                } else {
+                    // Фоллбек, если вдруг узел не найден
+                    ctx.beginPath();
+                    ctx.moveTo(edge.x1, edge.y1);
+                    ctx.lineTo(edge.x2, edge.y2);
+                }
+                
+                ctx.stroke();
             }
-            
-            ctx.strokeStyle = gradient;
-            ctx.lineWidth = 1.5;
-            
-          
-            ctx.setLineDash([100, 5]); 
-           
-            ctx.lineDashOffset = -this.time * 15; 
-
-            ctx.beginPath();
-            ctx.moveTo(edge.x1, edge.y1);
-            ctx.lineTo(edge.x2, edge.y2);
-            ctx.stroke();
-
-            
-            ctx.setLineDash([]);
         });
 
-        // === 2.ТОЧКИ  ===
+        // === 2. ТОЧКИ (Старая логика без изменений) ===
+        // this.circles.forEach(circle => {
+        //     const px = circle.cx;
+        //     const py = circle.cy;
+        //     const r = circle.r;
+        //     const sizeFactor = circle.sizeFactor || 1;
+            
+        //     const pulse = 0.8 + 1 * Math.sin(this.time * circle.speed + circle.phase);
+            
+        //     const glowRadius = r * 5 * sizeFactor;
+        //     const coreRadius = r * 0.6 * sizeFactor;
+
+        //     const outerGlow = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
+        //     outerGlow.addColorStop(0, `rgba(255, 26, 0, ${0.6 * pulse})`);
+        //     outerGlow.addColorStop(0.1, `rgba(255, 26, 0, ${0.3 * pulse})`);
+        //     outerGlow.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            
+        //     ctx.fillStyle = outerGlow;
+        //     ctx.beginPath();
+        //     ctx.arc(px, py, glowRadius, 0, Math.PI * 2);
+        //     ctx.fill();
+
+        //     const coreGlow = ctx.createRadialGradient(px, py, 0, px, py, coreRadius);
+        //     coreGlow.addColorStop(0, 'rgba(255, 255, 255, 1)');
+        //     coreGlow.addColorStop(0.5, 'rgba(255, 220, 230, 0.9)');
+        //     coreGlow.addColorStop(1, 'rgba(255, 200, 210, 0)');
+            
+        //     ctx.fillStyle = coreGlow;
+        //     ctx.beginPath();
+        //     ctx.arc(px, py, coreRadius, 0, Math.PI * 2);
+        //     ctx.fill();
+        // });
+
+               
         this.circles.forEach(circle => {
             const px = circle.cx;
             const py = circle.cy;
             const r = circle.r;
-            const sizeFactor = circle.sizeFactor || 1;
             
-            // Пульсация от 0.4 до 1.0 (только для красного свечения!)
-            const pulse = 0.8 + 1 * Math.sin(this.time * circle.speed + circle.phase);
+            // Пульация ТОЛЬКО для прозрачности
+            const pulse = 0.7 + 0.3 * Math.sin(this.time * circle.speed + circle.phase);
             
+            // === ЗАДАЕМ MIN И MAX РАЗМЕРЫ ===
+            const minRadius = 40;   // Минимальный размер точки
+            const maxRadius = 60;  // Максимальный размер точки
             
-            const glowRadius = r * 5 * sizeFactor;
-            const coreRadius = r * 0.6 * sizeFactor;
+            // sizeFactor от 0 до 1 для интерполяции между min и max
+            const sizeFactor = circle.sizeFactor || 0.5; // уже от 0.5 до 1.5, нормализуем
+            const normalizedFactor = (sizeFactor - 0.5) / 1.0; // теперь от 0 до 1
+            
+            // Вычисляем размеры в диапазоне min-max
+            const glowRadius = minRadius + (maxRadius - minRadius) * normalizedFactor;
+            const midRadius = glowRadius * 0.4;        // 40% от внешнего
+            const coreRadius = glowRadius * 0.15;      // 15% от внешнего
 
-            
+            // === ВНЕШНЕЕ СВЕЧЕНИЕ (мягкое) ===
             const outerGlow = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
-            outerGlow.addColorStop(0, `rgba(255, 26, 0, ${0.6 * pulse})`);
-            outerGlow.addColorStop(0.1, `rgba(255, 26, 0, ${0.3 * pulse})`);
-            outerGlow.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            outerGlow.addColorStop(0, `rgba(255, 26, 0, ${0.3 * pulse})`);
+            outerGlow.addColorStop(0.1, `rgba(255, 26, 0, ${0.1 * pulse})`);
+            outerGlow.addColorStop(1, 'rgba(255, 0, 47, 0)');
             
             ctx.fillStyle = outerGlow;
             ctx.beginPath();
             ctx.arc(px, py, glowRadius, 0, Math.PI * 2);
             ctx.fill();
 
-           
+            // === СРЕДНИЙ СЛОЙ ===
+            const midGlow = ctx.createRadialGradient(px, py, 0, px, py, midRadius);
+            midGlow.addColorStop(0, `rgba(255, 80, 80, ${0.4 * pulse})`);
+            midGlow.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            
+            ctx.fillStyle = midGlow;
+            ctx.beginPath();
+            ctx.arc(px, py, midRadius, 0, Math.PI * 2);
+            ctx.fill();
+
+            // === ЯДРО (белое с мягкими краями) ===
             const coreGlow = ctx.createRadialGradient(px, py, 0, px, py, coreRadius);
-            coreGlow.addColorStop(0, 'rgba(255, 255, 255, 1)');       // Всегда 100% непрозрачный белый
-            coreGlow.addColorStop(0.5, 'rgba(255, 220, 230, 0.9)');   // Почти непрозрачный
-            coreGlow.addColorStop(1, 'rgba(255, 200, 210, 0)');       // Мягкий край для слияния
+            coreGlow.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
+            coreGlow.addColorStop(0.5, 'rgba(255, 230, 230, 0.8)');
+            coreGlow.addColorStop(1, 'rgba(255, 200, 210, 0)');
             
             ctx.fillStyle = coreGlow;
             ctx.beginPath();
@@ -479,12 +573,10 @@ class HomePage extends HTMLElement {
             ctx.fill();
         });
 
-        // Запрашиваем следующий кадр
         this.animationId = requestAnimationFrame((t) => this.animate(t));
     }
 
     disconnectedCallback() {
-        // Обязательно очищаем анимацию при удалении компонента со страницы
         if (this.animationId) {
             cancelAnimationFrame(this.animationId);
         }

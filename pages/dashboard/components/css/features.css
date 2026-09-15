@@ -10,6 +10,7 @@
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 48px;
+    
 }
 
 /* === ОСНОВНОЙ КОНТЕЙНЕР === */
@@ -30,8 +31,9 @@
 }
 
 /* Распределяем элементы списка равномерно по высоте */
+/* === Распределяем элементы списка равномерно по высоте === */
 .feature-item {
-    flex: 1; /* Каждый элемент занимает равную часть высоты */
+    flex: 1; 
     display: flex;
     align-items: center;
     gap: 20px;
@@ -41,18 +43,22 @@
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
+    box-sizing: border-box; /* <-- ДОБАВЛЕНО: гарантирует, что padding и border не ломают размер */
 }
 
 .feature-item:hover {
     background: rgba(255, 255, 255, 0.05);
     border-color: rgba(255, 255, 255, 0.15);
-    transform: translateX(4px);
+    /* transform: translateX(4px); <-- УДАЛИ ЭТУ СТРОКУ ПОЛНОСТЬЮ */
 }
 
 .feature-item.active {
     background: rgba(255, 0, 54, 0.1);
     border: 1px solid rgba(255, 0, 54, 0.4);
     box-shadow: 0 0 24px rgba(255, 0, 54, 0.2);
+    /* Если ты ОЧЕНЬ хочешь оставить сдвиг при клике, раскомментируй строку ниже. 
+       Но для стабильной верстки лучше оставить как есть (без сдвига). */
+    /* transform: translateX(4px); */
 }
 
 .feature-icon-wrapper {

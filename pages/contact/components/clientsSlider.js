@@ -8,6 +8,12 @@ class ClientsSlider extends HTMLElement {
     connectedCallback() {
         const testimonials = [
             {
+                text: "Looks amazing! Thanks for the speedy work. I've sared with the client and we're waiting for approval.",
+                name: '',//Pauline-Kate Parison
+                position: '',//Design
+                logo: 'assets/img/clients/venatus.png'
+            },
+            {
                 text: "Oh my word! I loved that. You guys did a spectacular job! Round 3 is genuinely scary haha.",
                 name: '',
                 position: '',
