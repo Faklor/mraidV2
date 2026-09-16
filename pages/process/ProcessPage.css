@@ -1,8 +1,9 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .process-page {
-    padding: 20px 0 50px 0;
+    padding: 20px 80px 50px 80px;
     animation: fadeIn 0.8s ease-out;
     font-family: "RobotoMedium";
+    background: #0a0a0c;
 }
 
 @keyframes fadeIn {

@@ -93,7 +93,7 @@ body {
   display: flex;
   flex-direction: column;
   align-items: center; /* Центрируем по горизонтали */
-   overflow-x: hidden;
+   /* overflow-x: hidden; */
 }
 
 main {
@@ -126,9 +126,13 @@ h1 {
   width: 100%;
   max-width: 1920px;
   /* margin: 0 auto; <-- убираем, body уже центрирует */
-  padding: 0 100px;
+  padding: 0 0;
   
 }
+
+
+
+
 
 /* Адаптация для планшетов и мобильных */
 @media (max-width: 768px) {
@@ -261,3 +265,4 @@ h1 {
             font-size: 1.1rem;
         }
     }
+    

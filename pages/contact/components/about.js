@@ -5,28 +5,25 @@ class AboutContact extends HTMLElement {
         this.currentPlan = null;
         this.handlePlanChange = this.handlePlanChange.bind(this);
         
-        // Состояние для капчи
         this.captchaRequired = false;
         this.captchaWidgetId = null;
         this.hcaptchaLoading = null;
         this.captchaErrorCount = 0;
 
-        // Привязываем методы капчи к контексту класса (как в оригинальном main.js, но безопаснее для Shadow DOM)
         this.onCaptchaSolved = this.onCaptchaSolved.bind(this);
         this.onCaptchaExpired = this.onCaptchaExpired.bind(this);
         this.onCaptchaError = this.onCaptchaError.bind(this);
     }
 
     connectedCallback() {
+        // ВОЗВРАЩАЕМ слушатель! В рамках одного HTML-файла (SPA) события работают отлично
         window.addEventListener('planChanged', this.handlePlanChange);
         
-        // Закрытие модалки по клику на backdrop или крестик
         setTimeout(() => {
             const modal = document.getElementById('hcaptcha-modal');
             const closeBtn = modal?.querySelector('.hcaptcha-modal-close');
             
             if (modal) {
-                // Клик на backdrop
                 modal.addEventListener('click', (e) => {
                     if (e.target.classList.contains('hcaptcha-modal-backdrop')) {
                         this.closeCaptchaModal();
@@ -35,9 +32,7 @@ class AboutContact extends HTMLElement {
             }
             
             if (closeBtn) {
-                closeBtn.addEventListener('click', () => {
-                    this.closeCaptchaModal();
-                });
+                closeBtn.addEventListener('click', () => this.closeCaptchaModal());
             }
         }, 100);
         
@@ -48,9 +43,7 @@ class AboutContact extends HTMLElement {
         const modal = document.getElementById('hcaptcha-modal');
         if (modal) {
             modal.style.display = 'none';
-            // Сбрасываем виджет, чтобы при следующей попытке он создался заново
             this.captchaWidgetId = null;
-            console.log('[hCaptcha] Модалка закрыта, виджет сброшен');
         }
     }
 
@@ -69,7 +62,7 @@ class AboutContact extends HTMLElement {
         const plan = this.currentPlan;
 
         this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/contact/components/css/about.css">
+            <link rel="stylesheet" href="pages/contact/components/css/about.css"> 
             
             <section class="about-contact" id="contact">
                 <div class="contact-container">
@@ -137,7 +130,6 @@ class AboutContact extends HTMLElement {
                                 
                                 <div class="form-error" role="alert"></div>
                                 
-                                <!-- Контейнер для hCaptcha -->
                                 <div id="contact-captcha" style="display: none; margin-bottom: 15px;"></div>
                                 <div class="captcha-note" role="alert" style="color: #ff4444; font-size: 0.9rem; margin-bottom: 10px; min-height: 20px;"></div>
                                 
@@ -192,20 +184,31 @@ class AboutContact extends HTMLElement {
         if (changeBtn) {
             changeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                window.location.hash = 'pricing-section';
-                window.dispatchEvent(new CustomEvent('scroll-to-pricing', { bubbles: true, composed: true }));
+                window.location.hash = 'pricing';
+                
+                // Принудительно обновляем PriceCards, чтобы он показал актуальный выбранный план
+                const priceCards = document.querySelector('price-cards');
+                if (priceCards && typeof priceCards.render === 'function') {
+                    priceCards.render();
+                }
+                
+                setTimeout(() => {
+                    const pricingSection = document.querySelector('#pricing');
+                    if (pricingSection) {
+                        pricingSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 50);
             });
         }
 
         if (clearBtn) {
             clearBtn.addEventListener('click', (e) => {
                 e.preventDefault();
-                this.currentPlan = null;
                 localStorage.removeItem('selectedPlan');
+                this.currentPlan = null;
                 this.render();
                 
-                // === ДОБАВЛЕННАЯ СТРОКА ===
-                // Уведомляем компонент PriceCards, что выбор был сброшен
+                // Уведомляем PriceCards, что выбор сброшен, чтобы он вернул кнопку "Choose"
                 window.dispatchEvent(new CustomEvent('planCleared', { bubbles: true, composed: true }));
             });
         }

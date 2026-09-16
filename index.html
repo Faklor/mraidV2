@@ -120,8 +120,10 @@
                      links='[
                 {"href": "#home", "text": "Home"},
                 {"href": "#process", "text": "Process & Technology"},
-                {"href": "#portfolio", "text": "Portfolio"},
+                {"href": "#portfolio", "text": "Portfolio & Solutions"},
+                {"href": "#pricing", "text": "Price"},
                 {"href": "#dashboard", "text": "Dashboard"},
+                {"href": "#services", "text": "Creative Services"}, 
                 {"href": "#contact", "text": "Contact"}
             ]'></nav-bar>
         </app-header>
@@ -149,12 +151,22 @@
                 <page-portfolio></page-portfolio>
             </section>
 
-            <!-- 4. DASHBOARD -->
+             <!-- 4. PORTFOLIO -->
+            <section id="pricing" class="landing-section">
+                <price-cards></price-cards>
+            </section>
+
+            <!-- 5. DASHBOARD -->
             <section id="dashboard" class="landing-section">
                 <page-dashboard></page-dashboard>
             </section>
 
-            <!-- 5. CONTACT -->
+            <!-- 6. SERVICES -->
+            <section id="services" class="landing-section">
+                <page-services></page-services>
+            </section>
+
+            <!-- 7. CONTACT -->
             <section id="contact" class="landing-section">
                 <page-contact></page-contact>
             </section>
@@ -204,8 +216,12 @@
     <script src="pages/portfolio/components/portfolioSlider.js"></script>
     <script src="pages/portfolio/components/portfolioBuild.js"></script>
 
-    <script src="pages/portfolio/components/priceCards.js"></script>
+    <!-- <script src="pages/portfolio/components/priceCards.js"></script> -->
     <script src="pages/portfolio/components/priceInfo.js"></script>
+
+    <!-- -------------------Portfolio -->
+    <script src="pages/price/PricePage.js"></script>
+
 
     <!-- -------------------Dashboard -->
     <script src="pages/dashboard/dashboardPage.js"></script>
@@ -213,6 +229,13 @@
     <script src="pages/dashboard/components/showCase.js"></script>
     <script src="pages/dashboard/components/features.js"></script>
     <script src="pages/dashboard/components/info.js"></script>
+
+    <!-- -------------------Services -->
+    <script src="pages/services/PageServices.js"></script>
+    <script src="pages/services/components/banners.js"></script>
+    <script src="pages/services/components/servicesCards.js"></script>
+    <script src="pages/services/components/dashboardPromo.js"></script>
+    <script src="pages/services/components/featuresSection.js"></script>
 
     <!-- -------------------Contact -->
 
