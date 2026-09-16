@@ -1,3 +1,253 @@
+// class PriceCards extends HTMLElement {
+//     constructor() {
+//         super();
+//         this.attachShadow({ mode: 'open' });
+//         this.plans = [];
+//         this.handlePlanCleared = this.handlePlanCleared.bind(this);
+//     }
+
+//     connectedCallback() {
+//         this.plans = [
+//             {
+//                 title: 'Reskin from library',
+//                 description: 'Replace assets, keep proven mechanics and layout',
+//                 icon: 'assets/img/portfolio/price/price1.png',
+//                 features: [
+//                     'Asset replacement (art, texts, characters)',
+//                     'Proven high-performing monetization & layout',
+//                     'Builds for all major ad networks',
+//                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
+//                     'Technical support'
+//                 ],
+//                 price: '$199',
+//                 popular: false
+//             },
+//             {
+//                 title: 'Unique 2D/3D Playable',
+//                 description: 'Custom mechanics built around your game or product',
+//                 icon: 'assets/img/portfolio/price/price2.png',
+//                 features: [
+//                     'Custom unique mechanics',
+//                     '2 FREE iterations (adjust duration & difficulty)',
+//                     'Builds for all major ad networks',
+//                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
+//                     'Technical support'
+//                 ],
+//                 price: '$499',
+//                 popular: false
+//             },
+//             {
+//                 title: '3 Playables pack',
+//                 description: 'Three different playables with different mechanics',
+//                 icon: 'assets/img/portfolio/price/price3.png',
+//                 features: [
+//                     '3 unique playables (different mechanics)',
+//                     '2 FREE iterations for each playable (adjust duration & difficulty)',
+//                     'Builds for all major ad networks',
+//                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
+//                     'Technical support'
+//                 ],
+//                 price: '$1,499',
+//                 oldPrice: '$2,500',
+//                 popular: true
+//             },
+//             {
+//                 title: 'Growth scale plan from 8 playables per month',
+//                 description: 'For continuous UA growth and scaling campaigns',
+//                 icon: 'assets/img/portfolio/price/price4.png',
+//                 features: [
+//                     'From 8 unique playables per month (different mechanics)',
+//                     '2 FREE iterations for each playable (adjust duration & difficulty)',
+//                     '5 customized versions for each playable created by our designers via Dashboard (different art, texts, themes)',
+//                     'Builds for all major ad networks',
+//                     'Free access to Dashboard (with AI asset generation)',
+//                     'Technical support'
+//                 ],
+//                 price: '$3,499',
+//                 popular: false
+//             }
+//         ];
+
+//         this.checkmarkSVG = `
+//             <svg width="25" height="23" viewBox="0 0 25 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+//                 <path d="M1.5 12.5C1.5 12.5 8.34955 21.2355 10.0737 21.2355C11.7979 21.2355 23.5 1.5 23.5 1.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+//             </svg>
+//         `;
+
+//         window.addEventListener('planCleared', this.handlePlanCleared);
+//         this.render();
+
+//         if (window.location.hash === '#pricing') {
+//             setTimeout(() => {
+//                 const section = this.shadowRoot.getElementById('pricing-section');
+//                 if (section) section.scrollIntoView({ behavior: 'smooth', block: 'center' });
+//             }, 100);
+//         }
+//     }
+
+//     disconnectedCallback() {
+//         window.removeEventListener('planCleared', this.handlePlanCleared);
+//     }
+
+//     render() {
+//         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+//         const selectedTitle = storedPlan ? storedPlan.title : null;
+//         const isAnyPlanSelected = !!storedPlan;
+
+//         this.shadowRoot.innerHTML = `
+//             <link rel="stylesheet" href="pages/price/PricePage.css"> 
+
+//             <section class="pricing-wrapper" id="pricing-section">
+//                 <div class="pricing-header">
+//                     <h1 class="pricing-title">Packages & Pricing</h1>
+//                     <p class="pricing-description">Choose a package that fits your needs. All playables are ad network ready and can be customized for your game or campaign.</p>
+//                 </div>
+
+//                 <div class="price-cards-row">
+//                     ${this.plans.map((plan, index) => {
+//                         const isSelected = plan.title === selectedTitle;
+//                         return `
+//                             <div class="price-card ${plan.popular && !isAnyPlanSelected ? 'popular' : ''} ${isSelected ? 'selected-card' : ''}">
+//                                 ${plan.popular && !isAnyPlanSelected ? '<div class="popular-badge">Most popular</div>' : ''}
+                                
+//                                 <div class="card-icon">
+//                                     <img src="${plan.icon}" alt="${plan.title}">
+//                                 </div>
+//                                 <h3 class="card-title">${plan.title}</h3>
+//                                 <p class="card-description">${plan.description}</p>
+//                                 ${plan.subtitle ? `<p class="card-subtitle">${plan.subtitle}</p>` : ''}
+//                                 <ul class="card-features">
+//                                     ${plan.features.map(feature => `
+//                                         <li>
+//                                             <span class="feature-icon">${this.checkmarkSVG}</span>
+//                                             <span>${feature}</span>
+//                                         </li>
+//                                     `).join('')}
+//                                 </ul>
+//                                 <div class="card-price">
+//                                     <span class="current-price">From ${plan.price}</span>
+//                                     ${plan.oldPrice ? `<span class="old-price">${plan.oldPrice}</span>` : ''}
+//                                 </div>
+                                
+//                                 ${isSelected ? `
+//                                     <div class="selected-button">
+//                                         ${this.checkmarkSVG}
+//                                         <span>Selected</span>
+//                                     </div>
+//                                 ` : `
+//                                     <button class="choose-button" data-plan="${index}">Choose</button>
+//                                 `}
+//                             </div>
+//                         `;
+//                     }).join('')}
+//                 </div>
+//             </section>
+//         `;
+
+//         this.shadowRoot.querySelectorAll('.choose-button').forEach(button => {
+//             button.addEventListener('click', (e) => {
+//                 e.preventDefault(); 
+//                 const planIndex = e.target.getAttribute('data-plan');
+//                 this.selectPlan(planIndex);
+//             });
+//         });
+//     }
+
+//     handlePlanCleared() {
+//         const cards = this.shadowRoot.querySelectorAll('.price-card');
+        
+//         cards.forEach((card, index) => {
+//             const plan = this.plans[index];
+            
+//             card.classList.remove('selected-card', 'animate-selection');
+            
+//             if (plan.popular) {
+//                 card.classList.add('popular');
+//                 if (!card.querySelector('.popular-badge')) {
+//                     const badge = document.createElement('div');
+//                     badge.className = 'popular-badge';
+//                     badge.textContent = 'Most popular';
+//                     card.insertBefore(badge, card.firstChild);
+//                 }
+//             }
+            
+//             const selectedBtn = card.querySelector('.selected-button');
+//             if (selectedBtn) {
+//                 selectedBtn.outerHTML = `
+//                     <button class="choose-button" data-plan="${index}">Choose</button>
+//                 `;
+//             }
+//         });
+        
+//         this.shadowRoot.querySelectorAll('.choose-button').forEach(button => {
+//             button.addEventListener('click', (e) => {
+//                 e.preventDefault();
+//                 const planIndex = e.target.getAttribute('data-plan');
+//                 this.selectPlan(planIndex);
+//             });
+//         });
+//     }
+
+//     selectPlan(planIndex) {
+//         const selectedPlan = this.plans[planIndex];
+//         localStorage.setItem('selectedPlan', JSON.stringify(selectedPlan));
+
+//         const cards = this.shadowRoot.querySelectorAll('.price-card');
+//         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+        
+//         cards.forEach((card, index) => {
+//             const plan = this.plans[index];
+//             const isSelected = plan.title === storedPlan.title;
+            
+//             card.classList.remove('popular');
+//             const badge = card.querySelector('.popular-badge');
+//             if (badge) badge.remove();
+            
+//             if (isSelected) {
+//                 card.classList.add('selected-card');
+                
+//                 const button = card.querySelector('.choose-button');
+//                 if (button) {
+//                     button.outerHTML = `
+//                         <div class="selected-button">
+//                             ${this.checkmarkSVG}
+//                             <span>Selected</span>
+//                         </div>
+//                     `;
+//                 }
+                
+//                 setTimeout(() => {
+//                     card.classList.add('animate-selection');
+//                 }, 50);
+//             } else {
+//                 card.classList.remove('selected-card');
+                
+//                 const selectedBtn = card.querySelector('.selected-button');
+//                 if (selectedBtn) {
+//                     selectedBtn.outerHTML = `
+//                         <button class="choose-button" data-plan="${index}">Choose</button>
+//                     `;
+//                 }
+//             }
+//         });
+
+//         window.dispatchEvent(new CustomEvent('planChanged', { detail: selectedPlan, bubbles: true, composed: true }));
+
+//         setTimeout(() => {
+//             window.location.hash = 'contact';
+//             setTimeout(() => {
+//                 const contactSection = document.querySelector('#contact');
+//                 if (contactSection) {
+//                     contactSection.scrollIntoView({ behavior: 'smooth' });
+//                 }
+//             }, 100);
+//         }, 1000);
+//     }
+// }
+
+// customElements.define('price-cards', PriceCards);
+
+
 class PriceCards extends HTMLElement {
     constructor() {
         super();
@@ -11,7 +261,7 @@ class PriceCards extends HTMLElement {
             {
                 title: 'Reskin from library',
                 description: 'Replace assets, keep proven mechanics and layout',
-                icon: 'assets/img/portfolio/price/price1.png',
+                icon: `<svg class="price-svg-icon" width="45" height="45" viewBox="0 0 45 45" fill="none" xmlns="http://www.w3.org/2000/svg"><rect class="icon-draw" x="2" y="2" width="41" height="41" rx="2" stroke="#FF0034" stroke-width="4"/></svg>`,
                 features: [
                     'Asset replacement (art, texts, characters)',
                     'Proven high-performing monetization & layout',
@@ -25,7 +275,7 @@ class PriceCards extends HTMLElement {
             {
                 title: 'Unique 2D/3D Playable',
                 description: 'Custom mechanics built around your game or product',
-                icon: 'assets/img/portfolio/price/price2.png',
+                icon: `<svg class="price-svg-icon" width="53" height="62" viewBox="0 0 53 62" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="icon-flow" d="M50.4434 15.3939V43.8543C50.4434 44.807 49.9351 45.6873 49.11 46.1637L26.4434 59.2503L3.77669 46.1637C2.95162 45.6873 2.44336 44.807 2.44336 43.8543V15.3939L25.1483 2.78002C25.9537 2.33258 26.933 2.33258 27.7384 2.78002L50.4434 15.3939ZM2.44336 15.3939L26.4434 29.2503M26.4434 59.2503V29.2503M50.4434 15.3939L26.4434 29.2503" stroke="#FF0034" stroke-width="4.88745" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
                 features: [
                     'Custom unique mechanics',
                     '2 FREE iterations (adjust duration & difficulty)',
@@ -39,7 +289,7 @@ class PriceCards extends HTMLElement {
             {
                 title: '3 Playables pack',
                 description: 'Three different playables with different mechanics',
-                icon: 'assets/img/portfolio/price/price3.png',
+                icon: `<svg class="price-svg-icon" width="67" height="69" viewBox="0 0 67 69" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="icon-flow-delay-1" d="M32.5781 38.9412V57.3219C32.5781 57.9372 32.2499 58.5057 31.717 58.8134L17.0781 67.2651L2.43924 58.8134C1.90638 58.5057 1.57812 57.9372 1.57812 57.3219V38.9412L16.2417 30.7947C16.7619 30.5058 17.3944 30.5058 17.9145 30.7947L32.5781 38.9412ZM1.57812 38.9412L17.0781 47.8901M17.0781 67.2651V47.8901M32.5781 38.9412L17.0781 47.8901" stroke="#FF0034" stroke-width="3.15648" stroke-linecap="round" stroke-linejoin="round"/><path class="icon-flow-delay-2" d="M64.5781 38.9412V57.3219C64.5781 57.9372 64.2499 58.5057 63.717 58.8134L49.0781 67.2651L34.4392 58.8134C33.9064 58.5057 33.5781 57.9372 33.5781 57.3219V38.9412L48.2417 30.7947C48.7619 30.5058 49.3944 30.5058 49.9145 30.7947L64.5781 38.9412ZM33.5781 38.9412L49.0781 47.8901M49.0781 67.2651V47.8901M64.5781 38.9412L49.0781 47.8901" stroke="#FF0034" stroke-width="3.15648" stroke-linecap="round" stroke-linejoin="round"/><path class="icon-flow-delay-3" d="M48.5781 9.94119V28.3219C48.5781 28.9372 48.2499 29.5057 47.717 29.8134L33.0781 38.2651L18.4392 29.8134C17.9064 29.5057 17.5781 28.9372 17.5781 28.3219V9.94119L32.2417 1.79474C32.7619 1.50576 33.3944 1.50576 33.9145 1.79474L48.5781 9.94119ZM17.5781 9.94119L33.0781 18.8901M33.0781 38.2651V18.8901M48.5781 9.94119L33.0781 18.8901" stroke="#FF0034" stroke-width="3.15648" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
                 features: [
                     '3 unique playables (different mechanics)',
                     '2 FREE iterations for each playable (adjust duration & difficulty)',
@@ -54,7 +304,7 @@ class PriceCards extends HTMLElement {
             {
                 title: 'Growth scale plan from 8 playables per month',
                 description: 'For continuous UA growth and scaling campaigns',
-                icon: 'assets/img/portfolio/price/price4.png',
+                icon: `<svg class="price-svg-icon" width="57" height="58" viewBox="0 0 57 58" fill="none" xmlns="http://www.w3.org/2000/svg"><rect class="icon-bar-3" x="43.8219" y="2.57778" width="10.3111" height="52.8444" rx="2.57778" stroke="#FF0034" stroke-width="5.15556"/><rect class="icon-bar-2" x="23.2008" y="23.2008" width="10.3111" height="32.2222" rx="2.57778" stroke="#FF0034" stroke-width="5.15556"/><rect class="icon-bar-1" x="2.57778" y="38.6676" width="10.3111" height="16.7556" rx="2.57778" stroke="#FF0034" stroke-width="5.15556"/></svg>`,
                 features: [
                     'From 8 unique playables per month (different mechanics)',
                     '2 FREE iterations for each playable (adjust duration & difficulty)',
@@ -92,13 +342,12 @@ class PriceCards extends HTMLElement {
     render() {
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
         const selectedTitle = storedPlan ? storedPlan.title : null;
+        const isAnyPlanSelected = !!storedPlan;
 
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/price/PricePage.css"> 
 
-            <!-- ЕДИНАЯ СЕКЦИЯ ДЛЯ ЗАГОЛОВКА И КАРТОЧЕК -->
             <section class="pricing-wrapper" id="pricing-section">
-                
                 <div class="pricing-header">
                     <h1 class="pricing-title">Packages & Pricing</h1>
                     <p class="pricing-description">Choose a package that fits your needs. All playables are ad network ready and can be customized for your game or campaign.</p>
@@ -108,10 +357,11 @@ class PriceCards extends HTMLElement {
                     ${this.plans.map((plan, index) => {
                         const isSelected = plan.title === selectedTitle;
                         return `
-                            <div class="price-card ${plan.popular ? 'popular' : ''} ${isSelected ? 'selected-card' : ''}">
-                                ${plan.popular ? '<div class="popular-badge">Most popular</div>' : ''}
+                            <div class="price-card ${plan.popular && !isAnyPlanSelected ? 'popular' : ''} ${isSelected ? 'selected-card' : ''}">
+                                ${plan.popular && !isAnyPlanSelected ? '<div class="popular-badge">Most popular</div>' : ''}
+                                
                                 <div class="card-icon">
-                                    <img src="${plan.icon}" alt="${plan.title}">
+                                    ${plan.icon}
                                 </div>
                                 <h3 class="card-title">${plan.title}</h3>
                                 <p class="card-description">${plan.description}</p>
@@ -154,24 +404,94 @@ class PriceCards extends HTMLElement {
     }
 
     handlePlanCleared() {
-        this.render();
+        const cards = this.shadowRoot.querySelectorAll('.price-card');
+        
+        cards.forEach((card, index) => {
+            const plan = this.plans[index];
+            
+            card.classList.remove('selected-card', 'animate-selection');
+            
+            if (plan.popular) {
+                card.classList.add('popular');
+                if (!card.querySelector('.popular-badge')) {
+                    const badge = document.createElement('div');
+                    badge.className = 'popular-badge';
+                    badge.textContent = 'Most popular';
+                    card.insertBefore(badge, card.firstChild);
+                }
+            }
+            
+            const selectedBtn = card.querySelector('.selected-button');
+            if (selectedBtn) {
+                selectedBtn.outerHTML = `
+                    <button class="choose-button" data-plan="${index}">Choose</button>
+                `;
+            }
+        });
+        
+        this.shadowRoot.querySelectorAll('.choose-button').forEach(button => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault();
+                const planIndex = e.target.getAttribute('data-plan');
+                this.selectPlan(planIndex);
+            });
+        });
     }
 
     selectPlan(planIndex) {
         const selectedPlan = this.plans[planIndex];
         localStorage.setItem('selectedPlan', JSON.stringify(selectedPlan));
 
-        this.render();
+        const cards = this.shadowRoot.querySelectorAll('.price-card');
+        const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+        
+        cards.forEach((card, index) => {
+            const plan = this.plans[index];
+            const isSelected = plan.title === storedPlan.title;
+            
+            card.classList.remove('popular');
+            const badge = card.querySelector('.popular-badge');
+            if (badge) badge.remove();
+            
+            if (isSelected) {
+                card.classList.add('selected-card');
+                
+                const button = card.querySelector('.choose-button');
+                if (button) {
+                    button.outerHTML = `
+                        <div class="selected-button">
+                            ${this.checkmarkSVG}
+                            <span>Selected</span>
+                        </div>
+                    `;
+                }
+                
+                setTimeout(() => {
+                    card.classList.add('animate-selection');
+                }, 50);
+            } else {
+                card.classList.remove('selected-card');
+                
+                const selectedBtn = card.querySelector('.selected-button');
+                if (selectedBtn) {
+                    selectedBtn.outerHTML = `
+                        <button class="choose-button" data-plan="${index}">Choose</button>
+                    `;
+                }
+            }
+        });
 
         window.dispatchEvent(new CustomEvent('planChanged', { detail: selectedPlan, bubbles: true, composed: true }));
 
-        window.location.hash = 'contact';
         setTimeout(() => {
-            const contactSection = document.querySelector('#contact');
-            if (contactSection) {
-                contactSection.scrollIntoView({ behavior: 'smooth' });
-            }
-        }, 50);
+            window.location.hash = 'contact';
+            setTimeout(() => {
+                const contactSection = document.querySelector('#contact');
+                if (contactSection) {
+                    contactSection.scrollIntoView({ behavior: 'smooth' });
+                }
+            }, 100);
+        }, 1000);
     }
 }
 

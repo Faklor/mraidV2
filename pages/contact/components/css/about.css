@@ -496,3 +496,57 @@
         max-height: 250px;
     }
 }
+
+/* === ИКОНКА ВЫБРАННОГО ПАКЕТА (SVG с анимацией) === */
+.package-icon {
+    width: 50px;
+    height: 50px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.package-icon .price-svg-icon {
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+}
+
+/* Убираем старые стили для img, если они были */
+.package-icon img {
+    display: none;
+}
+
+/* Анимация SVG иконок (та же, что в PriceCards) */
+.package-icon .icon-draw,
+.package-icon .icon-flow,
+.package-icon .icon-flow-delay-1,
+.package-icon .icon-flow-delay-2,
+.package-icon .icon-flow-delay-3,
+.package-icon .icon-bar-1,
+.package-icon .icon-bar-2,
+.package-icon .icon-bar-3 {
+    fill: none;
+    stroke-dasharray: 150, 10;
+    animation: svg-flow 5s linear infinite;
+}
+
+.package-icon .icon-draw {
+    stroke-dasharray: 100, 5;
+    animation-duration: 10s;
+}
+
+.package-icon .icon-flow-delay-1 { animation-delay: 0s; }
+.package-icon .icon-flow-delay-2 { animation-delay: 0.5s; }
+.package-icon .icon-flow-delay-3 { animation-delay: 1s; }
+
+.package-icon .icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
+.package-icon .icon-bar-2 { animation-duration: 2.5s; }
+.package-icon .icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
+
+@keyframes svg-flow {
+    to {
+        stroke-dashoffset: -50;
+    }
+}

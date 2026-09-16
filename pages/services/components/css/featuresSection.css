@@ -1,18 +1,21 @@
 /* === СЕКЦИЯ FEATURES === */
 .features-section {
-    padding: 60px 40px;
-    background: #0a0a0c;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
-    margin: 0 40px 100px;
+    padding: 60px 120px;
+    
 }
 
 .features-content {
-    max-width: 1440px;
+    box-sizing: border-box;
+    width: 100%;
     margin: 0 auto;
     display: flex;
     align-items: center;
     gap: 60px;
+
+    background: #0a0a0c;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    padding:40px;
 }
 
 /* === ЛЕВАЯ ЧАСТЬ - ТЕКСТ === */

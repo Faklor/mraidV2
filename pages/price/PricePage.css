@@ -1,7 +1,7 @@
 /* === ОБЩИЙ КОНТЕЙНЕР ЦЕН (Заголовок + Карточки) === */
 .pricing-wrapper {
     background: #0a0a0c;
-    padding: 80px 200px; /* Единый отступ для всего блока сверху, снизу, слева и справа */
+    padding: 80px 120px; /* Единый отступ для всего блока сверху, снизу, слева и справа */
     margin-bottom: 60px;
     font-family: 'RobotoMedium', sans-serif;
 }
@@ -9,7 +9,7 @@
 /* === ЗАГОЛОВОК СЕКЦИИ === */
 .pricing-header {
     text-align: center;
-    margin-bottom: 60px; /* Отступ от текста до начала карточек */
+    margin-bottom: 20px; /* Отступ от текста до начала карточек */
 }
 
 .pricing-title {
@@ -45,8 +45,41 @@
     padding: 32px 24px;
     display: flex;
     flex-direction: column;
-    transition: all 0.3s ease;
+    /* transition: all 0.3s ease; */
+     transition: all 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
+
+.price-card.animate-selection {
+    animation: cardSelectPulse 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes cardSelectPulse {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 rgba(255, 0, 54, 0);
+    }
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 0 40px rgba(255, 0, 54, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 30px rgba(255, 0, 54, 0.5);
+    }
+}
+
+/* Когда любая карта выбрана, убираем popular стили со ВСЕХ карт */
+.price-cards-row:has(.selected-card) .price-card.popular {
+    border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    background: #141417 !important;
+    box-shadow: none !important;
+}
+
+.price-cards-row:has(.selected-card) .popular-badge {
+    display: none !important;
+}
+
+/* Выбранная карта всегда красная независимо от popular */
 
 /* === ИКОНКА КАРТОЧКИ === */
 .card-icon {
@@ -212,11 +245,17 @@
 }
 
 /* === ВЫБРАННАЯ КАРТОЧКА === */
-.price-card.selected-card {
+/* .price-card.selected-card {
     border-color: #FF0036;
     background: #1a1a1e;
     box-shadow: 0 0 20px rgba(255, 0, 54, 0.1);
+} */
+ .price-card.selected-card {
+    border: 2px solid #FF0036 !important;
+    background: #1a1a1e !important;
+    box-shadow: 0 0 30px rgba(255, 0, 54, 0.4) !important;
 }
+
 
 /* === КНОПКА "ВЫБРАНО" === */
 .selected-button {
@@ -283,4 +322,62 @@
         width: 56px;
         height: 56px;
     }
+}
+
+
+/* === АНИМАЦИЯ SVG ИКОНОК === */
+.card-icon {
+    width: 50px;
+    height: 50px;
+    margin: 0 0 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.price-svg-icon {
+    width: 100%;
+    height: 100%;
+    overflow: visible; /* Важно для свечения */
+}
+
+/* Эффект бегущей линии для всех элементов */
+.icon-draw,
+.icon-flow,
+.icon-flow-delay-1,
+.icon-flow-delay-2,
+.icon-flow-delay-3,
+.icon-bar-1,
+.icon-bar-2,
+.icon-bar-3 {
+    fill: none;
+    stroke-dasharray: 150, 10; /* Длина штриха и пробела */
+    animation: svg-flow 5s linear infinite;
+}
+
+/* Разная скорость для создания эффекта "волны" */
+.icon-draw {
+    stroke-dasharray: 100, 5;
+    animation-duration: 10s;
+}
+
+.icon-flow-delay-1 { animation-delay: 0s; }
+.icon-flow-delay-2 { animation-delay: 0.5s; }
+.icon-flow-delay-3 { animation-delay: 1s; }
+
+.icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
+.icon-bar-2 { animation-duration: 2.5s; }
+.icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
+
+@keyframes svg-flow {
+    to {
+        stroke-dashoffset: -50; /* Движение пунктира */
+    }
+}
+
+/* Дополнительное легкое свечение при наведении на карточку */
+.price-card:hover .price-svg-icon path,
+.price-card:hover .price-svg-icon rect {
+   
+    transition: all 0.3s ease;
 }

@@ -43,7 +43,6 @@
 
 /* === КАРТОЧКА === */
 .service-card {
-    background: #141417;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
     padding: 28px 24px;
@@ -94,7 +93,6 @@
     margin-top: auto;
     border-radius: 8px;
     overflow: hidden;
-    background: #1a1a1e;
 }
 
 .card-image {

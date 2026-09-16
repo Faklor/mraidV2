@@ -1,6 +1,6 @@
 /* === СЕКЦИЯ DASHBOARD PROMO === */
 .dashboard-promo {
-    padding: 100px 40px;
+    padding: 100px 120px;
     background: linear-gradient(135deg, #1a0a0e 0%, #0a0a0c 100%);
     position: relative;
     overflow: hidden;
@@ -19,11 +19,11 @@
 }
 
 .promo-content {
-    max-width: 1440px;
+    width:100%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1.2fr;
-    gap: 80px;
+    /* gap: 80px; */
     align-items: center;
     position: relative;
     z-index: 1;
@@ -126,12 +126,12 @@
 
 /* Стилизация стандартных контролов видео */
 .promo-video::-webkit-media-controls-panel {
-    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    
 }
 
 .promo-video::-webkit-media-controls-play-button,
 .promo-video::-webkit-media-controls-volume-slider {
-    filter: invert(1);
+    
 }
 
 /* === АДАПТАЦИЯ === */

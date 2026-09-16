@@ -16,7 +16,6 @@ class AboutContact extends HTMLElement {
     }
 
     connectedCallback() {
-        // ВОЗВРАЩАЕМ слушатель! В рамках одного HTML-файла (SPA) события работают отлично
         window.addEventListener('planChanged', this.handlePlanChange);
         
         setTimeout(() => {
@@ -53,13 +52,99 @@ class AboutContact extends HTMLElement {
 
     handlePlanChange(event) {
         this.currentPlan = event.detail;
-        this.render();
+        this.updateSelectedPackage();
+    }
+
+    renderSelectedPackage(plan) {
+        return `
+            <div class="selected-package">
+                <div class="package-header">
+                    <div class="package-icon">
+                        ${plan.icon}
+                    </div>
+                    <div class="package-info">
+                        <span class="package-label">Selected package</span>
+                        <h3 class="package-name">${plan.title}</h3>
+                        <span class="package-price">From ${plan.price}</span>
+                    </div>
+                    <div class="package-actions">
+                        <button class="clear-package-btn" type="button">Clear</button>
+                        <button class="change-package-btn" type="button">Change</button>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    // НОВЫЙ МЕТОД: Делегирование событий (гарантирует работу кнопок всегда)
+    initPackageActions() {
+        const container = this.shadowRoot.getElementById('selected-package-container');
+        if (!container) return;
+
+        container.addEventListener('click', (e) => {
+            // Логика кнопки CLEAR
+            if (e.target.classList.contains('clear-package-btn')) {
+                e.preventDefault();
+                const packageElement = container.querySelector('.selected-package');
+                
+                if (packageElement) {
+                    const animation = packageElement.animate([
+                        { opacity: 1, transform: 'translateY(0)', marginBottom: '24px' },
+                        { opacity: 0, transform: 'translateY(-20px)', marginBottom: '0' }
+                    ], {
+                        duration: 300,
+                        easing: 'ease-out',
+                        fill: 'forwards'
+                    });
+
+                    animation.finished.then(() => {
+                        localStorage.removeItem('selectedPlan');
+                        this.currentPlan = null;
+                        container.innerHTML = '';
+                        window.dispatchEvent(new CustomEvent('planCleared', { bubbles: true, composed: true }));
+                    });
+                }
+            }
+
+            // Логика кнопки CHANGE
+            if (e.target.classList.contains('change-package-btn')) {
+                e.preventDefault();
+                window.location.hash = 'pricing';
+                
+                const priceCards = document.querySelector('price-cards');
+                if (priceCards && typeof priceCards.render === 'function') {
+                    priceCards.render();
+                }
+                
+                setTimeout(() => {
+                    const pricingSection = document.querySelector('#pricing');
+                    if (pricingSection) {
+                        pricingSection.scrollIntoView({ behavior: 'smooth' });
+                    }
+                }, 50);
+            }
+        });
+    }
+
+    updateSelectedPackage() {
+        const container = this.shadowRoot.getElementById('selected-package-container');
+        if (!container) return;
+
+        const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
+        this.currentPlan = storedPlan || null;
+        const plan = this.currentPlan;
+
+        // Просто обновляем HTML, слушатели уже работают благодаря initPackageActions()
+        if (plan) {
+            container.innerHTML = this.renderSelectedPackage(plan);
+        } else {
+            container.innerHTML = '';
+        }
     }
 
     render() {
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
         this.currentPlan = this.currentPlan || storedPlan || null;
-        const plan = this.currentPlan;
 
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/contact/components/css/about.css"> 
@@ -85,24 +170,8 @@ class AboutContact extends HTMLElement {
                         <div class="form-wrapper">
                             <h2 class="form-title">Send us a message</h2>
                             
-                            ${plan ? `
-                            <div class="selected-package">
-                                <div class="package-header">
-                                    <div class="package-icon">
-                                        <img src="${plan.icon}" alt="${plan.title}">
-                                    </div>
-                                    <div class="package-info">
-                                        <span class="package-label">Selected package</span>
-                                        <h3 class="package-name">${plan.title}</h3>
-                                        <span class="package-price">From ${plan.price}</span>
-                                    </div>
-                                    <div class="package-actions">
-                                        <button class="clear-package-btn" type="button">Clear</button>
-                                        <button class="change-package-btn" type="button">Change</button>
-                                    </div>
-                                </div>
-                            </div>
-                            ` : ''}
+                            <!-- Контейнер теперь пустой, его заполнит updateSelectedPackage -->
+                            <div id="selected-package-container"></div>
                             
                             <form class="contact-form" id="contactForm">
                                 <div class="form-row">
@@ -174,44 +243,8 @@ class AboutContact extends HTMLElement {
         `;
 
         this.initForm();
-        this.initPackageSelector();
-    }
-
-    initPackageSelector() {
-        const changeBtn = this.shadowRoot.querySelector('.change-package-btn');
-        const clearBtn = this.shadowRoot.querySelector('.clear-package-btn');
-        
-        if (changeBtn) {
-            changeBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.hash = 'pricing';
-                
-                // Принудительно обновляем PriceCards, чтобы он показал актуальный выбранный план
-                const priceCards = document.querySelector('price-cards');
-                if (priceCards && typeof priceCards.render === 'function') {
-                    priceCards.render();
-                }
-                
-                setTimeout(() => {
-                    const pricingSection = document.querySelector('#pricing');
-                    if (pricingSection) {
-                        pricingSection.scrollIntoView({ behavior: 'smooth' });
-                    }
-                }, 50);
-            });
-        }
-
-        if (clearBtn) {
-            clearBtn.addEventListener('click', (e) => {
-                e.preventDefault();
-                localStorage.removeItem('selectedPlan');
-                this.currentPlan = null;
-                this.render();
-                
-                // Уведомляем PriceCards, что выбор сброшен, чтобы он вернул кнопку "Choose"
-                window.dispatchEvent(new CustomEvent('planCleared', { bubbles: true, composed: true }));
-            });
-        }
+        this.initPackageActions(); // <--- ВАЖНО: Инициализируем слушатели кнопок
+        this.updateSelectedPackage(); // <--- ВАЖНО: Заполняем контейнер и применяем анимацию
     }
 
     initForm() {
@@ -236,13 +269,11 @@ class AboutContact extends HTMLElement {
         form.addEventListener('submit', (e) => {
             e.preventDefault();
 
-            // 1. Honeypot
             if (honeypotInput && honeypotInput.value) {
                 this.showThanks(form);
                 return;
             }
 
-            // 2. Валидация
             let invalidFields = [];
             if (!nameInput.value.trim()) invalidFields.push('Name');
             if (!emailInput.value.trim() || !emailInput.validity.valid) invalidFields.push('Email');
@@ -255,9 +286,7 @@ class AboutContact extends HTMLElement {
             }
             if (errorEl) errorEl.textContent = '';
 
-            // 3. Логика капчи (идентична main.js, но с защитой от null)
             if (this.captchaRequired && window.hcaptcha) {
-                // ЖЕЛЕЗНАЯ ЗАЩИТА: если виджет не отрисовался, не вызываем getResponse, а пытаемся отрисовать снова
                 if (this.captchaWidgetId === null) {
                     this.showCaptchaNote('Captcha widget blocked. Retrying... Please click "Send Message" again.');
                     this.renderCaptcha();
@@ -326,11 +355,9 @@ class AboutContact extends HTMLElement {
                 submitBtn.disabled = false;
                 submitBtn.textContent = 'Send Message';
                 
-                // Сбрасываем виджет
                 this.captchaWidgetId = null;
                 this.captchaRequired = true;
                 
-                // Показываем модалку снова
                 this.showCaptchaNote('Captcha check failed. Please try again.');
                 setTimeout(() => {
                     this.renderCaptcha();
@@ -356,14 +383,12 @@ class AboutContact extends HTMLElement {
         if (this.hcaptchaLoading) return this.hcaptchaLoading;
         
         this.hcaptchaLoading = new Promise((resolve, reject) => {
-            // Создаем глобальный колбэк для загрузки API
             window.onLoadCallback = () => {
                 console.log('[hCaptcha] API загружен!');
                 resolve();
             };
             
             const s = document.createElement('script');
-            // ДОБАВЛЯЕМ onload=onLoadCallback
             s.src = 'https://js.hcaptcha.com/1/api.js?onload=onLoadCallback&render=explicit';
             s.async = true;
             s.defer = true;
@@ -388,11 +413,9 @@ class AboutContact extends HTMLElement {
             return;
         }
 
-        // Показываем модалку
         modal.style.display = 'flex';
         console.log('[hCaptcha] Модальное окно открыто');
 
-        // Проверяем, что API загружен
         if (!window.hcaptcha) {
             console.log('[hCaptcha] API еще не загружен, загружаем...');
             this.loadHcaptcha().then(() => {
@@ -401,15 +424,13 @@ class AboutContact extends HTMLElement {
             return;
         }
 
-        // Очищаем контейнер перед рендером
         container.innerHTML = '';
         this.captchaWidgetId = null;
 
         try {
             console.log('[hCaptcha] Рендерим виджет в модальном окне...');
             this.captchaWidgetId = window.hcaptcha.render(container, {
-                //sitekey: '7520fd58-5574-45a4-9246-4da25390e316', 
-                sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa', //mraid
+                sitekey: '519ea82c-d070-4543-909d-f76ff016bdfa',
                 callback: this.onCaptchaSolved,
                 'expired-callback': this.onCaptchaExpired,
                 'error-callback': this.onCaptchaError,
@@ -421,17 +442,14 @@ class AboutContact extends HTMLElement {
         }
     }
 
-    // === Методы-колбэки для hCaptcha ===
     onCaptchaSolved(token) {
         console.log('[hCaptcha] Капча пройдена! Токен:', token ? token.substring(0, 20) + '...' : 'null');
         this.captchaErrorCount = 0;
         this.showCaptchaNote('');
         
-        // Закрываем модалку
         const modal = document.getElementById('hcaptcha-modal');
         if (modal) modal.style.display = 'none';
         
-        // Отправляем форму с токеном
         this.submitFormData(token);
     }
 
@@ -445,7 +463,6 @@ class AboutContact extends HTMLElement {
         console.error('[hCaptcha] Ошибка:', error);
         this.captchaErrorCount++;
         
-        // Сбрасываем виджет
         this.captchaWidgetId = null;
         
         if (this.captchaErrorCount >= 2) {
@@ -459,13 +476,11 @@ class AboutContact extends HTMLElement {
     }
 
     showThanks(form) {
-        // Скрываем модальное окно
         const modal = document.getElementById('hcaptcha-modal');
         if (modal) {
             modal.style.display = 'none';
         }
         
-        // Очищаем контейнер капчи
         const container = document.getElementById('hcaptcha-widget-container');
         if (container) {
             container.innerHTML = '';
