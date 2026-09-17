@@ -8,19 +8,19 @@ class ProcessSteps extends HTMLElement {
         const steps = [
             {
                 number: '01',
-                title: 'Idea & Concept',
+                title: 'Idea & concept',
                 description: 'We turn your brief or idea into playable concepts, mechanics and scenarios',
                 icon: 'assets/img/process/idea.svg'
             },
             {
                 number: '02',
-                title: 'Game Design',
+                title: 'Game design',
                 description: 'We design engaging mechanics and map out key screens and flows',
                 icon: 'assets/img/process/game.svg'
             },
             {
                 number: '03',
-                title: 'Art & Animation',
+                title: 'Art & animation',
                 description: 'We create high-quality visuals and animations that bring your playable to life',
                 icon: 'assets/img/process/art.svg'
             },
@@ -38,7 +38,7 @@ class ProcessSteps extends HTMLElement {
             },
             {
                 number: '06',
-                title: 'Launch & Support',
+                title: 'Launch & support',
                 description: 'We deliver, monitor results and support your campaign for growth',
                 icon: 'assets/img/process/support.svg'
             }

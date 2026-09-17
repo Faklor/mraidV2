@@ -341,7 +341,7 @@
     overflow: visible; /* Важно для свечения */
 }
 
-/* Эффект бегущей линии для всех элементов */
+
 .icon-draw,
 .icon-flow,
 .icon-flow-delay-1,
@@ -351,11 +351,11 @@
 .icon-bar-2,
 .icon-bar-3 {
     fill: none;
-    stroke-dasharray: 150, 10; /* Длина штриха и пробела */
-    animation: svg-flow 5s linear infinite;
+    stroke-dasharray: 100, 10; 
+    animation: svg-flow 5s linear infinite alternate  ;
 }
 
-/* Разная скорость для создания эффекта "волны" */
+
 .icon-draw {
     stroke-dasharray: 100, 5;
     animation-duration: 10s;
@@ -370,6 +370,9 @@
 .icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
 
 @keyframes svg-flow {
+    from {
+        stroke-dashoffset: 0; 
+    }
     to {
         stroke-dashoffset: -50; /* Движение пунктира */
     }

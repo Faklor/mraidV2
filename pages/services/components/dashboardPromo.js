@@ -50,7 +50,7 @@ class DashboardPromo extends HTMLElement {
                             banners quickly and easily -no coding required.
                         </p>
                         
-                        <a href="#dashboard" class="promo-cta-btn">
+                        <a href="https://dashboard.mraid.io/" class="promo-cta-btn">
                             Go to Dashboard
                             <svg width="21" height="15" viewBox="0 0 21 15" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M11.3609 13.542L19.543 7.04199L11.3609 0.541992M19.543 7.04199H0.542968" stroke="white" stroke-width="1.08428" stroke-linecap="round" stroke-linejoin="round"/>
