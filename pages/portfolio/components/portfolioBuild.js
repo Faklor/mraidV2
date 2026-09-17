@@ -36,7 +36,7 @@ class PortfolioBuild extends HTMLElement {
                 id: 'banners',
                 title: 'Banners, videos, etc.',
                 description: 'Interactive banners for your advertising',
-                src: 'assets/playables/build/ex-m-default.html',
+                src: 'assets/playables/build/ex-banner.html',
                 icon: 'banners',
                 active: false
             },
