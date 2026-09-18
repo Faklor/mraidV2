@@ -57,17 +57,19 @@
 }
 
 .feature-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 600;
     color: #ffffff;
-    margin: 0 0 8px;
+    margin: 0 0 2px;
+    font-family: 'RobotoLight';
 }
 
 .feature-description {
-    font-size: 0.9rem;
-    color: #888;
-    line-height: 1.5;
+    font-size: 1rem;
+    color: #d8d8d8;
+    line-height: 1.2;
     margin: 0;
+    font-family: 'RobotoLight';
 }
 
 /* === CTA BANNER === */
@@ -103,6 +105,8 @@
     flex: 1;
     position: relative;
     z-index: 1;
+    font-family: 'RobotoLight';
+
 }
 
 .banner-icon {
@@ -122,15 +126,15 @@
 }
 
 .banner-title {
-    font-size: 1.5rem;
+    font-size: 1.8rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 8px;
 }
 
 .banner-description {
-    font-size: 1rem;
-    color: #888;
+    font-size: 1.3rem;
+    color: #fff;
     line-height: 1.6;
     margin: 0;
 }

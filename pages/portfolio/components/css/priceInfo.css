@@ -34,7 +34,7 @@
 
 /* === ЗАГОЛОВОК === */
 .info-title {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 20px;
@@ -53,8 +53,8 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    font-size: 0.9rem;
-    color: #c0c0c0;
+    font-size: 1.1rem;
+    color: #FFFFFF;
 }
 
 /* === ИКОНКИ В СЕТКЕ (теперь это картинки) === */
@@ -89,9 +89,9 @@
 
 /* === ОПИСАНИЕ === */
 .info-description {
-    font-size: 0.9rem;
-    color: #a0a0a0;
-    line-height: 1.6;
+    font-size: 1.1rem;
+    color: #FFFFFF;
+    line-height: 1.2;
     margin: 0;
     flex: 1;
 }

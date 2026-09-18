@@ -53,6 +53,7 @@
     font-weight: 600;
     color: #ffffff;
     letter-spacing: 0.5px;
+    
 }
 
 /* === ТЕКСТОВАЯ ЧАСТЬ === */
@@ -65,11 +66,13 @@
 }
 
 .promo-description {
-    font-size: 1.1rem;
-    color: #888;
+    font-size: 1.3rem;
+    color: #fff;
     line-height: 1.6;
     margin: 0 0 32px;
     max-width: 480px;
+    font-family: 'RobotoLight';
+
 }
 
 .promo-cta-btn {

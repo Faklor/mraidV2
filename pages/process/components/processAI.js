@@ -18,6 +18,7 @@ class ProcessAI extends HTMLElement {
             <link rel="stylesheet" href="pages/process/components/css/processAI.css">
             
             <section class="ai-features-row">
+            
                 ${aiFeatures.map(text => `
                     <div class="ai-feature">
                         <span class="ai-diamond">✦</span>

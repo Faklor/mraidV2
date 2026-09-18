@@ -19,8 +19,8 @@
 }
 
 .buttons {
-    --btn-width: 280px;    /* ← МЕНЯЙ ЭТО ЗНАЧЕНИЕ для контроля ширины */
-    --btn-height: 56px;    /* ← МЕНЯЙ ЭТО ЗНАЧЕНИЕ для контроля высоты */
+    --btn-width: 280px;   
+    --btn-height: 56px;   
     
     display: flex;
     gap: 16px;
@@ -54,7 +54,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-}
+} 
 
 .btn-primary {
     background-color: #FF0036;
@@ -62,7 +62,7 @@
 }
 
 .btn-primary:hover {
-    background-color: #cc002b;
+    
     transform: translateY(-2px);
 }
 
@@ -73,8 +73,8 @@
 }
 
 .btn-secondary:hover {
-    background-color: #2a2a2a;
-    border-color: #FF0036;
+    
+    transform: translateY(-2px);
 }
 
 @media (max-width: 768px) {

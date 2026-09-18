@@ -29,6 +29,7 @@ class ProcessPlatforms extends HTMLElement {
             <link rel="stylesheet" href="pages/process/components/css/processPlatform.css">
             
             <section class="platforms-section">
+            
                 <div class="platforms-header">
                     <h2>Trusted by leading platforms and networks</h2>
                 </div>

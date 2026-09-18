@@ -273,7 +273,7 @@ class PriceCards extends HTMLElement {
                 popular: false
             },
             {
-                title: 'Unique 2D/3D Playable',
+                title: 'Unique 2D/3D playable',
                 description: 'Custom mechanics built around your game or product',
                 icon: `<svg class="price-svg-icon" width="53" height="62" viewBox="0 0 53 62" fill="none" xmlns="http://www.w3.org/2000/svg"><path class="icon-flow" d="M50.4434 15.3939V43.8543C50.4434 44.807 49.9351 45.6873 49.11 46.1637L26.4434 59.2503L3.77669 46.1637C2.95162 45.6873 2.44336 44.807 2.44336 43.8543V15.3939L25.1483 2.78002C25.9537 2.33258 26.933 2.33258 27.7384 2.78002L50.4434 15.3939ZM2.44336 15.3939L26.4434 29.2503M26.4434 59.2503V29.2503M50.4434 15.3939L26.4434 29.2503" stroke="#FF0034" stroke-width="4.88745" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
                 features: [

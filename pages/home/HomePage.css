@@ -3,8 +3,20 @@
     position: relative; /* Важно: делает эту секцию "якорем" для абсолютного фона */
     padding: 20px 80px 50px 80px;
     animation: fadeIn 0.8s ease-out;
-    font-family: 'RobotoMedium', sans-serif;
+    font-family: 'RobotoMedium';
     overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */
+}
+
+.hero-blick {
+    position: absolute;
+    top: -50px;         /* Сдвигаем вверх, чтобы центр блика был в углу */
+    left: -500px;       /* Сдвигаем вправо */
+    width: 1000px;       /* Размер блика — подбери под свою картинку */
+    height: auto;
+    opacity: 1;       /* Прозрачность, чтобы не был слишком ярким */
+    pointer-events: none; /* Чтобы не мешал кликам */
+    z-index: 2;         /* Поверх фона, но под контентом */
+    mix-blend-mode: screen; /* Режим наложения для красивого свечения */
 }
 
 @keyframes fadeIn {

@@ -48,10 +48,12 @@
 }
 
 .contact-subtitle {
-    font-size: 1.1rem;
-    color: #888;
-    line-height: 1.5;
+    font-size: 1.2rem;
+    color: #fff;
+    line-height: 1.2;
     margin: 0 0 28px;
+     font-family: 'RobotoLight';
+
 }
 
 .team-photo {
@@ -98,6 +100,7 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
+    
 }
 
 .form-title {
@@ -112,6 +115,7 @@
     display: flex;
     flex-direction: column;
     gap: 15px;
+    font-family: 'RobotoLight';
 }
 
 .form-row {
@@ -196,7 +200,7 @@
 
 /* === ЧЕКБОКС === */
 .form-checkbox {
-    margin-top: 2px;
+    margin-top: 2\5px;
 }
 
 .checkbox-label {
@@ -222,7 +226,7 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-    margin-top: 2px;
+    margin-top: 4px;
 }
 
 .checkbox-label input[type="checkbox"]:checked + .checkbox-custom {

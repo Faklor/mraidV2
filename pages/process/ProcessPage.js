@@ -9,6 +9,7 @@ class ProcessPage extends HTMLElement {
             <link rel="stylesheet" href="pages/process/ProcessPage.css">
             
             <div class="process-page">
+              
                 <!-- Заголовок страницы -->
                 <section class="process-header">
                     <div class="process-title">

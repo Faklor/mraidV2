@@ -48,6 +48,7 @@ class ProcessSteps extends HTMLElement {
             <link rel="stylesheet" href="pages/process/components/css/processStep.css">
             
             <section class="steps-row">
+                
                 <!-- Пунктирная линия -->
                 <div class="dashed-line"></div>
                 

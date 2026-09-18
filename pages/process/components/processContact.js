@@ -24,6 +24,7 @@ class ProcessContact extends HTMLElement {
             <link rel="stylesheet" href="pages/process/components/css/processContact.css">
             
             <section class="contact-cta">
+            
                 <!-- Левая часть: текст + кнопка -->
                 <div class="contact-content">
                     <h2>Have a project?</h2>

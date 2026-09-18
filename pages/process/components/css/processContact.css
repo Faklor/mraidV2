@@ -7,12 +7,14 @@
     background: rgba(63, 63, 63, 0.08);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
-    padding: 40px 48px;
-    margin: 60px 20px 0;
+    padding: 30px 48px;
+    margin: 160px 20px 50px;
     position: relative;
     overflow: hidden;
     
 }
+
+
 
 /* Декоративный красный паттерн справа */
 .contact-cta::before {

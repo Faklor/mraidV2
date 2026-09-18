@@ -79,7 +79,7 @@ class DashboardFeatures extends HTMLElement {
             }
         ];
 
-        this.features = features; // Сохраняем для доступа из других методов
+        this.features = features;
 
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/dashboard/components/css/features.css">
@@ -88,7 +88,6 @@ class DashboardFeatures extends HTMLElement {
                 <h2 class="features-heading">Powerful features</h2>
                 
                 <div class="features-container">
-                    <!-- Левая колонка: список фич -->
                     <div class="features-list">
                         ${features.map((feature, index) => `
                             <div class="feature-item ${index === this.activeFeature ? 'active' : ''}" 
@@ -104,9 +103,7 @@ class DashboardFeatures extends HTMLElement {
                         `).join('')}
                     </div>
 
-                    <!-- ПРАВЫЙ ОБЩИЙ БЛОК С ФОНОМ -->
                     <div class="feature-panel">
-                        <!-- Текст слева -->
                         <div class="feature-content">
                             <div class="content-header">
                                 <h3 class="content-title">${features[this.activeFeature].description}</h3>
@@ -117,14 +114,13 @@ class DashboardFeatures extends HTMLElement {
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                                 <path d="M5 13L9 17L19 7" stroke="#FF0036" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                             </svg>
-                                            ${item}
+                                            <span>${item}</span>
                                         </li>
                                     `).join('')}
                                 </ul>
                             </div>
                         </div>
 
-                        <!-- Видео справа -->
                         <div class="video-wrapper paused">
                             <div class="video-container">
                                 <video class="feature-video" 
@@ -133,14 +129,12 @@ class DashboardFeatures extends HTMLElement {
                                     playsinline>
                                 </video>
                                 
-                                <!-- Кнопка Play поверх -->
                                 <div class="play-overlay">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z"/>
                                     </svg>
                                 </div>
                                 
-                                <!-- Контролы -->
                                 <div class="video-controls">
                                     <div class="control-bar">
                                         <div class="progress-bar">
@@ -160,7 +154,6 @@ class DashboardFeatures extends HTMLElement {
                                                 <path d="M3 3v5h5"/>
                                             </svg>
                                         </button>
-                                        <!-- КНОПКА FULLSCREEN -->
                                         <button class="control-btn fullscreen-btn">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
@@ -179,7 +172,6 @@ class DashboardFeatures extends HTMLElement {
         this.initVideoControls();
     }
 
-    // === ИНИЦИАЛИЗАЦИЯ ПЕРЕКЛЮЧЕНИЯ ФИЧ ===
     initFeatures() {
         const featureItems = this.shadowRoot.querySelectorAll('.feature-item');
         
@@ -187,45 +179,58 @@ class DashboardFeatures extends HTMLElement {
             item.addEventListener('click', (e) => {
                 const index = parseInt(item.dataset.index);
                 
-                // Убираем active у всех
                 featureItems.forEach(i => i.classList.remove('active'));
-                // Добавляем active нажатому
                 item.classList.add('active');
                 
-                // Обновляем индекс
                 this.activeFeature = index;
                 
-                // Обновляем контент и видео
                 this.updateContent();
                 this.switchVideo();
             });
         });
     }
 
-    // === ОБНОВЛЕНИЕ ТЕКСТОВОГО КОНТЕНТА ===
+    // === ИСПРАВЛЕННОЕ ОБНОВЛЕНИЕ КОНТЕНТА ===
     updateContent() {
         const feature = this.features[this.activeFeature];
         const contentHeader = this.shadowRoot.querySelector('.content-header');
         
-        if (contentHeader) {
-            contentHeader.innerHTML = `
-                <h3 class="content-title">${feature.description}</h3>
-                <p class="content-description">${feature.details}</p>
-                <ul class="content-list">
-                    ${feature.items.map(item => `
-                        <li>
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                                <path d="M5 13L9 17L19 7" stroke="#FF0036" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                            </svg>
-                            ${item}
-                        </li>
-                    `).join('')}
-                </ul>
-            `;
-        }
+        if (!contentHeader) return;
+
+        // Добавляем класс для анимации исчезновения
+        contentHeader.classList.add('fade-out');
+
+        // Ждём окончания анимации исчезновения
+        setTimeout(() => {
+            // Обновляем только текст существующих элементов
+            const title = contentHeader.querySelector('.content-title');
+            const description = contentHeader.querySelector('.content-description');
+            const list = contentHeader.querySelector('.content-list');
+
+            if (title) title.textContent = feature.description;
+            if (description) description.textContent = feature.details;
+
+            if (list) {
+                // Обновляем только текст в существующих li
+                const listItems = list.querySelectorAll('li span');
+                feature.items.forEach((item, index) => {
+                    if (listItems[index]) {
+                        listItems[index].textContent = item;
+                    }
+                });
+            }
+
+            // Убираем класс fade-out и добавляем fade-in
+            contentHeader.classList.remove('fade-out');
+            contentHeader.classList.add('fade-in');
+
+            // Убираем fade-in после окончания анимации
+            setTimeout(() => {
+                contentHeader.classList.remove('fade-in');
+            }, 300);
+        }, 200);
     }
 
-    // === ПЕРЕКЛЮЧЕНИЕ ВИДЕО ===
     switchVideo() {
         const video = this.shadowRoot.querySelector('.feature-video');
         const videoWrapper = this.shadowRoot.querySelector('.video-wrapper');
@@ -233,30 +238,12 @@ class DashboardFeatures extends HTMLElement {
         const playPauseBtn = this.shadowRoot.querySelector('.play-pause-btn');
         
         if (video) {
-            // Останавливаем текущее видео
             video.pause();
-            
-            // Меняем источник
             video.src = this.features[this.activeFeature].video;
             video.load();
-            
-            // Пробуем автовоспроизведение
-            setTimeout(() => {
-                video.play().then(() => {
-                    videoWrapper.classList.remove('paused');
-                    playOverlay.style.display = 'none';
-                    this.updatePlayButton(playPauseBtn, true);
-                }).catch(() => {
-                    // Если autoplay заблокирован
-                    videoWrapper.classList.add('paused');
-                    playOverlay.style.display = 'flex';
-                    this.updatePlayButton(playPauseBtn, false);
-                });
-            }, 100);
         }
     }
 
-    // === ИНИЦИАЛИЗАЦИЯ КОНТРОЛОВ ВИДЕО ===
     initVideoControls() {
         const video = this.shadowRoot.querySelector('.feature-video');
         const playPauseBtn = this.shadowRoot.querySelector('.play-pause-btn');
@@ -269,7 +256,6 @@ class DashboardFeatures extends HTMLElement {
 
         if (!video) return;
 
-        // Play/Pause
         const togglePlay = () => {
             if (video.paused) {
                 video.play();
@@ -288,7 +274,6 @@ class DashboardFeatures extends HTMLElement {
         playOverlay.addEventListener('click', togglePlay);
         video.addEventListener('click', togglePlay);
 
-        // Restart
         restartBtn.addEventListener('click', () => {
             video.currentTime = 0;
             video.play();
@@ -297,7 +282,6 @@ class DashboardFeatures extends HTMLElement {
             this.updatePlayButton(playPauseBtn, true);
         });
 
-        // Обновление прогресса
         video.addEventListener('timeupdate', () => {
             if (video.duration) {
                 const progress = (video.currentTime / video.duration) * 100;
@@ -309,7 +293,6 @@ class DashboardFeatures extends HTMLElement {
             }
         });
 
-        // Клик по прогресс бару
         progressBar.addEventListener('click', (e) => {
             if (video.duration) {
                 const rect = progressBar.getBoundingClientRect();
@@ -318,14 +301,10 @@ class DashboardFeatures extends HTMLElement {
             }
         });
 
-        
-
-        // Fullscreen
         const fullscreenBtn = this.shadowRoot.querySelector('.fullscreen-btn');
         if (fullscreenBtn) {
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
-                    // Разворачиваем видео на весь экран
                     if (video.requestFullscreen) {
                         video.requestFullscreen();
                     } else if (video.webkitRequestFullscreen) {
@@ -334,7 +313,6 @@ class DashboardFeatures extends HTMLElement {
                         video.msRequestFullscreen();
                     }
                 } else {
-                    // Сворачиваем
                     if (document.exitFullscreen) {
                         document.exitFullscreen();
                     } else if (document.webkitExitFullscreen) {
@@ -345,11 +323,8 @@ class DashboardFeatures extends HTMLElement {
                 }
             });
         }
-
-       
     }
 
-    // === ОБНОВЛЕНИЕ КНОПКИ PLAY/PAUSE ===
     updatePlayButton(button, isPlaying) {
         if (!button) return;
         
@@ -369,7 +344,6 @@ class DashboardFeatures extends HTMLElement {
         }
     }
 
-    // === ФОРМАТИРОВАНИЕ ВРЕМЕНИ ===
     formatTime(seconds) {
         if (isNaN(seconds)) return '0:00';
         const mins = Math.floor(seconds / 60);

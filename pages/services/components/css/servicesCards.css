@@ -31,6 +31,7 @@
     margin: 0;
     max-width: 600px;
     justify-self: end;
+    font-family: 'RobotoLight';
 }
 
 /* === СЕТКА КАРТОЧЕК === */
@@ -50,7 +51,7 @@
     flex-direction: column;
     align-items: flex-start;
     transition: all 0.3s ease;
-    height: 100%;
+    
 }
 
 
@@ -75,16 +76,19 @@
     font-size: 1.25rem;
     font-weight: 600;
     color: #ffffff;
-    margin: 0 0 12px;
+    margin: 0 0 2px;
     line-height: 1.3;
+    font-family: 'RobotoLight';
 }
 
 /* === ОПИСАНИЕ === */
 .card-description {
     font-size: 0.95rem;
-    color: #888;
-    line-height: 1.5;
+    color: #fff;
+    line-height: 1.2;
     flex: 1;
+    font-family: 'RobotoLight';
+
 }
 
 /* === ИЗОБРАЖЕНИЕ === */

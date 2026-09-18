@@ -282,6 +282,7 @@ class HomePage extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/HomePage.css">
             <div class="home-page">
+                <img class="hero-blick" src="assets/img/blick.png" alt="">
                 <div class="bg-looper-wrapper">
                     <canvas id="network-canvas"></canvas>
                 </div>

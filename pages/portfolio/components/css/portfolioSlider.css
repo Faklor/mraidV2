@@ -256,7 +256,7 @@
 .slider-track-wrapper {
     overflow: hidden;
     flex: 1;
-    padding: 10px 0;
+    padding: 20px 0;
 }
 
 .slider-track {
@@ -280,7 +280,7 @@
 .slider-card:hover {
     transform: translateY(-3px);
     border-color: rgba(255, 0, 54, 0.4);
-    box-shadow: 0 12px 32px rgba(255, 0, 54, 0.2);
+    box-shadow: 0 12px 10px 1px rgba(255, 0, 54, 0.1);
 }
 
 .card-image {

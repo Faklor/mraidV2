@@ -25,7 +25,8 @@
     background-color: #111113;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    position: relative; 
+    position: relative;
+    
 }
 
 /* 2. СТИЛИ ДЛЯ ИНТЕРАКТИВНЫХ БЛОКОВ (с тултипом) */
@@ -41,23 +42,21 @@
     flex-shrink: 0;
     width: 30px;
     height: auto;
-    animation: gentleFloat 5s ease-in-out infinite; 
+   
 }
 
 .feature-item.has-tooltip > svg:first-child {
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
-.feature-item.has-tooltip:hover > svg:first-child {
-    animation-play-state: paused;
-    transform: scale(1.1) translateY(-2px);
-    filter: drop-shadow(0 6px 12px rgba(255, 0, 54, 0.4));
-}
+
 
 .feature-item span {
-    font-size: 1rem;
-    font-weight: 600;
+    
     color: #ffffff;
+     font-family: "RobotoLight";
+    font-size: 20px;
+    font-weight: 300;
 }
 
 /* === 4. ИКОНКА ВОПРОСА И ТУЛТИП (ГЛАВНОЕ ИЗМЕНЕНИЕ) === */
@@ -89,8 +88,6 @@
     color: #fff;
     padding: 10px 16px;
     border-radius: 8px;
-    font-size: 0.85rem;
-    font-weight: 500;
     white-space: nowrap;
     opacity: 0;
     visibility: hidden;
@@ -99,8 +96,13 @@
     border: 1px solid rgba(255, 255, 255, 0.1);
     z-index: 100;
     
-    /* ВАЖНО: разрешаем мышке "заходить" на текст подсказки, чтобы она не исчезала */
+    
     pointer-events: auto; 
+
+   font-family: "RobotoLight";
+    font-size: 18px;
+    font-weight: 300;
+    
 }
 
 .tooltip-text::before {

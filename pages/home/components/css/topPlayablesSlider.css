@@ -1,5 +1,5 @@
 .slider-section {
-    padding: 60px 0 0 0;
+    padding: 60px 20px 0 20px;
 }
 
 .slider-header {
@@ -7,7 +7,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 32px;
-    margin-left: 35px;
+    margin-left: 0px;
 }
 
 .slider-header h2 {

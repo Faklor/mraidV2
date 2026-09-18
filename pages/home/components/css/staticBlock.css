@@ -15,18 +15,20 @@
 
 
 .stat-number {
-    font-size: 1.75rem; /* Уменьшили размер */
+    font-size:28px; /* Уменьшили размер */
     font-weight: 800;
-    color: #FF0036;
+    color: #FF0034;
     margin-bottom: 8px;
     display: block;
 }
 
 .stat-label {
-    font-size: 0.85rem; /* Уменьшили размер текста */
-    color: #888;
+    font-size: 18px; /* Уменьшили размер текста */
+    color: #FFFFFF;
     line-height: 1.3;
     margin: 0;
+    font-family: "RobotoLight";
+    font-weight: 400;
 }
 
 /* Планшеты: 3 колонки */

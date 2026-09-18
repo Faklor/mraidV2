@@ -10,7 +10,7 @@ class StatsGrid extends HTMLElement {
             { number: '8+', label: 'Years of experience' },
             { number: '300+', label: 'Happy clients' },
             { number: 'Global', label: 'Top game studios & brands' },
-            { number: 'Full-Cycle', label: 'From concept to support' }
+            { number: 'Full-cycle', label: 'From concept to support' }
         ];
 
         this.shadowRoot.innerHTML = `
