@@ -25,7 +25,7 @@ class TopPlayablesSlider extends HTMLElement {
                     <h2>Top performing playables</h2>
                     <a href="#portfolio" class="see-more">See more <span class="arrow">
                     <svg width="40" height="35" viewBox="0 0 40 35" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M22.2125 32.5751L37.5 17.2875L22.2125 2M37.5 17.2875H2" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M22.2125 32.5751L37.5 17.2875L22.2125 2M37.5 17.2875H2" stroke="#FF0034" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
 
                     </span></a>

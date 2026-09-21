@@ -349,7 +349,7 @@ class PriceCards extends HTMLElement {
 
             <section class="pricing-wrapper" id="pricing-section">
                 <div class="pricing-header">
-                    <h1 class="pricing-title">Packages & Pricing</h1>
+                    <h1 class="pricing-title">Packages & pricing</h1>
                     <p class="pricing-description">Choose a package that fits your needs. All playables are ad network ready and can be customized for your game or campaign.</p>
                 </div>
 

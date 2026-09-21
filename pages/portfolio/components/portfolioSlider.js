@@ -28,7 +28,7 @@ class PortfolioSlider extends HTMLElement {
             
             const data = await response.json();
             
-            // 1. ХРАНИМ КАТЕГОРИИ И МЕХАНИКИ КАК МАССИВЫ
+            
             this.allProjects = data.previews.map(item => ({
                 title: item.project || 'Unknown Project',
                 categories: (item.categories && item.categories.length > 0) ? item.categories : ['Other'],
@@ -38,19 +38,19 @@ class PortfolioSlider extends HTMLElement {
                 link: item.url || '#'
             }));
 
-            // 2. ИСПОЛЬЗУЕМ flatMap() ЧТОБЫ РАЗВЕРНУТЬ МАССИВЫ И НАЙТИ УНИКАЛЬНЫЕ ЗНАЧЕНИЯ
+           
             this.uniqueCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
 
-            // Устанавливаем фильтры по умолчанию
+            
             this.currentCategory = this.uniqueCategories[0] || '';
             
-            // === НОВОЕ: Вычисляем механики и размеры ТОЛЬКО для выбранной категории ===
+           
             this.updateAvailableFilters();
 
-            // Фильтруем массив по дефолтным значениям
+           
             this.applyFilters();
 
-            // Сообщаем NavBar о количестве проектов
+            
             window.PORTFOLIO_TOTAL_COUNT = this.allProjects.length;
             window.dispatchEvent(new CustomEvent('portfolio-data-loaded', { 
                 detail: { count: this.allProjects.length } 
@@ -65,7 +65,7 @@ class PortfolioSlider extends HTMLElement {
 
     // === АНИМИРОВАННАЯ ФИЛЬТРАЦИЯ ===
     applyFilters() {
-        // 3. ПРОВЕРЯЕМ ВХОЖДЕНИЕ (.includes) ВМЕСТО ПОЛНОГО СОВПАДЕНИЯ (===)
+        
         this.filteredProjects = this.allProjects.filter(p => {
             const matchCategory = p.categories.includes(this.currentCategory);
             const matchMechanic = p.mechanics.includes(this.currentMechanic);
@@ -141,7 +141,7 @@ class PortfolioSlider extends HTMLElement {
             <link rel="stylesheet" href="pages/portfolio/components/css/portfolioSlider.css">
             <section class="portfolio-slider-section">
                 <div class="slider-header">
-                    <div class="header-left"><h2>Portfolio & Solutions</h2></div>
+                    <div class="header-left"><h2>Portfolio & solutions</h2></div>
                     <div class="header-right"><p>Explore our playables, choose the right format for your campaign and find a solution that fits your needs</p></div>
                 </div>
                 <div class="filter-section">

@@ -9,7 +9,7 @@ class AboutStory extends HTMLElement {
             {
                 icon: 'assets/img/about/story/icon1.png',
                 number: '2018',
-                label: 'Founded'
+                label: 'founded'
             },
             {
                 icon: 'assets/img/about/story/icon2.png',

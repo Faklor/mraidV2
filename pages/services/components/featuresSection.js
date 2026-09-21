@@ -30,7 +30,7 @@ class FeaturesSection extends HTMLElement {
                                     <path d="M30.2 52.2134V55.1501C30.2 57.9194 30.2 59.3026 29.3396 60.1631C28.4791 61.0235 27.0959 61.0235 24.3266 61.0235C21.5572 61.0235 20.174 61.0235 19.3136 60.1631C18.4531 59.3026 18.4531 57.9194 18.4531 55.1501V52.2134M39.0102 2.28906L39.7679 4.33596C40.7605 7.02012 41.2568 8.36221 42.2347 9.34014C43.2156 10.321 44.5577 10.8173 47.2418 11.8099L49.2887 12.5676L47.2418 13.3253C44.5577 14.3179 43.2156 14.8142 42.2377 15.7921C41.2568 16.773 40.7605 18.1151 39.7679 20.7992L39.0102 22.8461L38.2525 20.7992C37.2599 18.1151 36.7636 16.773 35.7857 15.7951C34.8048 14.8142 33.4627 14.3179 30.7786 13.3253L28.7317 12.5676L30.7786 11.8099C33.4627 10.8173 34.8048 10.321 35.7827 9.34307C36.7636 8.36221 37.2599 7.02012 38.2525 4.33596L39.0102 2.28906Z" stroke="#FF0034" stroke-width="4.57773" stroke-linejoin="round"/>
                                 </svg>
                             </div>
-                            <h3 class="feature-title">Creative Expertise</h3>
+                            <h3 class="feature-title">Creative expertise</h3>
                         </div>
 
                         <div class="feature-divider"></div>
@@ -43,7 +43,7 @@ class FeaturesSection extends HTMLElement {
                                     <path d="M47.7598 17.9082H56.7145V26.863" stroke="#FF0034" stroke-width="5.96986" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </div>
-                            <h3 class="feature-title">Performance Focused</h3>
+                            <h3 class="feature-title">Performance focused</h3>
                         </div>
 
                         <div class="feature-divider"></div>

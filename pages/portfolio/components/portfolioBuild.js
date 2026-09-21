@@ -18,7 +18,7 @@ class PortfolioBuild extends HTMLElement {
             },
             {
                 id: '2d',
-                title: '2D Playable',
+                title: '2D playable',
                 description: 'Custom 2D playables built around your game or product',
                 src: 'assets/playables/build/ex-2d.html',
                 icon: '2d',
@@ -42,7 +42,7 @@ class PortfolioBuild extends HTMLElement {
             },
             {
                 id: 'fullcycle',
-                title: 'Full-Cycle Production',
+                title: 'Full-cycle production',
                 description: 'Concept Art → Development → Testing Builds. We handle the entire production',
                 src: 'assets/playables/build/ex-m-click.html',
                 icon: 'fullcycle',

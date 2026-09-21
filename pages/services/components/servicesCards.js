@@ -6,31 +6,31 @@ class ServicesCards extends HTMLElement {
         this.services = [
             {
                 icon: 'assets/img/services/cards/icon1.png',
-                title: 'Video Ads',
+                title: 'Video ads',
                 description: 'High-quality video ads for UA campaigns, app stores and social media.',
                 image: 'assets/img/services/cards/card1.png'
             },
             {
                 icon: 'assets/img/services/cards/icon2.png',
-                title: 'HTML5 Banners',
+                title: 'HTML5 banners',
                 description: 'Interactive and animated HTML5 banners for all major ad networks.',
                 image: 'assets/img/services/cards/card2.png'
             },
             {
                 icon: 'assets/img/services/cards/icon3.png',
-                title: '2D/3D Graphics',
+                title: '2D/3D graphics',
                 description: 'Concept art, characters, environments, icons and UI/UX.',
                 image: 'assets/img/services/cards/card3.png'
             },
             {
                 icon: 'assets/img/services/cards/icon4.png',
-                title: 'Animations (Spine / 3D)',
+                title: 'Animations (spine / 3D)',
                 description: 'Smooth, eye-catching animations for games, ads and app stores.',
                 image: 'assets/img/services/cards/card4.png'
             },
             {
                 icon: 'assets/img/services/cards/icon5.png',
-                title: 'Store Assets',
+                title: 'Store assets',
                 description: 'Custom assets for App Store, Google Play and other platforms.',
                 image: 'assets/img/services/cards/card5.png'
             }
