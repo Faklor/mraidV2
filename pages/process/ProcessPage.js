@@ -8,7 +8,7 @@ class ProcessPage extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/process/ProcessPage.css">
             
-            <div class="process-page">
+            <div class="process-page" data-reveal >
               
                 <!-- Заголовок страницы -->
                 <section class="process-header">

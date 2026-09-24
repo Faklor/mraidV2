@@ -21,6 +21,7 @@
     margin-bottom: 80px;
     padding: 0 20px;
     padding-top: 20px;
+    align-items: center;
 }
 
 .process-title h1 {
@@ -36,11 +37,16 @@
 }
 
 .process-description p {
-    font-size: 28px;
+    font-size: 25px;
     color: #a0a0a0;
     line-height: 1.1;
     margin: 0;
     text-align: justify;
+    padding:0 0px 0 0px;
+    font-weight: 300;
+    font-family: 'RobotoLight';
+
+
 
 }
 

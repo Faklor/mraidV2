@@ -115,6 +115,7 @@
     aspect-ratio: 16 / 10;
     overflow: hidden;
     background: #1a1a1a;
+    aspect-ratio: 443 / 789; 
 }
 
 .card-image img {
@@ -122,6 +123,7 @@
     height: 100%;
     object-fit: cover;
     transition: transform 0.3s ease;
+    
 }
 
 .slider-card:hover .card-image img {

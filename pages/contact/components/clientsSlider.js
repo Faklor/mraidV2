@@ -9,8 +9,8 @@ class ClientsSlider extends HTMLElement {
         const testimonials = [
             {
                 text: "Looks amazing! Thanks for the speedy work. I've sared with the client and we're waiting for approval.",
-                name: '',//Pauline-Kate Parison
-                position: '',//Design
+                name: '',
+                position: '',
                 logo: 'assets/img/clients/venatus.png'
             },
             {
@@ -67,10 +67,6 @@ class ClientsSlider extends HTMLElement {
                 position: '',
                 logo: 'assets/img/clients/game-story.png'
             },
-            
-
-            
-            
         ];
 
         this.testimonials = testimonials;
@@ -149,7 +145,6 @@ class ClientsSlider extends HTMLElement {
                 dot.classList.toggle('active', index === this.currentSlide);
             });
 
-            // Сдвигаем трек
             if (track) {
                 const cardWidth = cards[0]?.offsetWidth || 0;
                 const gap = 24;
@@ -167,8 +162,10 @@ class ClientsSlider extends HTMLElement {
         nextBtn?.addEventListener('click', () => {
             if (this.currentSlide < this.testimonials.length - 1) {
                 this.currentSlide++;
-                updateSlider();
+            } else {
+                this.currentSlide = 0;
             }
+            updateSlider();
         });
 
         dots.forEach((dot) => {
@@ -178,15 +175,7 @@ class ClientsSlider extends HTMLElement {
             });
         });
 
-        // Автопрокрутка
-        setInterval(() => {
-            if (this.currentSlide < this.testimonials.length - 1) {
-                this.currentSlide++;
-            } else {
-                this.currentSlide = 0;
-            }
-            updateSlider();
-        }, 10000);
+        
     }
 }
 

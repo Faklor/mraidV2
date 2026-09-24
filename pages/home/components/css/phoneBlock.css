@@ -1,4 +1,3 @@
-/* Обертка всего блока */
 .showcase-wrapper {
     position: relative;
     width: 100%;
@@ -9,24 +8,13 @@
     z-index: 1;
 }
 
-.bg-blick {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100%;
-    max-width: none;
-    z-index: 2;
-    pointer-events: none;
-    opacity: 0.6;
-}
-
 .phone-3d-container {
+    padding: 20px;
     position: relative;
     z-index: 10;
-    perspective: 1200px;
-    width: 250px;
-    height: 480px;
+    perspective: 1500px;
+    width: 220px;
+    height: 440px;
     cursor: pointer;
 }
 
@@ -35,40 +23,82 @@
     width: 100%;
     height: 100%;
     transform-style: preserve-3d;
-    /* УБРАНО: transition: transform 0.3s ease-out; (теперь этим управляет JS) */
-    animation: tilt3d 8s ease-in-out infinite;
+    animation: float3D 12s ease-in-out infinite;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Отключаем CSS-анимацию при наведении, чтобы работал JS */
 .phone-3d-container:hover .phone-inner {
     animation: none;
+    transition: transform 0.1s linear;
 }
 
-@keyframes tilt3d {
-    0%, 100% { transform: rotateY(0deg) rotateX(0deg); }
-    25% { transform: rotateY(5deg) rotateX(2deg); } /* Тоже немного уменьшил для плавности */
-    75% { transform: rotateY(-5deg) rotateX(-2deg); }
+@keyframes float3D {
+    0%, 100% {
+        transform: translateY(0px) rotateZ(0deg);
+    }
+    15% {
+        transform: translateY(-15px) rotateZ(0deg);
+    }
+    30% {
+        transform: translateY(-5px) rotateZ(0deg);
+    }
+    45% {
+        transform: translateY(-20px) rotateZ(12deg);
+    }
+    55% {
+        transform: translateY(-18px) rotateZ(12deg);
+    }
+    
 }
 
-/* === ПРЕЛОАДЕР === */
-.preloader {
+.phone-svg-body {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.6)) 
+            drop-shadow(0 0 10px rgba(255, 0, 54, 0.2));
+}
+
+.phone-svg-notch {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 25;
+    pointer-events: none;
+}
+
+.preloader,
+.playable-screen {
     position: absolute;
     top: 10px;
     left: 10px;
-    width: 230px;
-    height: 460px;
-    border-radius: 12px;
-    z-index: 2;
+    width: 200px;
+    height: 420px;
+    border-radius: 26px;
+    overflow: hidden;
+    background-color: #000;
+}
+
+.playable-screen {
+    z-index: 10;
+    border: none;
+}
+
+.preloader {
+    z-index: 12;
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 1;
     transition: opacity 0.4s ease;
-    overflow: hidden;
-    background-color: #111114;
 }
 
-/* Картинка-фон внутри прелоадера */
 .preloader-bg {
     position: absolute;
     top: 0;
@@ -76,8 +106,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    /* Размытие и затемнение применяем прямо к картинке */
-    filter: blur(10px) brightness(1);
+    filter: blur(8px) brightness(0.6);
     z-index: 1;
     pointer-events: none;
 }
@@ -87,10 +116,9 @@
     pointer-events: none;
 }
 
-/* Спиннер поверх картинки */
 .spinner {
     position: relative;
-    z-index: 2; /* Гарантированно выше картинки */
+    z-index: 13;
     width: 36px;
     height: 36px;
     border: 3px solid rgba(255, 255, 255, 0.15);
@@ -104,44 +132,21 @@
     to { transform: rotate(360deg); }
 }
 
-.playable-screen {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 230px;
-    height: 460px;
-    background: #000;
-    border-radius: 12px;
-    z-index: 1;
-}
-
 .screen-reflection {
     position: absolute;
     top: 10px;
     left: 10px;
-    width: 230px;
-    height: 460px;
+    width: 200px;
+    height: 420px;
+    border-radius: 26px;
     background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.4) 0%,
-        rgba(255, 255, 255, 0.1) 20%,
-        transparent 40%,
-        transparent 60%,
-        rgba(0, 0, 0, 0.1) 80%,
-        rgba(0, 0, 0, 0.2) 100%
+        135deg,
+        rgba(255, 255, 255, 0.15) 0%,
+        rgba(255, 255, 255, 0.05) 30%,
+        transparent 50%,
+        transparent 100%
     );
-    border-radius: 12px;
-    z-index: 3; /* Выше прелоадера и iframe */
-    pointer-events: none;
-}
-
-.phone-frame-img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 4; /* Самый верхний слой */
+    z-index: 20;
     pointer-events: none;
 }
 
@@ -158,7 +163,7 @@
     opacity: 0;
     visibility: hidden;
     transition: all 0.3s ease;
-    z-index: 20;
+    z-index: 25;
     pointer-events: none;
     backdrop-filter: blur(4px);
     box-shadow: 0 4px 12px rgba(255, 0, 54, 0.4);
@@ -175,20 +180,9 @@
     visibility: visible;
 }
 
-/* === АДАПТАЦИЯ === */
 @media (max-width: 768px) {
     .phone-3d-container {
-        width: 200px;
-        height: 384px;
-    }
-    
-    /* Адаптируем размеры прелоадера и экрана под мобильные */
-    .playable-screen,
-    .screen-reflection,
-    .preloader {
-        top: 12px;
-        left: 4px;
-        width: 192px;
-        height: 360px;
+        transform: scale(0.7);
+        transform-origin: center center;
     }
 }

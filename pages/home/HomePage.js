@@ -266,15 +266,11 @@ class HomePage extends HTMLElement {
         
         this.nodes = [];
         this.edges = [];
-        this.circles = [];
-        this.nodeDegree = new Map();
         
         this.svgWidth = 1174;
         this.svgHeight = 528;
         
-        // Переменные для анимации
-        this.time = 0;
-        this.timeSeconds = 0; // ВАЖНО: добавлено для новой анимации
+        this.timeSeconds = 0;
         this.lastFrameTime = 0;
     }
 
@@ -312,16 +308,50 @@ class HomePage extends HTMLElement {
         this.animate();
     }
 
+    findClosestNode(x, y) {
+        let closestIndex = -1;
+        let minDistance = 8; // Допуск в 8 пикселей для привязки к кругу
+
+        for (let i = 0; i < this.nodes.length; i++) {
+            const n = this.nodes[i];
+            const dist = Math.sqrt((n.cx - x) ** 2 + (n.cy - y) ** 2);
+            if (dist < minDistance) {
+                minDistance = dist;
+                closestIndex = i;
+            }
+        }
+        return closestIndex;
+    }
+
     parseSVGFromString() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(this.networkSVG, "image/svg+xml");
         
-        const nodeSet = new Set();
+        this.nodes = [];
         this.edges = [];
-        this.circles = [];
-        this.nodeDegree = new Map();
 
-        // 1. Парсим линии
+        // 1. СНАЧАЛА парсим КРУГИ. Они становятся нашими "ЯКОРЯМИ" (узлами)
+        doc.querySelectorAll('circle').forEach((circle, index) => {
+            const cx = parseFloat(circle.getAttribute('cx'));
+            const cy = parseFloat(circle.getAttribute('cy'));
+            const r = parseFloat(circle.getAttribute('r'));
+            const fill = circle.getAttribute('fill') || '#D9D9D9';
+            
+            if (!isNaN(cx)) {
+                this.nodes.push({
+                    id: index,
+                    cx, cy, r, fill,
+                    ph: Math.random() * Math.PI * 2,
+                    floatAmp: 4.5 + Math.random() * 16.5,
+                    floatSpeed: 0.55 + Math.random() * 0.75,
+                    floatPhase: Math.random() * Math.PI * 2,
+                    floatDir: Math.random() < 0.5 ? -1 : 1,
+                    hot: Math.random() < 0.3
+                });
+            }
+        });
+
+        // 2. Парсим ЛИНИИ и привязываем их к ближайшим кругам
         doc.querySelectorAll('line').forEach(line => {
             const x1 = parseFloat(line.getAttribute('x1'));
             const y1 = parseFloat(line.getAttribute('y1'));
@@ -329,82 +359,32 @@ class HomePage extends HTMLElement {
             const y2 = parseFloat(line.getAttribute('y2'));
             
             if (!isNaN(x1)) {
+                const isFade = line.hasAttribute('data-fade');
                 this.edges.push({ 
                     x1, y1, x2, y2,
-                    isFade: line.hasAttribute('data-fade'),
-                    isReverse: line.hasAttribute('data-reverse')
+                    isFade,
+                    isReverse: line.hasAttribute('data-reverse'),
+                    nodeIndex1: this.findClosestNode(x1, y1),
+                    nodeIndex2: this.findClosestNode(x2, y2)
                 });
-                nodeSet.add(`${x1},${y1}`);
-                nodeSet.add(`${x2},${y2}`);
             }
         });
 
-        // 2. Парсим пути (если есть)
+        // 3. Парсим пути (если есть)
         doc.querySelectorAll('path').forEach(path => {
             const d = path.getAttribute('d');
             const matches = [...d.matchAll(/M\s*([\d.-]+)\s+([\d.-]+)\s+L\s*([\d.-]+)\s+([\d.-]+)/g)];
             matches.forEach(m => {
                 const x1 = parseFloat(m[1]), y1 = parseFloat(m[2]);
                 const x2 = parseFloat(m[3]), y2 = parseFloat(m[4]);
-                this.edges.push({ x1, y1, x2, y2, isFade: false, isReverse: false });
-                nodeSet.add(`${x1},${y1}`);
-                nodeSet.add(`${x2},${y2}`);
-            });
-        });
-
-        // 3. Парсим круги
-        doc.querySelectorAll('circle').forEach(circle => {
-            const cx = parseFloat(circle.getAttribute('cx'));
-            const cy = parseFloat(circle.getAttribute('cy'));
-            const r = parseFloat(circle.getAttribute('r'));
-            const fill = circle.getAttribute('fill') || '#D9D9D9';
-            
-            if (!isNaN(cx)) {
-                this.circles.push({ 
-                    cx, 
-                    cy, 
-                    r, 
-                    fill,
-                    sizeFactor: 0.5 + Math.random(),
-                    phase: Math.random() * Math.PI * 2,
-                    speed: 0.5 + Math.random() * 1.5
+                this.edges.push({ 
+                    x1, y1, x2, y2, 
+                    isFade: false, 
+                    isReverse: false,
+                    nodeIndex1: this.findClosestNode(x1, y1),
+                    nodeIndex2: this.findClosestNode(x2, y2)
                 });
-            }
-        });
-
-        // 4. Считаем degree и создаем карту узлов для быстрого поиска
-        const nodeMap = new Map();
-        
-        this.edges.forEach(edge => {
-            const key1 = `${edge.x1},${edge.y1}`;
-            const key2 = `${edge.x2},${edge.y2}`;
-            this.nodeDegree.set(key1, (this.nodeDegree.get(key1) || 0) + 1);
-            this.nodeDegree.set(key2, (this.nodeDegree.get(key2) || 0) + 1);
-        });
-
-        // 5. Создаем узлы с параметрами анимации из примера
-        this.nodes = Array.from(nodeSet).map((str, index) => {
-            const [x, y] = str.split(',').map(Number);
-            nodeMap.set(str, index); // Сохраняем индекс узла
-            
-            return { 
-                x, 
-                y, 
-                degree: this.nodeDegree.get(str) || 0,
-                // Свойства для анимации "живой сетки"
-                ph: Math.random() * Math.PI * 2,
-                floatAmp: 4.5 + Math.random() * 16.5,
-                floatSpeed: 0.55 + Math.random() * 0.75,
-                floatPhase: Math.random() * Math.PI * 2,
-                floatDir: Math.random() < 0.5 ? -1 : 1,
-                hot: Math.random() < 0.3
-            };
-        });
-
-        // 6. Добавляем индексы узлов в edges, чтобы в animate быстро их находить
-        this.edges.forEach(edge => {
-            edge.nodeIndex1 = nodeMap.get(`${edge.x1},${edge.y1}`);
-            edge.nodeIndex2 = nodeMap.get(`${edge.x2},${edge.y2}`);
+            });
         });
     }
 
@@ -418,159 +398,105 @@ class HomePage extends HTMLElement {
         
         const rawDelta = (timestamp - this.lastFrameTime) / 1000;
         this.lastFrameTime = timestamp;
-        const normalizedDelta = rawDelta / (1 / 60);
-        this.time += normalizedDelta * 0.016;
         this.timeSeconds += rawDelta; 
         
         const { ctx } = this;
         const width = this.canvas.width;
         const height = this.canvas.height;
+        const H = height;
 
         ctx.clearRect(0, 0, width, height);
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
 
-        const H = height;
-        
+        // === ШАГ 1: Вычисляем финальные позиции ВСЕХ узлов (кругов) ОДИН РАЗ ===
+        const nodePositions = this.nodes.map(n => {
+            const perspectiveScale = Math.max(0.18, Math.min(1, (n.cy - H * 0.38) / (H * 0.72)));
+            const lift = Math.sin(this.timeSeconds * n.floatSpeed * n.floatDir + n.floatPhase) * n.floatAmp * perspectiveScale;
+            return {
+                px: n.cx,
+                py: n.cy + lift,
+                node: n
+            };
+        });
+
+        // === ШАГ 2: Рисуем линии, используя УЖЕ вычисленные позиции узлов ===
         this.edges.forEach(edge => {
-            const gradient = ctx.createLinearGradient(edge.x1, edge.y1, edge.x2, edge.y2);
+            const posA = nodePositions[edge.nodeIndex1];
+            const posB = nodePositions[edge.nodeIndex2];
             
+            // Если узел не найден (крайний случай), используем статические координаты
+            const startX = posA ? posA.px : edge.x1;
+            const startY = posA ? posA.py : edge.y1;
+            const endX = posB ? posB.px : edge.x2;
+            const endY = posB ? posB.py : edge.y2;
+
             if (edge.isFade) {
-                // === СТАРАЯ ЛОГИКА ДЛЯ FADE (статичная) ===
+                const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
                 if (edge.isReverse) {
                     gradient.addColorStop(0, 'rgba(13, 13, 15, 0)');
-                    gradient.addColorStop(1, 'rgba(255, 26, 0, 0.8)');
+                    gradient.addColorStop(1, 'rgba(255, 0, 52, 0.2)');
                 } else {
-                    gradient.addColorStop(0, 'rgba(255, 26, 0, 0.8)');
+                    gradient.addColorStop(0, 'rgba(255, 0, 52, 0.2)');
                     gradient.addColorStop(1, 'rgba(13, 13, 15, 0)');
                 }
-                
                 ctx.strokeStyle = gradient;
                 ctx.lineWidth = 1.5;
                 ctx.beginPath();
-                ctx.moveTo(edge.x1, edge.y1);
-                ctx.lineTo(edge.x2, edge.y2);
+                ctx.moveTo(startX, startY);
+                ctx.lineTo(endX, endY);
                 ctx.stroke();
-                
             } else {
-                // === СТАРАЯ ЛОГИКА ГРАДИЕНТА ===
-                gradient.addColorStop(0, 'rgba(255, 26, 0, 0.8)'); 
-                gradient.addColorStop(0.5, 'rgba(119, 0, 2, 0.6)'); 
-                gradient.addColorStop(1, 'rgba(255, 26, 0, 0.8)');
-                
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = 1.2;
-
-                // === НОВАЯ АНИМАЦИЯ (плавание и пульсация) ТОЛЬКО ЗДЕСЬ ===
-                const a = this.nodes[edge.nodeIndex1];
-                const b = this.nodes[edge.nodeIndex2];
-                
-                if (a && b) {
-                    const p = 0.5 + 0.5 * Math.sin(this.timeSeconds * 0.42 + (a.ph + b.ph) * 0.18);
-                    
-                    const perspectiveA = Math.max(0.18, Math.min(1, (a.y - H * 0.68) / (H * 0.72)));
-                    const perspectiveB = Math.max(0.18, Math.min(1, (b.y - H * 0.68) / (H * 0.72)));
-                    
-                    const la = Math.sin(this.timeSeconds * a.floatSpeed * a.floatDir + a.floatPhase) * a.floatAmp * perspectiveA;
-                    const lb = Math.sin(this.timeSeconds * b.floatSpeed * b.floatDir + b.floatPhase) * b.floatAmp * perspectiveB;
+                if (posA && posB) {
+                    const p = 0.5 + 0.5 * Math.sin(this.timeSeconds * 0.42 + (posA.node.ph + posB.node.ph) * 0.18);
                     
                     ctx.beginPath();
-                    ctx.moveTo(a.x, a.y + la);
-                    ctx.lineTo(b.x, b.y + lb);
-                } else {
-                    // Фоллбек, если вдруг узел не найден
-                    ctx.beginPath();
-                    ctx.moveTo(edge.x1, edge.y1);
-                    ctx.lineTo(edge.x2, edge.y2);
+                    ctx.moveTo(posA.px, posA.py);
+                    ctx.lineTo(posB.px, posB.py);
+                    
+                    ctx.strokeStyle = `rgba(255, 0, 52, ${0.10 + 0.14 * p})`;
+                    ctx.lineWidth = 0.8; 
+                    ctx.stroke();
                 }
-                
-                ctx.stroke();
             }
         });
 
-        // === 2. ТОЧКИ (Старая логика без изменений) ===
-        // this.circles.forEach(circle => {
-        //     const px = circle.cx;
-        //     const py = circle.cy;
-        //     const r = circle.r;
-        //     const sizeFactor = circle.sizeFactor || 1;
+        // === ШАГ 3: Рисуем узлы (круги) ПОВЕРХ линий (С УВЕЛИЧЕННЫМ РАЗМЕРОМ) ===
+        nodePositions.forEach(pos => {
+            const n = pos.node;
+            const movementSin = Math.sin(this.timeSeconds * n.floatSpeed * n.floatDir + n.floatPhase);
+            const movementWave = 0.5 + 0.5 * movementSin;
+            const p = n.hot ? movementWave : 0.5 + 0.5 * Math.sin(this.timeSeconds * 1.33875 + n.ph * 1.7);
             
-        //     const pulse = 0.8 + 1 * Math.sin(this.time * circle.speed + circle.phase);
-            
-        //     const glowRadius = r * 5 * sizeFactor;
-        //     const coreRadius = r * 0.6 * sizeFactor;
+            const px = pos.px;
+            const py = pos.py;
 
-        //     const outerGlow = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
-        //     outerGlow.addColorStop(0, `rgba(255, 26, 0, ${0.6 * pulse})`);
-        //     outerGlow.addColorStop(0.1, `rgba(255, 26, 0, ${0.3 * pulse})`);
-        //     outerGlow.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            // УВЕЛИЧЕННЫЕ РАЗМЕРЫ ДЛЯ ЗАМЕТНОСТИ
+            const glowSize = n.hot ? 5.0 + 8.0 * p : 2.5 + 3.5 * p;
             
-        //     ctx.fillStyle = outerGlow;
-        //     ctx.beginPath();
-        //     ctx.arc(px, py, glowRadius, 0, Math.PI * 2);
-        //     ctx.fill();
-
-        //     const coreGlow = ctx.createRadialGradient(px, py, 0, px, py, coreRadius);
-        //     coreGlow.addColorStop(0, 'rgba(255, 255, 255, 1)');
-        //     coreGlow.addColorStop(0.5, 'rgba(255, 220, 230, 0.9)');
-        //     coreGlow.addColorStop(1, 'rgba(255, 200, 210, 0)');
+            const g = ctx.createRadialGradient(px, py, 0, px, py, glowSize);
+            if (n.hot) {
+                g.addColorStop(0, `rgba(255, 0, 52, ${0.30 + 0.55 * p})`);
+                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.12 + 0.25 * p})`);
+                g.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            } else {
+                g.addColorStop(0, `rgba(255, 0, 52, ${0.07 + 0.10 * p})`);
+                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.03 + 0.05 * p})`);
+                g.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            }
             
-        //     ctx.fillStyle = coreGlow;
-        //     ctx.beginPath();
-        //     ctx.arc(px, py, coreRadius, 0, Math.PI * 2);
-        //     ctx.fill();
-        // });
-
-               
-        this.circles.forEach(circle => {
-            const px = circle.cx;
-            const py = circle.cy;
-            const r = circle.r;
-            
-            // Пульация ТОЛЬКО для прозрачности
-            const pulse = 0.7 + 0.3 * Math.sin(this.time * circle.speed + circle.phase);
-            
-            // === ЗАДАЕМ MIN И MAX РАЗМЕРЫ ===
-            const minRadius = 40;   // Минимальный размер точки
-            const maxRadius = 60;  // Максимальный размер точки
-            
-            // sizeFactor от 0 до 1 для интерполяции между min и max
-            const sizeFactor = circle.sizeFactor || 0.5; // уже от 0.5 до 1.5, нормализуем
-            const normalizedFactor = (sizeFactor - 0.5) / 1.0; // теперь от 0 до 1
-            
-            // Вычисляем размеры в диапазоне min-max
-            const glowRadius = minRadius + (maxRadius - minRadius) * normalizedFactor;
-            const midRadius = glowRadius * 0.4;        // 40% от внешнего
-            const coreRadius = glowRadius * 0.15;      // 15% от внешнего
-
-            // === ВНЕШНЕЕ СВЕЧЕНИЕ (мягкое) ===
-            const outerGlow = ctx.createRadialGradient(px, py, 0, px, py, glowRadius);
-            outerGlow.addColorStop(0, `rgba(255, 26, 0, ${0.3 * pulse})`);
-            outerGlow.addColorStop(0.1, `rgba(255, 26, 0, ${0.1 * pulse})`);
-            outerGlow.addColorStop(1, 'rgba(255, 0, 47, 0)');
-            
-            ctx.fillStyle = outerGlow;
+            ctx.fillStyle = g;
             ctx.beginPath();
-            ctx.arc(px, py, glowRadius, 0, Math.PI * 2);
+            ctx.arc(px, py, glowSize, 0, Math.PI * 2);
             ctx.fill();
 
-            // === СРЕДНИЙ СЛОЙ ===
-            const midGlow = ctx.createRadialGradient(px, py, 0, px, py, midRadius);
-            midGlow.addColorStop(0, `rgba(255, 80, 80, ${0.4 * pulse})`);
-            midGlow.addColorStop(1, 'rgba(255, 0, 52, 0)');
+            // УВЕЛИЧЕННОЕ ЯДРО ТОЧКИ
+            const coreSize = n.hot ? 2.0 + 1.5 * p : 1.2 + 0.8 * p;
+            const coreAlpha = n.hot ? 0.28 + 0.65 * p : 0.10 + 0.14 * p;
             
-            ctx.fillStyle = midGlow;
+            ctx.fillStyle = `rgba(255, 35, 75, ${coreAlpha})`;
             ctx.beginPath();
-            ctx.arc(px, py, midRadius, 0, Math.PI * 2);
-            ctx.fill();
-
-            // === ЯДРО (белое с мягкими краями) ===
-            const coreGlow = ctx.createRadialGradient(px, py, 0, px, py, coreRadius);
-            coreGlow.addColorStop(0, 'rgba(255, 255, 255, 0.95)');
-            coreGlow.addColorStop(0.5, 'rgba(255, 230, 230, 0.8)');
-            coreGlow.addColorStop(1, 'rgba(255, 200, 210, 0)');
-            
-            ctx.fillStyle = coreGlow;
-            ctx.beginPath();
-            ctx.arc(px, py, coreRadius, 0, Math.PI * 2);
+            ctx.arc(px, py, coreSize, 0, Math.PI * 2);
             ctx.fill();
         });
 

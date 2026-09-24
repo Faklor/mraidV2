@@ -48,10 +48,6 @@ class ProcessSteps extends HTMLElement {
             <link rel="stylesheet" href="pages/process/components/css/processStep.css">
             
             <section class="steps-row">
-                
-                <!-- Пунктирная линия -->
-                <div class="dashed-line"></div>
-                
                 ${steps.map(step => `
                     <div class="step-card">
                         <div class="step-icon-wrapper">
@@ -60,6 +56,7 @@ class ProcessSteps extends HTMLElement {
                         <span class="step-number">${step.number}</span>
                         <h3 class="step-title">${step.title}</h3>
                         <p class="step-description">${step.description}</p>
+                        <div class="step-arrow"></div>
                     </div>
                 `).join('')}
             </section>

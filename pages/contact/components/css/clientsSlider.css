@@ -1,9 +1,7 @@
-/* === СЕКЦИЯ CLIENTS SLIDER === */
 .clients-slider-section {
     padding: 60px 40px;
     background: #0D0D0F;
     font-family: 'RobotoLight';
-
 }
 
 .slider-heading {
@@ -14,7 +12,6 @@
     text-align: start;
 }
 
-/* === СЛАЙДЕР === */
 .slider-wrapper {
     position: relative;
     display: flex;
@@ -58,13 +55,12 @@
 .slider-track {
     display: flex;
     gap: 24px;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1); /* Ускорено для плавности */
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-/* === КАРТОЧКА ОТЗЫВА === */
 .testimonial-card {
     flex-shrink: 0;
-    width: calc(33.333% - 16px); /* 3 карточки на десктопе */
+    width: calc(23.333% - 16px);
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 16px;
@@ -75,6 +71,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+   
 }
 
 .testimonial-card.active {
@@ -84,12 +81,12 @@
     background: rgba(255, 0, 54, 0.05);
 }
 
-/* === КОНТЕНТ ОТЗЫВА === */
 .testimonial-content {
     display: flex;
     gap: 16px;
     align-items: flex-start;
-    margin-bottom: 24px;
+    /* margin-bottom: 24px; */
+   
 }
 
 .quote-icon {
@@ -109,17 +106,17 @@
     flex: 1;
     font-size: 1rem;
     color: #e0e0e0;
-    line-height: 1.6;
+    line-height: 1.2;
     margin: 0;
+    min-height: 80px; /* Минимальная высота для текста */
 }
 
-/* === АВТОР (ТЕПЕРЬ ТОЛЬКО ЛОГОТИП) === */
 .testimonial-author {
     display: flex;
-    justify-content: flex-end; /* Логотип аккуратно справа */
+    justify-content: flex-end;
     align-items: center;
-    padding-top: 24px;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 2px;
+    /* border-top: 1px solid rgba(255, 255, 255, 0.1); */
 }
 
 .author-logo {
@@ -137,10 +134,7 @@
     object-fit: contain;
     opacity: 0.8;
     transition: opacity 0.3s ease, filter 0.3s ease;
-    
-    /* Опционально: делает логотипы монохромными, а на активном слайде - цветными. 
-       Если хочешь всегда цветные, просто удали эти две строки с filter */
-    filter: grayscale(100%) brightness(1.5); 
+    filter: grayscale(100%) brightness(1.5);
 }
 
 .testimonial-card.active .author-logo img {
@@ -148,7 +142,6 @@
     filter: grayscale(0%) brightness(1);
 }
 
-/* === ТОЧКИ НАВИГАЦИИ === */
 .slider-dots {
     display: flex;
     justify-content: center;
@@ -175,10 +168,10 @@
     background: rgba(255, 0, 54, 0.6);
 }
 
-/* === АДАПТАЦИЯ === */
 @media (max-width: 1200px) {
     .testimonial-card {
-        width: calc(50% - 12px); /* 2 карточки на планшете */
+        width: calc(50% - 12px);
+        min-height: 300px;
     }
 }
 
@@ -202,9 +195,17 @@
     }
     
     .testimonial-card {
-        width: 100%; /* 1 карточка на мобильном */
-        min-height: auto;
+        width: 100%;
+        min-height: 260px;
         padding: 24px;
+    }
+    
+    .testimonial-content {
+        min-height: 100px;
+    }
+    
+    .testimonial-text {
+        min-height: 60px;
     }
     
     .author-logo {

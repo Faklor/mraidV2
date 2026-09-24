@@ -193,7 +193,7 @@
     <!-- -------------------Home -->
     <script src="pages/home/HomePage.js"></script>
 
-    <script src="pages/home/components/heroBlock.js"></script>
+    <script src="pages/home/components/titleBlock.js"></script>
     <script src="pages/home/components/phoneBlock.js"></script>
     <script src="pages/home/components/featuresBlock.js"></script>
     <script src="pages/home/components/sliderClientsBlock.js"></script>
@@ -249,25 +249,25 @@
 
     <!-- <script src="router.js"></script> -->
     <script>
-       const ENABLE_PRELOADER = false; 
+       const ENABLE_PRELOADER = true; 
 
         document.addEventListener('DOMContentLoaded', () => {
             const preloader = document.getElementById('main-preloader');
             const mainContent = document.getElementById('main-content');
 
             if (!ENABLE_PRELOADER) {
-                // Если прелоадер выключен:
+                
                 if (preloader) {
-                    preloader.style.display = 'none'; // Скрываем его, чтобы не мешал
-                    // или preloader.remove(); чтобы полностью удалить из DOM
+                    preloader.style.display = 'none'; 
+                   
                 }
                 if (mainContent) {
-                    mainContent.classList.add('is-visible'); // Сразу показываем контент
+                    mainContent.classList.add('is-visible'); 
                 }
-                return; // Прерываем выполнение, чтобы не вешать лишние слушатели
+                return; 
             }
 
-            // Если прелоадер включен (стандартная логика)
+            
             if (preloader && mainContent) {
                 preloader.addEventListener('preloader-complete', () => {
                     mainContent.classList.add('is-visible');
@@ -306,6 +306,58 @@
             sections.forEach(section => {
                 if (section.id) observer.observe(section);
             });
+        });
+    </script>
+
+    <!-- -------------------ScrollEffect -->
+    <script src="components/scrollReveal.js"></script>
+    <script>
+        // Универсальная функция, которая находит элементы ДАЖЕ внутри Shadow DOM
+        function initGlobalReveal() {
+            // 1. Укажи здесь теги всех своих основных компонентов-страниц
+            const pageComponents = [
+                'page-home',
+                'page-process',
+                'page-portfolio',
+                'price-cards',
+                'page-dashboard',
+                'page-services',
+                'page-contact',
+                'app-header',
+                'app-footer'
+            ];
+
+            let elementsToReveal = [];
+
+            // 2. Собираем элементы из Shadow DOM компонентов
+            pageComponents.forEach(tag => {
+                const components = document.querySelectorAll(tag);
+                components.forEach(comp => {
+                    if (comp.shadowRoot) {
+                        // Ищем все элементы с атрибутом data-reveal внутри компонента
+                        const revealed = comp.shadowRoot.querySelectorAll('[data-reveal]');
+                        elementsToReveal = [...elementsToReveal, ...revealed];
+                    }
+                });
+            });
+
+            // 3. Собираем элементы из обычного DOM (на всякий случай)
+            const lightDomElements = document.querySelectorAll('[data-reveal]');
+            elementsToReveal = [...elementsToReveal, ...lightDomElements];
+
+            // 4. Применяем анимацию ко всем найденным элементам ОДНИМ вызовом
+            if (elementsToReveal.length > 0) {
+                window.scrollReveal.reveal(elementsToReveal, {
+                    threshold: 0.1,
+                    once: false // false = анимация повторяется при скролле вверх-вниз
+                });
+            }
+        }
+
+        // Запускаем сканер после полной загрузки страницы + небольшая задержка, 
+        // чтобы Web Components гарантированно успели отрисовать свой innerHTML
+        window.addEventListener('load', () => {
+            setTimeout(initGlobalReveal, 300);
         });
     </script>
     

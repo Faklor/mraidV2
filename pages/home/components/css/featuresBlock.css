@@ -14,6 +14,12 @@
     flex-direction: column;
     gap: 16px;
     z-index: 10;
+
+    /* background-color: #111113;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.05); */
+    
+
 }
 
 /* 1. БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ БЛОКОВ */
@@ -21,7 +27,7 @@
     display: flex;
     align-items: center;
     gap: 12px; 
-    padding: 16px 20px;
+    padding: 10px 20px;
     background-color: #111113;
     border-radius: 12px;
     border: 1px solid rgba(255, 255, 255, 0.05);

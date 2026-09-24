@@ -19,7 +19,7 @@
 }
 
 .buttons {
-    --btn-width: 280px;   
+    --btn-width: 240px;   
     --btn-height: 56px;   
     
     display: flex;
@@ -41,7 +41,7 @@
     
     padding: 0 24px;
     border-radius: 8px;
-    font-weight: 600;
+    font-weight: 300;
     font-size: 1rem;
     text-decoration: none;
     transition: all 0.3s ease;
@@ -67,7 +67,7 @@
 }
 
 .btn-secondary {
-    background-color: #1a1a1a;
+    background-color:transparent;
     color: #ffffff;
     border: 1px solid #333;
 }

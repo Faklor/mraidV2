@@ -56,6 +56,8 @@ html, body {
 
 html {
   scroll-behavior: smooth;
+  /* scrollbar-gutter: stable; 
+    overflow-y: scroll;  */
 }
 
 /* Скрываем стандартный скроллбар и стилизуем свой */
@@ -130,6 +132,19 @@ h1 {
   
 }
 
+
+/* === УПРАВЛЕНИЕ ПОКАЗОМ ОСНОВНОГО КОНТЕНТА === */
+html.preloader-active, 
+body.preloader-active {
+    overflow: hidden !important;
+    /* Гарантируем, что место под скроллбар резервируется, чтобы контент не прыгал */
+    scrollbar-gutter: stable !important; 
+}
+.container.preloader-active,
+main.preloader-active,
+.landing-main.preloader-active {
+    overflow: hidden !important;
+}
 
 
 

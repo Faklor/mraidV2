@@ -17,6 +17,7 @@
     pointer-events: none; /* Чтобы не мешал кликам */
     z-index: 2;         /* Поверх фона, но под контентом */
     mix-blend-mode: screen; /* Режим наложения для красивого свечения */
+    visibility: hidden;
 }
 
 @keyframes fadeIn {
@@ -100,6 +101,12 @@
 
 .stats-section {
     padding: 0 20px;
+}
+
+.features-list {
+    align-self: start;
+    margin: 40px 0 0 0;
+
 }
 
 /* === АДАПТАЦИЯ === */

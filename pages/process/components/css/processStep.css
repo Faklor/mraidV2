@@ -7,51 +7,15 @@
     margin-bottom: 40px;
 }
 
-
-
-/* === ПУНКТИРНАЯ ЛИНИЯ С АНИМАЦИЕЙ ПОТОКА === */
-.dashed-line {
-    position: absolute;
-    top: 43px;
-    left: 60px;
-    right: 250px;
-    height: 2px;
-    z-index: 10;
-    pointer-events: none;
-    /* Заменяем border на градиент для плавной анимации движения */
-    background: repeating-linear-gradient(
-        90deg,
-        rgba(255, 255, 255, 0.15) 0px,
-        rgba(255, 255, 255, 0.15) 10px,
-        transparent 10px,
-        transparent 20px
-    );
-    background-size: 200% 100%;
-    animation: dashed-flow 100s linear infinite;
-}
-
-@keyframes dashed-flow {
-    0% { background-position: 100% 0; }
-    100% { background-position: 0 0; }
-}
-
-/* Карточка шага */
 .step-card {
     position: relative;
-    background: #1a1a1a;
+    background: #0F0F11;
     border-radius: 12px;
     padding: 84px 20px 20px;
     z-index: 1;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-/* Легкий подъем карточки при наведении */
-.step-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-}
-
-/* === МОСТИК МЕЖДУ КАРТОЧКАМИ === */
 .step-card:not(:last-child)::before {
     content: '';
     position: absolute;
@@ -59,11 +23,10 @@
     top: 18px;
     width: 30px;
     height: 50px;
-    background: #1a1a1a;
+    background: #0F0F11;
     z-index: 100;
 }
 
-/* === ПОЛУКРУГЛЫЕ ВЫРЕЗЫ === */
 .step-card:not(:last-child)::after {
     content: '';
     position: absolute;
@@ -72,12 +35,11 @@
     width: 20px;
     height: 50px;
     background: 
-        radial-gradient(circle at 50% 0%, #0D0D0F 12px, transparent 13px),
-        radial-gradient(circle at 50% 100%, #0D0D0F 12px, transparent 13px);
+        radial-gradient(circle at 50% 0%, #0a0a0c 12px, transparent 13px),
+        radial-gradient(circle at 50% 100%, #0a0a0c 12px, transparent 13px);
     z-index: 101;
 }
 
-/* Красный кружок с иконкой + АНИМАЦИЯ ПУЛЬСАЦИИ */
 .step-icon-wrapper {
     position: absolute;
     top: 15px;
@@ -90,13 +52,10 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-    /* Базовая тень */
     box-shadow: 0 0 0 0 rgba(255, 0, 54, 0.4);
-    /* Запускаем анимацию пульсации */
     animation: icon-pulse 3s ease-in-out infinite;
 }
 
-/* Делаем пульсацию "волнообразной", добавляя задержку для каждого элемента */
 .step-card:nth-child(1) .step-icon-wrapper { animation-delay: 0s; }
 .step-card:nth-child(2) .step-icon-wrapper { animation-delay: 0.2s; }
 .step-card:nth-child(3) .step-icon-wrapper { animation-delay: 0.4s; }
@@ -120,12 +79,10 @@
     transition: transform 0.3s ease;
 }
 
-/* При наведении на карточку иконка чуть увеличивается */
 .step-card:hover .step-icon {
     transform: scale(1.1);
 }
 
-/* Номер шага */
 .step-number {
     position: absolute;
     top: 20px;
@@ -134,30 +91,74 @@
     font-weight: 700;
     color: rgba(255, 255, 255, 0.3);
     transition: color 0.3s ease;
+    visibility: hidden;
 }
 
 .step-card:hover .step-number {
     color: rgba(255, 255, 255, 0.6);
 }
 
-/* Заголовок красным */
 .step-title {
     font-size: 1.1rem;
-    font-weight: 700;
+    font-weight: 300;
     color: #FF0036;
     margin: 0 0 12px;
     padding-top: 8px;
 }
 
-/* Описание */
 .step-description {
     font-size: 0.9rem;
     color: #a0a0a0;
-    line-height: 1.5;
+    line-height: 1.2;
     margin: 0;
+    font-family: 'RobotoLight';
 }
 
-/* === АДАПТАЦИЯ === */
+/* === ПУНКТИРНАЯ СТРЕЛКА МЕЖДУ КАРТОЧКАМИ === */
+.step-arrow {
+    position: absolute;
+    top: 42px;
+    left: 88px;
+    width: 160px;
+    height: 2px;
+    z-index: 102; /* ВЫШЕ мостиков (100-101) */
+    pointer-events: none;
+    display: block !important; /* Принудительно показываем */
+}
+
+.step-arrow::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: repeating-linear-gradient(
+        90deg,
+        rgba(255, 0, 52, 1) 0px,
+        rgba(255, 0, 52, 1) 8px,
+        transparent 8px,
+        transparent 16px
+    );
+}
+
+.step-arrow::after {
+    content: '';
+    position: absolute;
+    right: -7px;
+    top: -4px;
+    width: 0;
+    height: 0;
+    border-top: 5px solid transparent;
+    border-bottom: 5px solid transparent;
+    border-left: 7px solid rgba(255, 0, 52, 1);
+}
+
+/* Скрываем стрелку только у последней карточки в ряду (6-я) */
+.step-card:nth-child(6n) .step-arrow {
+    display: none !important;
+}
+
 @media (max-width: 1440px) {
     .steps-row {
         grid-template-columns: repeat(3, 1fr);
@@ -168,8 +169,9 @@
         display: none;
     }
     
-    .dashed-line {
-        display: none; /* На планшетах убираем линию, так как сетка ломается */
+    /* На планшетах скрываем у 3-й и 6-й */
+    .step-card:nth-child(3n) .step-arrow {
+        display: none !important;
     }
 }
 
@@ -186,6 +188,10 @@
     .step-card:not(:last-child)::before,
     .step-card:not(:last-child)::after {
         display: none;
+    }
+    
+    .step-arrow {
+        display: none !important;
     }
     
     .step-icon-wrapper {

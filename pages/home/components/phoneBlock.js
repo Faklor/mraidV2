@@ -8,6 +8,7 @@ class PhoneShowcase extends HTMLElement {
     }
 
     connectedCallback() {
+        this.renderHTML();
         this.loadRandomPlayable();
         this.setupInactivityDetection();
         this.setup3DTilt();
@@ -21,7 +22,6 @@ class PhoneShowcase extends HTMLElement {
         
         this.lastPlayable = randomPl;
         
-        // Пути от корня сайта (../../../ поднимает из components в корень)
         const playableSrc = `assets/playables/pl${randomPl}/index.html`;
         const previewSrc = `assets/playables/pl${randomPl}/preview.jpg`;
         
@@ -31,43 +31,44 @@ class PhoneShowcase extends HTMLElement {
 
         if (iframe) {
             if (preloader) preloader.classList.remove('hidden');
-            
-            // Меняем картинку фона ПЕРЕД загрузкой iframe
             if (preloaderBg) preloaderBg.src = previewSrc;
             
-            iframe.src = playableSrc;
+            iframe.src = 'about:blank';
+            setTimeout(() => {
+                iframe.src = playableSrc;
+            }, 50);
             
             iframe.onload = () => {
                 if (preloader) preloader.classList.add('hidden');
             };
-        } else {
-            this.renderHTML(playableSrc, previewSrc);
         }
         
         this.resetInactivityTimer();
     }
 
-    renderHTML(playableSrc, previewSrc) {
+    renderHTML() {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/components/css/phoneBlock.css">
             
             <div class="showcase-wrapper">
-                <img src="assets/img/main-blick.png" alt="Main Blick" class="bg-blick">
-                
                 <div class="phone-3d-container">
                     <div class="phone-inner">
-                        <!-- ПРЕЛОАДЕР С ОБЫЧНОЙ КАРТИНКОЙ -->
                         <div class="preloader">
-                            <img src="${previewSrc}" alt="Preview" class="preloader-bg">
+                            <img src="" alt="Preview" class="preloader-bg">
                             <div class="spinner"></div>
                         </div>
-                        
-                        <iframe src="${playableSrc}" class="playable-screen" frameborder="0" title="Playable Game"></iframe>
+                        <iframe src="about:blank" class="playable-screen" frameborder="0" title="Playable Game"></iframe>
+                        <svg class="phone-svg-body" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="2" y="2" width="296" height="596" rx="45" fill="#111114" stroke="#26282C" stroke-width="4"/>
+                            <rect x="14" y="14" width="272" height="572" rx="36" fill="none" stroke="#101114" stroke-width="20"/>
+                            <rect x="16" y="16" width="268" height="568" rx="35" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                        </svg>
+                        <svg class="phone-svg-notch" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+                            <rect x="100" y="20" width="100" height="22" rx="10" fill="#101114"/>
+                        </svg>
                         <div class="screen-reflection"></div>
-                        <img src="assets/img/phone.png" alt="Phone Frame" class="phone-frame-img">
                     </div>
                 </div>
-                
                 <div class="inactivity-indicator">
                     <span>Next game in <span class="countdown">30</span>s</span>
                 </div>
@@ -121,7 +122,7 @@ class PhoneShowcase extends HTMLElement {
         }
     }
 
-        setup3DTilt() {
+    setup3DTilt() {
         const container = this.shadowRoot.querySelector('.phone-3d-container');
         const phoneInner = this.shadowRoot.querySelector('.phone-inner');
 
@@ -134,21 +135,13 @@ class PhoneShowcase extends HTMLElement {
         let targetRotateY = 0;
         let animationFrameId = null;
 
-        // Функция плавного сглаживания (lerp)
-        const lerp = (start, end, factor) => {
-            return start + (end - start) * factor;
-        };
+        const lerp = (start, end, factor) => start + (end - start) * factor;
 
-        // Анимационный цикл для плавного движения
         const animate = () => {
-            // Сглаживаем текущий угол к целевому (factor 0.1 = очень плавно)
             currentRotateX = lerp(currentRotateX, targetRotateX, 0.1);
             currentRotateY = lerp(currentRotateY, targetRotateY, 0.1);
-
-            // Применяем трансформацию
             phoneInner.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
 
-            // Продолжаем анимацию, пока курсор внутри
             if (isMouseInside) {
                 animationFrameId = requestAnimationFrame(animate);
             }
@@ -156,48 +149,35 @@ class PhoneShowcase extends HTMLElement {
 
         const handleMouseMove = (e) => {
             const rect = container.getBoundingClientRect();
-            
             const isInside = (
-                e.clientX >= rect.left &&
-                e.clientX <= rect.right &&
-                e.clientY >= rect.top &&
-                e.clientY <= rect.bottom
+                e.clientX >= rect.left && e.clientX <= rect.right &&
+                e.clientY >= rect.top && e.clientY <= rect.bottom
             );
 
-            // Вход курсора
             if (isInside && !isMouseInside) {
                 isMouseInside = true;
                 phoneInner.style.animation = 'none';
-                
-                // Запускаем анимационный цикл
                 animationFrameId = requestAnimationFrame(animate);
-            } 
-            // Выход курсора
-            else if (!isInside && isMouseInside) {
+            } else if (!isInside && isMouseInside) {
                 isMouseInside = false;
-                
-                // Останавливаем анимационный цикл
                 if (animationFrameId) {
                     cancelAnimationFrame(animationFrameId);
                     animationFrameId = null;
                 }
-
-                // Плавно возвращаем в центр
                 targetRotateX = 0;
                 targetRotateY = 0;
                 
-                // Запускаем анимацию возврата
                 const returnAnimate = () => {
                     currentRotateX = lerp(currentRotateX, 0, 0.1);
                     currentRotateY = lerp(currentRotateY, 0, 0.1);
                     phoneInner.style.transform = `rotateX(${currentRotateX}deg) rotateY(${currentRotateY}deg)`;
 
-                    // Продолжаем, пока не достигнем центра (погрешность 0.1°)
                     if (Math.abs(currentRotateX) > 0.1 || Math.abs(currentRotateY) > 0.1) {
                         requestAnimationFrame(returnAnimate);
                     } else {
-                        // Возвращаем CSS-анимацию
-                        phoneInner.style.animation = 'tilt3d 8s ease-in-out infinite';
+                        // Сбрасываем inline transform, чтобы CSS-анимация могла работать
+                        phoneInner.style.transform = '';
+                        phoneInner.style.animation = 'float3D 12s ease-in-out infinite';
                         currentRotateX = 0;
                         currentRotateY = 0;
                     }
@@ -205,19 +185,15 @@ class PhoneShowcase extends HTMLElement {
                 requestAnimationFrame(returnAnimate);
             }
 
-            // Расчет целевого наклона (работает от самого центра)
             if (isMouseInside) {
                 const x = e.clientX - rect.left;
                 const y = e.clientY - rect.top;
                 const centerX = rect.width / 2;
                 const centerY = rect.height / 2;
 
-                // Нормализуем от -1 до 1
                 const normalizedX = (x - centerX) / centerX;
                 const normalizedY = (centerY - y) / centerY;
-
-                // Максимальный угол 6 градусов (умеренный наклон)
-                const maxTilt = 6;
+                const maxTilt = 8;
                 targetRotateX = normalizedY * maxTilt;
                 targetRotateY = normalizedX * maxTilt;
             }

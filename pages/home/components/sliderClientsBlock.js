@@ -81,11 +81,11 @@ class TrustedBy extends HTMLElement {
 
         // Пауза при наведении
         container.addEventListener('mouseenter', () => {
-            isPaused = true;
+            // isPaused = true;
         });
 
         container.addEventListener('mouseleave', () => {
-            isPaused = false;
+            // isPaused = false;
         });
 
         const animate = () => {
