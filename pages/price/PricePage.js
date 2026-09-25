@@ -269,7 +269,7 @@ class PriceCards extends HTMLElement {
                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
                     'Technical support'
                 ],
-                price: '$199',
+                price: '$290',
                 popular: false
             },
             {
@@ -283,7 +283,7 @@ class PriceCards extends HTMLElement {
                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
                     'Technical support'
                 ],
-                price: '$499',
+                price: '$590',
                 popular: false
             },
             {
@@ -297,7 +297,7 @@ class PriceCards extends HTMLElement {
                     'Free access to Dashboard (create custom versions for free with AI asset generation)',
                     'Technical support'
                 ],
-                price: '$1,499',
+                price: '$1,490',
                 oldPrice: '$2,500',
                 popular: true
             },
@@ -313,7 +313,7 @@ class PriceCards extends HTMLElement {
                     'Free access to Dashboard (with AI asset generation)',
                     'Technical support'
                 ],
-                price: '$3,499',
+                price: '$3,490',
                 popular: false
             }
         ];
