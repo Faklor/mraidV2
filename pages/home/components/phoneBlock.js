@@ -46,12 +46,52 @@ class PhoneShowcase extends HTMLElement {
         this.resetInactivityTimer();
     }
 
+    // renderHTML() {
+    //     this.shadowRoot.innerHTML = `
+    //         <link rel="stylesheet" href="pages/home/components/css/phoneBlock.css">
+            
+    //         <div class="showcase-wrapper">
+    //             <div class="phone-3d-container">
+    //                 <div class="phone-inner">
+    //                     <div class="preloader">
+    //                         <img src="" alt="Preview" class="preloader-bg">
+    //                         <div class="spinner"></div>
+    //                     </div>
+    //                     <iframe src="about:blank" class="playable-screen" frameborder="0" title="Playable Game"></iframe>
+    //                     <svg class="phone-svg-body" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+    //                         <rect x="2" y="2" width="296" height="596" rx="45" fill="#111114" stroke="#26282C" stroke-width="4"/>
+    //                         <rect x="14" y="14" width="272" height="572" rx="36" fill="none" stroke="#101114" stroke-width="20"/>
+    //                         <rect x="16" y="16" width="268" height="568" rx="35" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+    //                     </svg>
+    //                     <svg class="phone-svg-notch" viewBox="0 0 300 600" xmlns="http://www.w3.org/2000/svg">
+    //                         <rect x="100" y="20" width="100" height="22" rx="10" fill="#101114"/>
+    //                     </svg>
+    //                     <div class="screen-reflection"></div>
+    //                 </div>
+    //             </div>
+    //             <div class="inactivity-indicator">
+    //                 <span>Next game in <span class="countdown">30</span>s</span>
+    //             </div>
+    //         </div>
+    //     `;
+        
+    //     const iframe = this.shadowRoot.querySelector('.playable-screen');
+    //     const preloader = this.shadowRoot.querySelector('.preloader');
+    //     if (iframe && preloader) {
+    //         iframe.onload = () => {
+    //             preloader.classList.add('hidden');
+    //         };
+    //     }
+    // }
     renderHTML() {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/components/css/phoneBlock.css">
             
             <div class="showcase-wrapper">
                 <div class="phone-3d-container">
+                    <!-- НОВОЕ: Круглое свечение позади телефона -->
+                    <div class="phone-glow"></div>
+                    
                     <div class="phone-inner">
                         <div class="preloader">
                             <img src="" alt="Preview" class="preloader-bg">

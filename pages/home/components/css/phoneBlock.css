@@ -1,20 +1,21 @@
 .showcase-wrapper {
     position: relative;
     width: 100%;
-    height: auto;
+    height: 480px;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 1;
+    overflow: visible;
 }
 
 .phone-3d-container {
-    padding: 20px;
     position: relative;
     z-index: 10;
     perspective: 1500px;
-    width: 220px;
-    height: 440px;
+    /* Увеличенные базовые размеры */
+    width: 230px; 
+    height: 460px;
     cursor: pointer;
 }
 
@@ -29,6 +30,7 @@
 
 .phone-3d-container:hover .phone-inner {
     animation: none;
+    transform: rotateX(0deg) rotateY(0deg) rotateZ(0deg) translateY(0);
     transition: transform 0.1s linear;
 }
 
@@ -37,18 +39,38 @@
         transform: translateY(0px) rotateZ(0deg);
     }
     15% {
-        transform: translateY(-15px) rotateZ(0deg);
+        transform: translateY(-5px) rotateZ(0deg);
     }
     30% {
-          transform: translateY(-20px) rotateZ(12deg) rotateY(-20deg);
+        transform: translateY(-10px) rotateZ(12deg) rotateY(-20deg);
     }
     45% {
-        transform: translateY(-15px) rotateZ(12deg) rotateY(-20deg);
+        transform: translateY(-5px) rotateZ(12deg) rotateY(-20deg);
     }
     55% {
-         transform: translateY(-20px) rotateZ(12deg) rotateY(-20deg);
+        transform: translateY(-10px) rotateZ(12deg) rotateY(-20deg);
     }
-    
+}
+
+/* === КРУГЛОЕ СВЕЧЕНИЕ ПОЗАДИ ТЕЛЕФОНА === */
+.phone-glow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, rgba(255, 0, 54, 0.35) 0%, rgba(255, 0, 54, 0) 70%);
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: -1; 
+    pointer-events: none;
+    animation: glowPulse 4s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.9; transform: translate(-50%, -50%) scale(1.1); }
 }
 
 .phone-svg-body {
@@ -59,11 +81,6 @@
     height: 100%;
     z-index: 5;
     pointer-events: none;
-    /* filter:
-    drop-shadow(0 0 1px rgba(255, 0, 52, 1))
-    drop-shadow(0 0 1px rgba(255, 0, 52, 1)); */
-
-    /* box-shadow: 0 0 20px 1px rgba(255, 0, 52, 1); */
     filter: drop-shadow(0 0 4px rgba(255, 0, 54, 0.8)) 
             drop-shadow(0 0 15px rgba(255, 0, 54, 0.4));
 }
@@ -78,13 +95,16 @@
     pointer-events: none;
 }
 
+/* === ВНУТРЕННОСТИ ТЕЛЕФОНА (под 230x460) === */
+/* 230 - 24 = 206px ширина экрана */
+/* 460 - 24 = 436px высота экрана */
 .preloader,
 .playable-screen {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 200px;
-    height: 420px;
+    top: 12px;
+    left: 12px;
+    width: 206px;
+    height: 436px;
     border-radius: 26px;
     overflow: hidden;
     background-color: #000;
@@ -139,10 +159,10 @@
 
 .screen-reflection {
     position: absolute;
-    top: 10px;
-    left: 10px;
-    width: 200px;
-    height: 420px;
+    top: 12px;
+    left: 12px;
+    width: 206px;
+    height: 436px;
     border-radius: 26px;
     background: linear-gradient(
         135deg,
@@ -185,9 +205,14 @@
     visibility: visible;
 }
 
+/* === АДАПТАЦИЯ === */
 @media (max-width: 768px) {
+    .showcase-wrapper {
+        height: 400px;
+    }
+    
     .phone-3d-container {
-        transform: scale(0.7);
+        transform: scale(0.75);
         transform-origin: center center;
     }
 }

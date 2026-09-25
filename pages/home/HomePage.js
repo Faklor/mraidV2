@@ -463,26 +463,40 @@ class HomePage extends HTMLElement {
         });
 
         // === ШАГ 3: Рисуем узлы (круги) ПОВЕРХ линий (С УВЕЛИЧЕННЫМ РАЗМЕРОМ) ===
-        nodePositions.forEach(pos => {
+       nodePositions.forEach(pos => {
             const n = pos.node;
-            const movementSin = Math.sin(this.timeSeconds * n.floatSpeed * n.floatDir + n.floatPhase);
-            const movementWave = 0.5 + 0.5 * movementSin;
-            const p = n.hot ? movementWave : 0.5 + 0.5 * Math.sin(this.timeSeconds * 1.33875 + n.ph * 1.7);
             
-            const px = pos.px;
-            const py = pos.py;
+            // 1. Вычисляем фазу движения
+            const phase = this.timeSeconds * n.floatSpeed * n.floatDir + n.floatPhase;
+            
+            // 2. Движение вверх-вниз (перспектива сохраняется)
+            const perspectiveScale = Math.max(0.18, Math.min(1, (n.cy - H * 0.38) / (H * 0.72)));
+            const lift = Math.sin(phase) * n.floatAmp * perspectiveScale;
+            
+            // 3. НОВАЯ ЛОГИКА ЯРКОСТИ:
+            // Math.cos(phase) дает направление скорости. 
+            // Когда cos = -1 (движение вверх), множитель становится 1.0 (максимально ярко).
+            // Когда cos = 1 (движение вниз), множитель становится 0.0 (минимально ярко/тускло).
+            // Мы мапим это в диапазон от 0.2 (базовая видимость) до 1.0 (пиковая яркость)
+            const brightness = 0.2 + 0.8 * ((1 - Math.cos(phase)) / 2);
+            
+            // Для "горячих" (hot) точек делаем эффект более резким и заметным
+            const intensity = n.hot ? brightness : (0.4 + 0.6 * brightness); 
+            
+            const px = n.cx;
+            const py = n.cy + lift;
 
-            // УВЕЛИЧЕННЫЕ РАЗМЕРЫ ДЛЯ ЗАМЕТНОСТИ
-            const glowSize = n.hot ? 5.0 + 8.0 * p : 2.5 + 3.5 * p;
+            // Размер свечения зависит от яркости
+            const glowSize = n.hot ? 4.0 + 6.0 * intensity : 2.0 + 3.0 * intensity;
             
             const g = ctx.createRadialGradient(px, py, 0, px, py, glowSize);
             if (n.hot) {
-                g.addColorStop(0, `rgba(255, 0, 52, ${0.30 + 0.55 * p})`);
-                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.12 + 0.25 * p})`);
+                g.addColorStop(0, `rgba(255, 0, 52, ${0.20 + 0.60 * intensity})`);
+                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.08 + 0.20 * intensity})`);
                 g.addColorStop(1, 'rgba(255, 0, 52, 0)');
             } else {
-                g.addColorStop(0, `rgba(255, 0, 52, ${0.07 + 0.10 * p})`);
-                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.03 + 0.05 * p})`);
+                g.addColorStop(0, `rgba(255, 0, 52, ${0.05 + 0.15 * intensity})`);
+                g.addColorStop(0.35, `rgba(255, 0, 52, ${0.02 + 0.05 * intensity})`);
                 g.addColorStop(1, 'rgba(255, 0, 52, 0)');
             }
             
@@ -491,9 +505,9 @@ class HomePage extends HTMLElement {
             ctx.arc(px, py, glowSize, 0, Math.PI * 2);
             ctx.fill();
 
-            // УВЕЛИЧЕННОЕ ЯДРО ТОЧКИ
-            const coreSize = n.hot ? 2.0 + 1.5 * p : 1.2 + 0.8 * p;
-            const coreAlpha = n.hot ? 0.28 + 0.65 * p : 0.10 + 0.14 * p;
+            // Ядро точки тоже пульсирует в такт движению
+            const coreSize = n.hot ? 1.5 + 1.0 * intensity : 0.8 + 0.6 * intensity;
+            const coreAlpha = n.hot ? 0.20 + 0.60 * intensity : 0.08 + 0.20 * intensity;
             
             ctx.fillStyle = `rgba(255, 35, 75, ${coreAlpha})`;
             ctx.beginPath();
