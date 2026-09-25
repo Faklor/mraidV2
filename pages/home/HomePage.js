@@ -454,7 +454,8 @@ class HomePage extends HTMLElement {
                     ctx.moveTo(posA.px, posA.py);
                     ctx.lineTo(posB.px, posB.py);
                     
-                    ctx.strokeStyle = `rgba(255, 0, 52, ${0.10 + 0.14 * p})`;
+                    //ctx.strokeStyle = `rgba(255, 0, 52, ${0.10 + 0.14 * p})`;
+                    ctx.strokeStyle = `rgba(255, 0, 52,0.2)`;
                     ctx.lineWidth = 0.8; 
                     ctx.stroke();
                 }
