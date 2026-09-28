@@ -55,10 +55,10 @@ class TrustedBy extends HTMLElement {
         `;
 
         // Клонируем логотипы для бесшовной прокрутки
-        this.setupInfiniteScroll();
+        //this.setupInfiniteScroll();
         
         // Запускаем анимацию
-        this.startAnimation();
+        //this.startAnimation();
     }
 
     setupInfiniteScroll() {

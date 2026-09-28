@@ -4,16 +4,15 @@ class PortfolioSlider extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.currentIndex = 0;
         this.cardsPerView = 6;
-        this.isAnimating = false; // Флаг блокировки анимации
         
         this.allProjects = [];
-        this.uniqueCategories = ['all'];
-        this.uniqueMechanics = ['all'];
-        this.uniqueDimensions = ['all'];
+        this.uniqueCategories = [];
+        this.uniqueMechanics = [];
+        this.uniqueDimensions = [];
         
-        this.currentCategory = 'all';
-        this.currentMechanic = 'all';
-        this.currentDimension = 'all';
+        this.currentCategory = '';
+        this.currentMechanic = '';
+        this.currentDimension = '';
         this.filteredProjects = [];
     }
 
@@ -29,21 +28,29 @@ class PortfolioSlider extends HTMLElement {
             
             const data = await response.json();
             
+            
             this.allProjects = data.previews.map(item => ({
                 title: item.project || 'Unknown Project',
-                categories: (item.categories && item.categories.length > 0) ? item.categories.map(c => c.toLowerCase()) : ['other'],
-                mechanics: (item.genres && item.genres.length > 0) ? item.genres.map(m => m.toLowerCase()) : ['other'],
+                categories: (item.categories && item.categories.length > 0) ? item.categories : ['Other'],
+                mechanics: (item.genres && item.genres.length > 0) ? item.genres : ['Other'],
                 dimension: (item.formats && item.formats.length > 0) ? item.formats[0].toLowerCase() : '2d',
                 image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
                 link: item.url || '#'
             }));
 
-            const rawCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
-            this.uniqueCategories = ['all', ...rawCategories.filter(c => c !== 'all')];
+           
+            this.uniqueCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
 
-            this.updateAvailableFilters('init');
+            
+            this.currentCategory = this.uniqueCategories[0] || '';
+            
+           
+            this.updateAvailableFilters();
+
+           
             this.applyFilters();
 
+            
             window.PORTFOLIO_TOTAL_COUNT = this.allProjects.length;
             window.dispatchEvent(new CustomEvent('portfolio-data-loaded', { 
                 detail: { count: this.allProjects.length } 
@@ -56,69 +63,44 @@ class PortfolioSlider extends HTMLElement {
         }
     }
 
+    // === АНИМИРОВАННАЯ ФИЛЬТРАЦИЯ ===
     applyFilters() {
-        if (this.isAnimating) return; // Блокировка во время анимации
         
         this.filteredProjects = this.allProjects.filter(p => {
-            const matchCategory = this.currentCategory === 'all' || p.categories.includes(this.currentCategory);
-            const matchMechanic = this.currentMechanic === 'all' || p.mechanics.includes(this.currentMechanic);
-            const matchDimension = this.currentDimension === 'all' || p.dimension === this.currentDimension;
+            const matchCategory = p.categories.includes(this.currentCategory);
+            const matchMechanic = p.mechanics.includes(this.currentMechanic);
+            const matchDimension = p.dimension === this.currentDimension;
+
             return matchCategory && matchMechanic && matchDimension;
         });
 
         const track = this.shadowRoot.querySelector('.slider-track');
         const cards = track ? track.querySelectorAll('.slider-card') : [];
 
-        if (cards.length > 0) {
-            cards.forEach(card => card.classList.add('fade-out'));
-            setTimeout(() => {
-                this.currentIndex = 0;
-                this.renderCards();
-                this.renderDots();
-                
-                const newCards = this.shadowRoot.querySelectorAll('.slider-card');
-                newCards.forEach(card => {
-                    card.classList.add('fade-in');
-                    void card.offsetWidth; 
-                    card.classList.remove('fade-in');
-                });
-                this.updateSlider();
-            }, 300);
-        } else {
+        if (cards.length === 0) {
+            this.renderCards();
+            this.renderDots();
+            this.currentIndex = 0;
+            setTimeout(() => this.updateSlider(), 50);
+            return;
+        }
+
+        cards.forEach(card => card.classList.add('fade-out'));
+
+        setTimeout(() => {
             this.currentIndex = 0;
             this.renderCards();
             this.renderDots();
-            setTimeout(() => this.updateSlider(), 50);
-        }
-    }
 
-    updateAvailableFilters(changedType = 'category') {
-        let validProjects = this.allProjects.filter(p => 
-            this.currentCategory === 'all' || p.categories.includes(this.currentCategory)
-        );
+            const newCards = this.shadowRoot.querySelectorAll('.slider-card');
+            newCards.forEach(card => {
+                card.classList.add('fade-in');
+                void card.offsetWidth; 
+                card.classList.remove('fade-in');
+            });
 
-        if (this.currentMechanic !== 'all') {
-            validProjects = validProjects.filter(p => p.mechanics.includes(this.currentMechanic));
-        }
-
-        if (this.currentDimension !== 'all') {
-            validProjects = validProjects.filter(p => p.dimension === this.currentDimension);
-        }
-
-        const availMechanics = [...new Set(validProjects.flatMap(p => p.mechanics))].sort();
-        const availDimensions = [...new Set(validProjects.map(p => p.dimension))].sort();
-
-        this.uniqueMechanics = ['all', ...availMechanics.filter(m => m !== 'all')];
-        this.uniqueDimensions = ['all', ...availDimensions.filter(d => d !== 'all')];
-
-        if (this.currentMechanic !== 'all' && !this.uniqueMechanics.includes(this.currentMechanic)) {
-            this.currentMechanic = 'all';
-        }
-        if (this.currentDimension !== 'all' && !this.uniqueDimensions.includes(this.currentDimension)) {
-            this.currentDimension = 'all';
-        }
-
-        this.updateFilterButtons();
+            this.updateSlider();
+        }, 400);
     }
 
     renderCards() {
@@ -135,6 +117,11 @@ class PortfolioSlider extends HTMLElement {
                 <div class="card-image">
                     <img src="${p.image}" alt="${p.title}" loading="lazy">
                 </div>
+                <div class="card-info">
+                    <span class="card-title">${p.title}</span>
+                    <!-- Показываем первую механику из массива для красоты на карточке -->
+                    <span class="card-category">${p.dimension.toUpperCase()} • ${this.formatLabel(p.mechanics[0])}</span>
+                </div>
             </div>
         `).join('');
     }
@@ -146,7 +133,6 @@ class PortfolioSlider extends HTMLElement {
     }
 
     formatLabel(id) {
-        if (id === 'all') return 'All';
         return id.charAt(0).toUpperCase() + id.slice(1).replace(/-/g, ' ');
     }
 
@@ -158,9 +144,12 @@ class PortfolioSlider extends HTMLElement {
                     <div class="header-left"><h2>Portfolio & solutions</h2></div>
                     <div class="header-right"><p>Explore our playables, choose the right format for your campaign and find a solution that fits your needs</p></div>
                 </div>
-                
                 <div class="filter-section">
                     <div class="filter-group">
+                        <span class="filter-label">
+                            <img src="assets/img/portfolio/categories.png" alt="Categories" class="filter-icon">
+                            Categories
+                        </span>
                         <div class="filter-buttons">
                             ${this.uniqueCategories.map(cat => `
                                 <button class="filter-btn ${cat === this.currentCategory ? 'active' : ''}" data-type="category" data-value="${cat}">
@@ -169,11 +158,13 @@ class PortfolioSlider extends HTMLElement {
                             `).join('')}
                         </div>
                     </div>
-                    
                     <hr class="line-after-categories"/>
-                    
                     <div class="filter-row">
                         <div class="filter-group mechanics-group">
+                            <span class="filter-label">
+                                <img src="assets/img/portfolio/mechanics.png" alt="Mechanics" class="filter-icon">
+                                Mechanics
+                            </span>
                             <div class="filter-buttons-mechanics">
                                 ${this.uniqueMechanics.map(mech => `
                                     <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
@@ -184,9 +175,10 @@ class PortfolioSlider extends HTMLElement {
                         </div>
 
                         <div class="filter-group dimension-group">
-                            <div class="filter-buttons-dimensions">
+                            <span class="filter-label">&ensp;</span>
+                            <div class="filter-buttons dimension-buttons">
                                 ${this.uniqueDimensions.map(dim => `
-                                    <button class="filter-btn-dimension ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
+                                    <button class="filter-btn-mechanics dimension-btn ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
                                         ${dim.toUpperCase()}
                                     </button>
                                 `).join('')}
@@ -194,7 +186,6 @@ class PortfolioSlider extends HTMLElement {
                         </div>
                     </div>
                 </div>
-
                 <div class="slider-container">
                     <button class="slider-btn prev-btn" aria-label="Previous">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -227,101 +218,82 @@ class PortfolioSlider extends HTMLElement {
     }
 
     initEvents() {
+        // === ДЕЛЕГИРОВАНИЕ СОБЫТИЙ ДЛЯ ВСЕХ КНОПОК ФИЛЬТРОВ ===
         const filterSection = this.shadowRoot.querySelector('.filter-section');
         if (filterSection) {
             filterSection.addEventListener('click', (e) => {
-                const btn = e.target.closest('.filter-btn, .filter-btn-mechanics, .filter-btn-dimension');
+                const btn = e.target.closest('.filter-btn, .filter-btn-mechanics');
                 if (!btn || btn.classList.contains('active')) return;
                 
                 const type = btn.dataset.type;
                 const value = btn.dataset.value;
+                const group = btn.closest('.filter-buttons, .filter-buttons-mechanics');
                 
+                group.querySelectorAll('.filter-btn, .filter-btn-mechanics').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
                 if (type === 'category') {
-                    this.shadowRoot.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                    btn.classList.add('active');
-                    
                     this.currentCategory = value;
-                    this.currentMechanic = 'all';
-                    this.currentDimension = 'all';
-                    this.updateAvailableFilters('category');
+                    this.updateAvailableFilters('category'); // Пересчитываем всё для новой категории
+                    this.updateFilterButtons();
                 } 
                 else if (type === 'mechanic') {
                     this.currentMechanic = value;
-                    this.updateAvailableFilters('mechanic');
+                    this.updateAvailableFilters('mechanic'); // Пересчитывает типы, чтобы исключить пустоту
+                    this.updateFilterButtons();
                 } 
                 else if (type === 'dimension') {
                     this.currentDimension = value;
-                    this.updateAvailableFilters('dimension');
+                    this.updateAvailableFilters('dimension'); // Пересчитывает механики, чтобы исключить пустоту
+                    this.updateFilterButtons();
                 }
 
                 this.applyFilters();
             });
         }
 
+        // === ОСТАЛЬНЫЕ СОБЫТИЯ (слайдер, точки, ресайз) ===
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
-                // БЛОКИРОВКА: если анимация идёт, игнорируем клик
-                if (this.isAnimating || this.currentIndex === 0) return;
-                
-                this.isAnimating = true;
-                this.currentIndex--;
-                this.updateSlider();
-                
-                // Разблокировка после завершения transition (500мс как в CSS)
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
+                if (this.currentIndex > 0) { this.currentIndex--; this.updateSlider(); }
             });
         }
 
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
-                
-                // БЛОКИРОВКА: если анимация идёт или мы в конце, игнорируем клик
-                if (this.isAnimating || this.currentIndex >= maxIndex) return;
-                
-                this.isAnimating = true;
-                this.currentIndex++;
-                this.updateSlider();
-                
-                // Разблокировка после завершения transition
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
+                if (this.currentIndex < maxIndex) { this.currentIndex++; this.updateSlider(); }
             });
         }
 
         this.shadowRoot.addEventListener('click', (e) => {
             if (e.target.classList.contains('dot')) {
-                const newIndex = parseInt(e.target.dataset.page);
-                if (this.isAnimating || newIndex === this.currentIndex) return;
-                
-                this.isAnimating = true;
-                this.currentIndex = newIndex;
+                this.currentIndex = parseInt(e.target.dataset.page);
                 this.updateSlider();
-                
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
-            }
-            if (e.target.closest('.slider-card')) {
-                const card = e.target.closest('.slider-card');
-                const link = card.dataset.link;
-                if (link && link !== '#') window.open(link, '_blank');
             }
         });
 
         window.addEventListener('resize', () => {
             this.updateCardsPerView();
             this.currentIndex = 0;
-            this.renderCards();
-            this.renderDots();
-            this.updateSlider();
+            this.renderSlider();
         });
+
+        const track = this.shadowRoot.querySelector('.slider-track');
+        if (track) {
+            track.addEventListener('click', (e) => {
+                const card = e.target.closest('.slider-card');
+                if (card) {
+                    const link = card.dataset.link;
+                    if (link && link !== '#') {
+                        window.open(link, '_blank');
+                    }
+                }
+            });
+        }
     }
 
     updateCardsPerView() {
@@ -362,8 +334,49 @@ class PortfolioSlider extends HTMLElement {
         }
     }
 
+    // === ОБНОВЛЕНИЕ ДОСТУПНЫХ ФИЛЬТРОВ НА ОСНОВЕ КАТЕГОРИИ ===
+    updateAvailableFilters(changedType = 'category') {
+        
+        let validProjects = this.allProjects.filter(p => 
+            p.categories.includes(this.currentCategory)
+        );
+
+        
+        if (changedType === 'mechanic') {
+            validProjects = validProjects.filter(p => p.mechanics.includes(this.currentMechanic));
+        }
+
+        
+        const availDims = [...new Set(validProjects.map(p => p.dimension))];
+        this.uniqueDimensions = ['2d', ...availDims.filter(d => d !== '2d' && d !== '3d'), '3d'].filter(d => availDims.includes(d));
+
+       
+        if (!this.uniqueDimensions.includes(this.currentDimension)) {
+            this.currentDimension = this.uniqueDimensions[0] || '';
+        }
+
+       
+        validProjects = this.allProjects.filter(p => 
+            p.categories.includes(this.currentCategory) && 
+            p.dimension === this.currentDimension
+        );
+        this.uniqueMechanics = [...new Set(validProjects.flatMap(p => p.mechanics))].sort();
+
+       
+        if (changedType === 'category') {
+            this.currentMechanic = this.uniqueMechanics[0] || '';
+        } 
+        
+        else if (!this.uniqueMechanics.includes(this.currentMechanic)) {
+            this.currentMechanic = this.uniqueMechanics[0] || '';
+        }
+    }
+
+    // === ПЕРЕРИСОВКА КНОПОК МЕХАНИК И DIMENSIONS В DOM ===
     updateFilterButtons() {
         const mechContainer = this.shadowRoot.querySelector('.mechanics-group .filter-buttons-mechanics');
+        const dimContainer = this.shadowRoot.querySelector('.dimension-group .dimension-buttons');
+        
         if (mechContainer) {
             mechContainer.innerHTML = this.uniqueMechanics.map(mech => `
                 <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
@@ -371,11 +384,10 @@ class PortfolioSlider extends HTMLElement {
                 </button>
             `).join('');
         }
-
-        const dimContainer = this.shadowRoot.querySelector('.dimension-group .filter-buttons-dimensions');
+        
         if (dimContainer) {
             dimContainer.innerHTML = this.uniqueDimensions.map(dim => `
-                <button class="filter-btn-dimension ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
+                <button class="filter-btn-mechanics dimension-btn ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
                     ${dim.toUpperCase()}
                 </button>
             `).join('');

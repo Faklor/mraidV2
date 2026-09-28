@@ -89,10 +89,7 @@ class TopPlayablesSlider extends HTMLElement {
                                     <div class="card-image">
                                         <img src="${card.image}" alt="${card.title}" loading="lazy">
                                     </div>
-                                    <div class="card-info">
-                                        <span class="card-title">${card.title}</span>
-                                        <span class="card-category">${card.category}</span>
-                                    </div>
+                                    
                                 </div>
                             `).join('')}
                         </div>
