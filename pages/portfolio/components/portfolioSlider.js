@@ -4,7 +4,8 @@ class PortfolioSlider extends HTMLElement {
         this.attachShadow({ mode: 'open' });
         this.currentIndex = 0;
         this.cardsPerView = 6;
-        this.isAnimating = false; // Флаг блокировки анимации
+        this.isAnimating = false;
+        this.categoryScrollPosition = 0;
         
         this.allProjects = [];
         this.uniqueCategories = ['all'];
@@ -57,7 +58,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     applyFilters() {
-        if (this.isAnimating) return; // Блокировка во время анимации
+        if (this.isAnimating) return;
         
         this.filteredProjects = this.allProjects.filter(p => {
             const matchCategory = this.currentCategory === 'all' || p.categories.includes(this.currentCategory);
@@ -161,16 +162,26 @@ class PortfolioSlider extends HTMLElement {
                 
                 <div class="filter-section">
                     <div class="filter-group">
-                        <div class="filter-buttons">
-                            ${this.uniqueCategories.map(cat => `
-                                <button class="filter-btn ${cat === this.currentCategory ? 'active' : ''}" data-type="category" data-value="${cat}">
-                                    ${this.formatLabel(cat)}
+                        <div class="categories-slider">
+                            <div class="filter-buttons">
+                                ${this.uniqueCategories.map(cat => `
+                                    <button class="filter-btn ${cat === this.currentCategory ? 'active' : ''}" data-type="category" data-value="${cat}">
+                                        ${this.formatLabel(cat)}
+                                    </button>
+                                `).join('')}
+                            </div>
+                            <div class="category-nav">
+                                <button class="cat-nav-btn cat-prev" aria-label="Previous categories">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                 </button>
-                            `).join('')}
+                                <button class="cat-nav-btn cat-next" aria-label="Next categories">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                </button>
+                            </div>
                         </div>
                     </div>
                     
-                    <hr class="line-after-categories"/>
+                    
                     
                     <div class="filter-row">
                         <div class="filter-group mechanics-group">
@@ -226,6 +237,44 @@ class PortfolioSlider extends HTMLElement {
         return dots;
     }
 
+    // === НОВЫЕ МЕТОДЫ ДЛЯ ПРОКРУТКИ КАТЕГОРИЙ ===
+    scrollCategories(direction) {
+        const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
+        if (!buttonsContainer) return;
+
+        const scrollAmount = 150; // Пикселей за один клик
+        const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
+
+        if (direction === 'left') {
+            this.categoryScrollPosition = Math.max(0, this.categoryScrollPosition - scrollAmount);
+        } else {
+            this.categoryScrollPosition = Math.min(maxScroll, this.categoryScrollPosition + scrollAmount);
+        }
+
+        buttonsContainer.scrollTo({
+            left: this.categoryScrollPosition,
+            behavior: 'smooth'
+        });
+
+        this.updateCategoryNavButtons();
+    }
+
+    updateCategoryNavButtons() {
+        const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
+        const prevBtn = this.shadowRoot.querySelector('.cat-prev');
+        const nextBtn = this.shadowRoot.querySelector('.cat-next');
+
+        if (!buttonsContainer || !prevBtn || !nextBtn) return;
+
+        const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
+
+        prevBtn.style.opacity = this.categoryScrollPosition <= 0 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = this.categoryScrollPosition <= 0 ? 'none' : 'auto';
+
+        nextBtn.style.opacity = this.categoryScrollPosition >= maxScroll ? '0.3' : '1';
+        nextBtn.style.pointerEvents = this.categoryScrollPosition >= maxScroll ? 'none' : 'auto';
+    }
+
     initEvents() {
         const filterSection = this.shadowRoot.querySelector('.filter-section');
         if (filterSection) {
@@ -258,19 +307,29 @@ class PortfolioSlider extends HTMLElement {
             });
         }
 
+        // === НОВЫЕ ОБРАБОТЧИКИ ДЛЯ КНОПОК КАТЕГОРИЙ ===
+        const catPrevBtn = this.shadowRoot.querySelector('.cat-prev');
+        const catNextBtn = this.shadowRoot.querySelector('.cat-next');
+
+        if (catPrevBtn) {
+            catPrevBtn.addEventListener('click', () => this.scrollCategories('left'));
+        }
+
+        if (catNextBtn) {
+            catNextBtn.addEventListener('click', () => this.scrollCategories('right'));
+        }
+
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
-                // БЛОКИРОВКА: если анимация идёт, игнорируем клик
                 if (this.isAnimating || this.currentIndex === 0) return;
                 
                 this.isAnimating = true;
                 this.currentIndex--;
                 this.updateSlider();
                 
-                // Разблокировка после завершения transition (500мс как в CSS)
                 setTimeout(() => {
                     this.isAnimating = false;
                 }, 500);
@@ -281,14 +340,12 @@ class PortfolioSlider extends HTMLElement {
             nextBtn.addEventListener('click', () => {
                 const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
                 
-                // БЛОКИРОВКА: если анимация идёт или мы в конце, игнорируем клик
                 if (this.isAnimating || this.currentIndex >= maxIndex) return;
                 
                 this.isAnimating = true;
                 this.currentIndex++;
                 this.updateSlider();
                 
-                // Разблокировка после завершения transition
                 setTimeout(() => {
                     this.isAnimating = false;
                 }, 500);
@@ -380,6 +437,9 @@ class PortfolioSlider extends HTMLElement {
                 </button>
             `).join('');
         }
+
+        // Обновляем состояние кнопок навигации категорий
+        setTimeout(() => this.updateCategoryNavButtons(), 100);
     }
 }
 

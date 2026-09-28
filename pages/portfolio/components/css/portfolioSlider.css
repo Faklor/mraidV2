@@ -57,15 +57,31 @@
     margin-bottom: 20px;
 }
 
-/* Категории */
+/* === СЛАЙДЕР КАТЕГОРИЙ === */
+.categories-slider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
 .filter-buttons {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     gap: 8px;
     align-items: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none; /* Скрываем скроллбар */
+    -ms-overflow-style: none;
+    flex: 1;
+}
+
+.filter-buttons::-webkit-scrollbar {
+    display: none;
 }
 
 .filter-btn {
+    flex-shrink: 0;
     background: transparent;
     border: none;
     border-bottom: 2px solid transparent;
@@ -75,6 +91,7 @@
     padding: 8px 12px;
     cursor: pointer;
     transition: all 0.3s ease;
+    white-space: nowrap;
 }
 
 .filter-btn:hover {
@@ -85,6 +102,37 @@
     color: #FF0036;
     border-bottom-color: #FF0036;
     font-weight: 600;
+}
+
+/* Кнопки навигации категорий */
+.category-nav {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.cat-nav-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.cat-nav-btn:hover:not([style*="pointer-events: none"]) {
+    background: rgba(255, 0, 54, 0.2);
+    border-color: #FF0036;
+}
+
+.cat-nav-btn svg {
+    width: 16px;
+    height: 16px;
 }
 
 /* Строка с механиками и форматами */
@@ -119,7 +167,7 @@
     padding: 8px 18px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 20px;
+    border-radius: 10px;
     color: #aaaaaa;
     font-size: 0.9rem;
     font-weight: 500;
@@ -158,7 +206,7 @@
     padding: 8px 16px;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 8px;
+    border-radius: 10px;
     color: #aaaaaa;
     font-size: 0.85rem;
     font-weight: 600;
@@ -191,7 +239,7 @@
     height: 48px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 50%;
+    border-radius: 10px;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -216,32 +264,28 @@
     gap: 24px;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
-
-    padding: 10px 0;
 }
 
 /* === КАРТОЧКА === */
 .slider-card {
-    
     flex-shrink: 0;
     width: calc((100% - 120px) / 6);
-    border-radius: 16px;
+    border-radius: 10px;
     overflow: hidden;
     transition: all 0.4s ease;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.05);
-    
 }
 
 .slider-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-6px);
     border-color: rgba(255, 0, 54, 0.5);
-    box-shadow: 0 0px 24px rgba(255, 0, 54, 0.15);
+    box-shadow: 0 12px 24px rgba(255, 0, 54, 0.15);
 }
 
 .card-image {
     width: 100%;
-    aspect-ratio: 9 / 15; /* Увеличенная высота */
+    aspect-ratio: 9 / 15;
     overflow: hidden;
     background: #111;
     position: relative;
@@ -255,7 +299,7 @@
 }
 
 .slider-card:hover .card-image img {
-  
+    transform: scale(1.08);
 }
 
 /* === ТОЧКИ НАВИГАЦИИ === */
@@ -320,6 +364,15 @@
     
     .slider-card { width: calc((100% - 24px) / 2); }
     .slider-btn { width: 40px; height: 40px; }
+    
+    .categories-slider {
+        gap: 8px;
+    }
+    
+    .cat-nav-btn {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 @media (max-width: 480px) {
