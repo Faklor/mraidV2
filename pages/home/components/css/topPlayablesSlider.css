@@ -54,6 +54,7 @@
     align-items: center;
     gap: 16px;
     position: relative;
+    
 }
 
 .slider-btn {
@@ -84,6 +85,7 @@
 .slider-track-wrapper {
     overflow: hidden;
     flex: 1;
+    padding: 20px 0;
 }
 
 .slider-track {
