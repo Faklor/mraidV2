@@ -9,19 +9,21 @@ class TopPlayablesSlider extends HTMLElement {
     }
 
     async connectedCallback() {
-        // Показываем состояние загрузки
-        this.shadowRoot.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">Loading playables...</div>`;
+        this.shadowRoot.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">Loading top playables...</div>`;
         
         await this.loadData();
         this.render();
         this.initSlider();
         
-        // Используем ResizeObserver вместо window.resize для лучшей производительности
         this.resizeObserver = new ResizeObserver(() => {
             this.updateCardsPerView();
             this.updateSliderPosition();
         });
-        this.resizeObserver.observe(this.shadowRoot.querySelector('.slider-track-wrapper'));
+        
+        const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
+        if (wrapper) {
+            this.resizeObserver.observe(wrapper);
+        }
     }
 
     disconnectedCallback() {
@@ -32,33 +34,40 @@ class TopPlayablesSlider extends HTMLElement {
 
     async loadData() {
         try {
-            // ⚠️ ВАЖНО: Укажи здесь правильный путь к твоему JSON файлу!
-            const response = await fetch('assets/data/projects-data.json');
+            const response = await fetch('https://dashboard.mraid.io/portfolio.json');
             if (!response.ok) throw new Error('Failed to load JSON');
             
             const data = await response.json();
             
-            // Берем первые 12 проектов для слайдера (можно изменить число)
-            this.cardsData = data.slice(0, 12).map(item => {
-                // Умно хитрость: извлекаем категорию из первого слова title 
-                // (например, "Match Project 5" -> "Match", "Casual Project 17" -> "Casual")
-                const category = item.title.split(' ')[0] || 'Playable';
+            const favoriteProjects = data.previews.filter(item => 
+                item.favorite === 1 || item.favorite === true || item.favorite === "1"
+            );
+
+            this.cardsData = favoriteProjects.map(item => {
+                const category = (item.categories && item.categories.length > 0) 
+                    ? item.categories[0] 
+                    : 'Playable';
                 
                 return {
-                    title: item.title,
-                    image: item.image,
-                    url: item.url,
+                    title: item.project || 'Unknown Project',
+                    image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
+                    url: item.url || '#',
                     category: category
                 };
             });
+
         } catch (error) {
             console.error('Error loading slider data:', error);
-            // Fallback данные на случай ошибки загрузки
             this.cardsData = [];
         }
     }
 
     render() {
+        if (this.cardsData.length === 0) {
+            this.shadowRoot.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">No favorite playables found.</div>`;
+            return;
+        }
+
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/components/css/topPlayablesSlider.css">
             
@@ -89,7 +98,6 @@ class TopPlayablesSlider extends HTMLElement {
                                     <div class="card-image">
                                         <img src="${card.image}" alt="${card.title}" loading="lazy">
                                     </div>
-                                    
                                 </div>
                             `).join('')}
                         </div>
@@ -122,35 +130,43 @@ class TopPlayablesSlider extends HTMLElement {
         const track = this.shadowRoot.querySelector('.slider-track');
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
-        const dots = this.shadowRoot.querySelectorAll('.dot');
         const cards = this.shadowRoot.querySelectorAll('.slider-card');
 
-        // === ЛОГИКА КЛИКА ПО КАРТОЧКЕ ===
         cards.forEach(card => {
             card.addEventListener('click', () => {
                 const url = card.getAttribute('data-url');
-                if (url) {
-                    window.open(url, '_blank'); // Открываем ссылку в новой вкладке
+                if (url && url !== '#') {
+                    window.open(url, '_blank');
                 }
             });
         });
 
+       
         this.updateSliderPosition = () => {
             if (!track || !track.querySelector('.slider-card')) return;
             
             const cardWidth = track.querySelector('.slider-card').offsetWidth;
-            const gap = 24; // Должен совпадать с gap в CSS
+            const gap = 24; 
             const offset = -(this.currentIndex * (cardWidth + gap));
             
             track.style.transform = `translateX(${offset}px)`;
 
-            // Обновляем точки
-            dots.forEach((dot, index) => {
+            
+            const currentDots = this.shadowRoot.querySelectorAll('.dot');
+            currentDots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === this.currentIndex);
             });
 
-            // Управление прозрачностью кнопок
-            const maxIndex = Math.ceil(this.cardsData.length / this.cardsPerView) - 1;
+            const maxIndex = Math.max(0, Math.ceil(this.cardsData.length / this.cardsPerView) - 1);
+            
+            
+            if (this.currentIndex > maxIndex) {
+                this.currentIndex = maxIndex;
+                
+                requestAnimationFrame(() => this.updateSliderPosition());
+                return;
+            }
+            
             prevBtn.style.opacity = this.currentIndex === 0 ? '0.3' : '1';
             prevBtn.style.pointerEvents = this.currentIndex === 0 ? 'none' : 'auto';
             
@@ -166,28 +182,32 @@ class TopPlayablesSlider extends HTMLElement {
         });
 
         nextBtn.addEventListener('click', () => {
-            const maxIndex = Math.ceil(this.cardsData.length / this.cardsPerView) - 1;
+            const maxIndex = Math.max(0, Math.ceil(this.cardsData.length / this.cardsPerView) - 1);
             if (this.currentIndex < maxIndex) {
                 this.currentIndex++;
                 this.updateSliderPosition();
             }
         });
 
-        dots.forEach((dot) => {
-            dot.addEventListener('click', () => {
-                this.currentIndex = parseInt(dot.dataset.page);
-                this.updateSliderPosition();
+       
+        const attachDotListeners = () => {
+            this.shadowRoot.querySelectorAll('.dot').forEach((dot) => {
+                dot.addEventListener('click', () => {
+                    this.currentIndex = parseInt(dot.dataset.page);
+                    this.updateSliderPosition();
+                });
             });
-        });
+        };
+        
+        attachDotListeners();
 
-        // Первичная инициализация
         this.updateCardsPerView();
-        // Небольшая задержка, чтобы браузер успел отрисовать DOM и рассчитать ширину
         setTimeout(() => this.updateSliderPosition(), 100);
     }
 
     updateCardsPerView() {
-        const width = this.shadowRoot.querySelector('.slider-track-wrapper')?.offsetWidth || window.innerWidth;
+        const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
+        const width = wrapper ? wrapper.offsetWidth : window.innerWidth;
         
         if (width <= 768) {
             this.cardsPerView = 2;
@@ -199,11 +219,11 @@ class TopPlayablesSlider extends HTMLElement {
             this.cardsPerView = 6;
         }
         
-        // Перерисовываем точки при изменении количества видимых карточек
         const dotsContainer = this.shadowRoot.querySelector('.slider-dots');
         if (dotsContainer) {
             dotsContainer.innerHTML = this.generateDots();
-            // Обновляем слушатели для новых точек
+            
+            
             dotsContainer.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => {
                     this.currentIndex = parseInt(dot.dataset.page);

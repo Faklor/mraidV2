@@ -48,9 +48,10 @@
 }
 
 /* === ФИЛЬТРЫ === */
+/* === ФИЛЬТРЫ === */
 .filter-section {
     padding: 0 40px;
-    margin-bottom: 40px;
+    margin-bottom: 20px;
 }
 
 .filter-group {
@@ -71,7 +72,7 @@
     align-items: center;
     overflow-x: auto;
     overflow-y: hidden;
-    scrollbar-width: none; /* Скрываем скроллбар */
+    scrollbar-width: none;
     -ms-overflow-style: none;
     flex: 1;
 }
@@ -150,15 +151,26 @@
     align-items: center;
 }
 
+/* 👈 НОВЫЕ СТИЛИ ДЛЯ СЛАЙДЕРА МЕХАНИК */
+.mechanics-slider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+}
+
 .filter-buttons-mechanics {
     display: flex;
     align-items: center;
     gap: 10px;
-    overflow-x: auto;
-    padding-bottom: 8px;
-    scrollbar-width: thin;
-    scrollbar-color: #333 transparent;
+    overflow-x: auto; /* Оставляем для работы scrollTo, но скрываем визуально */
+    scrollbar-width: none; /* Скрываем скроллбар Firefox */
+    -ms-overflow-style: none; /* Скрываем скроллбар IE/Edge */
     flex: 1;
+}
+
+.filter-buttons-mechanics::-webkit-scrollbar {
+    display: none; /* Скрываем скроллбар Chrome/Safari */
 }
 
 .filter-btn-mechanics {
@@ -186,6 +198,74 @@
     border-color: #FF0036;
     color: #ffffff;
     box-shadow: 0 4px 12px rgba(255, 0, 54, 0.3);
+}
+
+/* 👈 Кнопки навигации механик */
+.mechanics-nav {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.mech-nav-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    color: #ffffff;
+}
+
+.mech-nav-btn:hover:not([style*="pointer-events: none"]) {
+    background: rgba(255, 0, 54, 0.2);
+    border-color: #FF0036;
+}
+
+.mech-nav-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+/* Форматы (2D / 3D) */
+.filter-group.dimension-group {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+}
+
+.filter-buttons-dimensions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.filter-btn-dimension {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    color: #aaaaaa;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.filter-btn-dimension:hover {
+    border-color: rgba(255, 0, 54, 0.3);
+    color: #ffffff;
+}
+
+.filter-btn-dimension.active {
+    background: rgba(255, 0, 54, 0.15);
+    border-color: #FF0036;
+    color: #FF0036;
 }
 
 /* Форматы (2D / 3D) */
@@ -239,7 +319,7 @@
     height: 48px;
     background: rgba(255, 255, 255, 0.05);
     border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 10px;
+    border-radius: 50%;
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -257,6 +337,7 @@
 .slider-track-wrapper {
     overflow: hidden;
     flex: 1;
+    padding: 20px 0;
 }
 
 .slider-track {
@@ -285,7 +366,7 @@
 
 .card-image {
     width: 100%;
-    aspect-ratio: 9 / 15;
+    aspect-ratio: 9 / 16;
     overflow: hidden;
     background: #111;
     position: relative;
@@ -299,7 +380,7 @@
 }
 
 .slider-card:hover .card-image img {
-    transform: scale(1.08);
+    /* transform: scale(1.08); */
 }
 
 /* === ТОЧКИ НАВИГАЦИИ === */

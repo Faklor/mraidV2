@@ -6,6 +6,7 @@ class PortfolioSlider extends HTMLElement {
         this.cardsPerView = 6;
         this.isAnimating = false;
         this.categoryScrollPosition = 0;
+        this.mechanicsScrollPosition = 0; 
         
         this.allProjects = [];
         this.uniqueCategories = ['all'];
@@ -36,7 +37,8 @@ class PortfolioSlider extends HTMLElement {
                 mechanics: (item.genres && item.genres.length > 0) ? item.genres.map(m => m.toLowerCase()) : ['other'],
                 dimension: (item.formats && item.formats.length > 0) ? item.formats[0].toLowerCase() : '2d',
                 image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
-                link: item.url || '#'
+                link: item.url || '#',
+                favorite: item.favorite === 1 || item.favorite === true || item.favorite === "1" // 👈 Избранное
             }));
 
             const rawCategories = [...new Set(this.allProjects.flatMap(p => p.categories))].sort();
@@ -65,6 +67,12 @@ class PortfolioSlider extends HTMLElement {
             const matchMechanic = this.currentMechanic === 'all' || p.mechanics.includes(this.currentMechanic);
             const matchDimension = this.currentDimension === 'all' || p.dimension === this.currentDimension;
             return matchCategory && matchMechanic && matchDimension;
+        });
+
+        
+        this.filteredProjects.sort((a, b) => {
+            if (a.favorite === b.favorite) return 0; 
+            return a.favorite ? -1 : 1;              
         });
 
         const track = this.shadowRoot.querySelector('.slider-track');
@@ -119,6 +127,8 @@ class PortfolioSlider extends HTMLElement {
             this.currentDimension = 'all';
         }
 
+        
+        this.mechanicsScrollPosition = 0; 
         this.updateFilterButtons();
     }
 
@@ -181,16 +191,25 @@ class PortfolioSlider extends HTMLElement {
                         </div>
                     </div>
                     
-                    
-                    
                     <div class="filter-row">
                         <div class="filter-group mechanics-group">
-                            <div class="filter-buttons-mechanics">
-                                ${this.uniqueMechanics.map(mech => `
-                                    <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
-                                        ${this.formatLabel(mech)}
+                            
+                            <div class="mechanics-slider">
+                                <div class="filter-buttons-mechanics">
+                                    ${this.uniqueMechanics.map(mech => `
+                                        <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
+                                            ${this.formatLabel(mech)}
+                                        </button>
+                                    `).join('')}
+                                </div>
+                                <div class="mechanics-nav">
+                                    <button class="mech-nav-btn mech-prev" aria-label="Previous mechanics">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                                     </button>
-                                `).join('')}
+                                    <button class="mech-nav-btn mech-next" aria-label="Next mechanics">
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M9 18L15 12L9 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                                    </button>
+                                </div>
                             </div>
                         </div>
 
@@ -237,12 +256,10 @@ class PortfolioSlider extends HTMLElement {
         return dots;
     }
 
-    // === НОВЫЕ МЕТОДЫ ДЛЯ ПРОКРУТКИ КАТЕГОРИЙ ===
     scrollCategories(direction) {
         const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
         if (!buttonsContainer) return;
-
-        const scrollAmount = 150; // Пикселей за один клик
+        const scrollAmount = 150;
         const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
 
         if (direction === 'left') {
@@ -250,12 +267,7 @@ class PortfolioSlider extends HTMLElement {
         } else {
             this.categoryScrollPosition = Math.min(maxScroll, this.categoryScrollPosition + scrollAmount);
         }
-
-        buttonsContainer.scrollTo({
-            left: this.categoryScrollPosition,
-            behavior: 'smooth'
-        });
-
+        buttonsContainer.scrollTo({ left: this.categoryScrollPosition, behavior: 'smooth' });
         this.updateCategoryNavButtons();
     }
 
@@ -263,16 +275,42 @@ class PortfolioSlider extends HTMLElement {
         const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
         const prevBtn = this.shadowRoot.querySelector('.cat-prev');
         const nextBtn = this.shadowRoot.querySelector('.cat-next');
-
         if (!buttonsContainer || !prevBtn || !nextBtn) return;
 
         const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
-
         prevBtn.style.opacity = this.categoryScrollPosition <= 0 ? '0.3' : '1';
         prevBtn.style.pointerEvents = this.categoryScrollPosition <= 0 ? 'none' : 'auto';
-
         nextBtn.style.opacity = this.categoryScrollPosition >= maxScroll ? '0.3' : '1';
         nextBtn.style.pointerEvents = this.categoryScrollPosition >= maxScroll ? 'none' : 'auto';
+    }
+
+   
+    scrollMechanics(direction) {
+        const container = this.shadowRoot.querySelector('.filter-buttons-mechanics');
+        if (!container) return;
+        const scrollAmount = 150;
+        const maxScroll = container.scrollWidth - container.offsetWidth;
+
+        if (direction === 'left') {
+            this.mechanicsScrollPosition = Math.max(0, this.mechanicsScrollPosition - scrollAmount);
+        } else {
+            this.mechanicsScrollPosition = Math.min(maxScroll, this.mechanicsScrollPosition + scrollAmount);
+        }
+        container.scrollTo({ left: this.mechanicsScrollPosition, behavior: 'smooth' });
+        this.updateMechanicsNavButtons();
+    }
+
+    updateMechanicsNavButtons() {
+        const container = this.shadowRoot.querySelector('.filter-buttons-mechanics');
+        const prevBtn = this.shadowRoot.querySelector('.mech-prev');
+        const nextBtn = this.shadowRoot.querySelector('.mech-next');
+        if (!container || !prevBtn || !nextBtn) return;
+
+        const maxScroll = container.scrollWidth - container.offsetWidth;
+        prevBtn.style.opacity = this.mechanicsScrollPosition <= 0 ? '0.3' : '1';
+        prevBtn.style.pointerEvents = this.mechanicsScrollPosition <= 0 ? 'none' : 'auto';
+        nextBtn.style.opacity = this.mechanicsScrollPosition >= maxScroll ? '0.3' : '1';
+        nextBtn.style.pointerEvents = this.mechanicsScrollPosition >= maxScroll ? 'none' : 'auto';
     }
 
     initEvents() {
@@ -288,7 +326,6 @@ class PortfolioSlider extends HTMLElement {
                 if (type === 'category') {
                     this.shadowRoot.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
                     this.currentCategory = value;
                     this.currentMechanic = 'all';
                     this.currentDimension = 'all';
@@ -302,53 +339,44 @@ class PortfolioSlider extends HTMLElement {
                     this.currentDimension = value;
                     this.updateAvailableFilters('dimension');
                 }
-
                 this.applyFilters();
             });
         }
 
-        // === НОВЫЕ ОБРАБОТЧИКИ ДЛЯ КНОПОК КАТЕГОРИЙ ===
+        // Обработчики категорий
         const catPrevBtn = this.shadowRoot.querySelector('.cat-prev');
         const catNextBtn = this.shadowRoot.querySelector('.cat-next');
+        if (catPrevBtn) catPrevBtn.addEventListener('click', () => this.scrollCategories('left'));
+        if (catNextBtn) catNextBtn.addEventListener('click', () => this.scrollCategories('right'));
 
-        if (catPrevBtn) {
-            catPrevBtn.addEventListener('click', () => this.scrollCategories('left'));
-        }
+        //  Обработчики механик
+        const mechPrevBtn = this.shadowRoot.querySelector('.mech-prev');
+        const mechNextBtn = this.shadowRoot.querySelector('.mech-next');
+        if (mechPrevBtn) mechPrevBtn.addEventListener('click', () => this.scrollMechanics('left'));
+        if (mechNextBtn) mechNextBtn.addEventListener('click', () => this.scrollMechanics('right'));
 
-        if (catNextBtn) {
-            catNextBtn.addEventListener('click', () => this.scrollCategories('right'));
-        }
-
+        // Слайдер проектов
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
                 if (this.isAnimating || this.currentIndex === 0) return;
-                
                 this.isAnimating = true;
                 this.currentIndex--;
                 this.updateSlider();
-                
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
+                setTimeout(() => { this.isAnimating = false; }, 500);
             });
         }
 
         if (nextBtn) {
             nextBtn.addEventListener('click', () => {
                 const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
-                
                 if (this.isAnimating || this.currentIndex >= maxIndex) return;
-                
                 this.isAnimating = true;
                 this.currentIndex++;
                 this.updateSlider();
-                
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
+                setTimeout(() => { this.isAnimating = false; }, 500);
             });
         }
 
@@ -356,14 +384,10 @@ class PortfolioSlider extends HTMLElement {
             if (e.target.classList.contains('dot')) {
                 const newIndex = parseInt(e.target.dataset.page);
                 if (this.isAnimating || newIndex === this.currentIndex) return;
-                
                 this.isAnimating = true;
                 this.currentIndex = newIndex;
                 this.updateSlider();
-                
-                setTimeout(() => {
-                    this.isAnimating = false;
-                }, 500);
+                setTimeout(() => { this.isAnimating = false; }, 500);
             }
             if (e.target.closest('.slider-card')) {
                 const card = e.target.closest('.slider-card');
@@ -438,8 +462,11 @@ class PortfolioSlider extends HTMLElement {
             `).join('');
         }
 
-        // Обновляем состояние кнопок навигации категорий
-        setTimeout(() => this.updateCategoryNavButtons(), 100);
+       
+        setTimeout(() => {
+            this.updateCategoryNavButtons();
+            this.updateMechanicsNavButtons();
+        }, 100);
     }
 }
 
