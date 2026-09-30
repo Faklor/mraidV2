@@ -69,10 +69,10 @@ class PortfolioSlider extends HTMLElement {
             return matchCategory && matchMechanic && matchDimension;
         });
 
-        this.filteredProjects.sort((a, b) => {
-            if (a.favorite === b.favorite) return 0; 
-            return a.favorite ? -1 : 1;              
-        });
+        // this.filteredProjects.sort((a, b) => {
+        //     if (a.favorite === b.favorite) return 0; 
+        //     return a.favorite ? -1 : 1;              
+        // });
 
         const track = this.shadowRoot.querySelector('.slider-track');
         const cards = track ? track.querySelectorAll('.slider-card') : [];
