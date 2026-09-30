@@ -391,6 +391,22 @@ class PortfolioSlider extends HTMLElement {
             });
         }
 
+        // this.shadowRoot.addEventListener('click', (e) => {
+        //     if (e.target.classList.contains('dot')) {
+        //         const newIndex = parseInt(e.target.dataset.page);
+        //         if (this.isAnimating || newIndex === this.currentIndex) return;
+        //         this.isAnimating = true;
+        //         this.currentIndex = newIndex;
+        //         this.updateSlider();
+        //         setTimeout(() => { this.isAnimating = false; }, 500);
+        //     }
+        //     if (e.target.closest('.slider-card')) {
+        //         const card = e.target.closest('.slider-card');
+        //         const link = card.dataset.link;
+        //         if (link && link !== '#') window.open(link, '_blank');
+        //     }
+        // });
+
         this.shadowRoot.addEventListener('click', (e) => {
             if (e.target.classList.contains('dot')) {
                 const newIndex = parseInt(e.target.dataset.page);
@@ -400,10 +416,24 @@ class PortfolioSlider extends HTMLElement {
                 this.updateSlider();
                 setTimeout(() => { this.isAnimating = false; }, 500);
             }
+            
             if (e.target.closest('.slider-card')) {
+                e.preventDefault();
                 const card = e.target.closest('.slider-card');
-                const link = card.dataset.link;
-                if (link && link !== '#') window.open(link, '_blank');
+                const clickedIndex = parseInt(card.dataset.index);
+                
+                // Собираем ВСЕ валидные ссылки из отфильтрованных проектов
+                const allLinks = this.filteredProjects
+                    .map(p => p.link)
+                    .filter(link => link && link !== '#');
+
+                if (allLinks.length > 0) {
+                    // Находим глобальный компонент и открываем его
+                    const modal = document.getElementById('global-playable-modal');
+                    if (modal) {
+                        modal.open(allLinks, clickedIndex);
+                    }
+                }
             }
         });
 

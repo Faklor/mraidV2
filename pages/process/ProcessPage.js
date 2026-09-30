@@ -23,11 +23,13 @@ class ProcessPage extends HTMLElement {
                 <!-- Ряд 1: Карточки с иконками -->
                 <process-steps></process-steps>
 
-                <!-- Ряд 2: Текст про AI -->
-                <process-ai></process-ai>
+               
 
                 <!-- Ряд 3: Картинки-превью -->
                 <process-previews></process-previews>
+
+                 <!-- Ряд 2: Текст про AI -->
+                <process-ai></process-ai>
 
                 <process-contact></process-contact>
 

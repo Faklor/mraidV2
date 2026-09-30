@@ -132,16 +132,29 @@ class TopPlayablesSlider extends HTMLElement {
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
         const cards = this.shadowRoot.querySelectorAll('.slider-card');
 
+        // === ИЗМЕНЕНИЕ ЗДЕСЬ: Открытие модального окна вместо новой вкладки ===
         cards.forEach(card => {
-            card.addEventListener('click', () => {
-                const url = card.getAttribute('data-url');
-                if (url && url !== '#') {
-                    window.open(url, '_blank');
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                const clickedIndex = parseInt(card.getAttribute('data-index'));
+                
+                // Собираем все валидные ссылки из top playables
+                const allLinks = this.cardsData
+                    .map(card => card.url)
+                    .filter(link => link && link !== '#');
+
+                if (allLinks.length > 0) {
+                    const modal = document.getElementById('global-playable-modal');
+                    if (modal && typeof modal.open === 'function') {
+                        modal.open(allLinks, clickedIndex);
+                    } else {
+                        // Запасной вариант, если модалка по какой-то причине не загрузилась
+                        window.open(allLinks[clickedIndex] || allLinks[0], '_blank');
+                    }
                 }
             });
         });
 
-       
         this.updateSliderPosition = () => {
             if (!track || !track.querySelector('.slider-card')) return;
             
@@ -151,7 +164,6 @@ class TopPlayablesSlider extends HTMLElement {
             
             track.style.transform = `translateX(${offset}px)`;
 
-            
             const currentDots = this.shadowRoot.querySelectorAll('.dot');
             currentDots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === this.currentIndex);
@@ -159,10 +171,8 @@ class TopPlayablesSlider extends HTMLElement {
 
             const maxIndex = Math.max(0, Math.ceil(this.cardsData.length / this.cardsPerView) - 1);
             
-            
             if (this.currentIndex > maxIndex) {
                 this.currentIndex = maxIndex;
-                
                 requestAnimationFrame(() => this.updateSliderPosition());
                 return;
             }
@@ -189,7 +199,6 @@ class TopPlayablesSlider extends HTMLElement {
             }
         });
 
-       
         const attachDotListeners = () => {
             this.shadowRoot.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => {
@@ -222,7 +231,6 @@ class TopPlayablesSlider extends HTMLElement {
         const dotsContainer = this.shadowRoot.querySelector('.slider-dots');
         if (dotsContainer) {
             dotsContainer.innerHTML = this.generateDots();
-            
             
             dotsContainer.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => {
