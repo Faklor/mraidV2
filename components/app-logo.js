@@ -8,7 +8,7 @@ class AppLogo extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="components/css/app-logo.css">
             
-            <h1 class="logo-container">
+            <h1 class="logo-container" role="button" tabindex="0" aria-label="Go to Home page">
                 <!-- Обертка для SVG с бликом -->
                 <div class="logo-wrapper">
                     <svg class="logo-svg" width="128" height="95" viewBox="0 0 128 95" fill="none" xmlns="http://www.w3.org/2000/svg" shape-rendering="crispEdges">
@@ -75,6 +75,22 @@ class AppLogo extends HTMLElement {
                 <span class="logo-text">MRAID.IO</span>
             </h1>
         `;
+
+       
+        const logoContainer = this.shadowRoot.querySelector('.logo-container');
+        
+        logoContainer.addEventListener('click', () => {
+            
+            window.location.hash = '#home';
+        });
+
+        
+        logoContainer.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                window.location.hash = '#home';
+            }
+        });
     }
 }
 
