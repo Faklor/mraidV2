@@ -88,6 +88,7 @@
     color: #ffffff;
     line-height: 1.2;
     margin: 0;
+    font-family: 'RobotoLight';
 }
 
 .banners-cta-btn {
@@ -99,11 +100,12 @@
     color: #ffffff;
     border-radius: 8px;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 300;
     text-decoration: none;
     transition: all 0.3s ease;
     width: fit-content;
     margin-top: 8px;
+    
 }
 
 .banners-cta-btn:hover {
