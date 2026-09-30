@@ -156,7 +156,6 @@
     border: none;
     display: block;
     background: #000;
-    pointer-events: none;
 }
 
 .nav-btn {
