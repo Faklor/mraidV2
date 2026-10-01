@@ -32,6 +32,15 @@ class TopPlayablesSlider extends HTMLElement {
         }
     }
 
+    shuffleArray(array) {
+        const shuffled = [...array];
+        for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+        }
+        return shuffled;
+    }
+
     async loadData() {
         try {
             const response = await fetch('https://dashboard.mraid.io/portfolio.json');
@@ -43,11 +52,25 @@ class TopPlayablesSlider extends HTMLElement {
                 item.favorite === 1 || item.favorite === true || item.favorite === "1"
             );
 
-            this.cardsData = favoriteProjects.map(item => {
+            // this.cardsData = favoriteProjects.map(item => {
+            //     const category = (item.categories && item.categories.length > 0) 
+            //         ? item.categories[0] 
+            //         : 'Playable';
+                
+            //     return {
+            //         title: item.project || 'Unknown Project',
+            //         image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
+            //         url: item.url || '#',
+            //         category: category
+            //     };
+            // });
+
+            const shuffledFavorites = this.shuffleArray(favoriteProjects);
+
+            this.cardsData = shuffledFavorites.map(item => {
                 const category = (item.categories && item.categories.length > 0) 
                     ? item.categories[0] 
                     : 'Playable';
-                
                 return {
                     title: item.project || 'Unknown Project',
                     image: item.screenshot || 'assets/img/portfolio/ex_slider.png',

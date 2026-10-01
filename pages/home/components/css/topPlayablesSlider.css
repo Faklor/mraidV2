@@ -32,7 +32,7 @@
 .see-more svg{
     width: 20px;
     height: auto;
-    align-self: center;
+    margin-top: 13px;
 }
 
 .see-more:hover {
@@ -42,6 +42,7 @@
 
 .see-more .arrow {
     transition: transform 0.3s ease;
+    
 }
 
 .see-more:hover .arrow {

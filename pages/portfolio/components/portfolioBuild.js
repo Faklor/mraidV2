@@ -93,6 +93,7 @@ class PortfolioBuild extends HTMLElement {
                     <div class="phone-container">
                         <img src="assets/img/main-blick.png" alt="Blick" class="phone-blick-bg">
                         <div class="phone-frame">
+                            
                             <img src="assets/img/phone.png" alt="Phone frame" class="phone-image">
                             <div class="phone-screen">
                                 <div class="playable-wrapper">

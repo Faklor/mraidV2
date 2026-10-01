@@ -32,6 +32,11 @@
     font-size: 1rem;
     font-weight: 600;
     transition: all 0.3s ease;
+    font-size: 24px;
+    
+}
+.see-more-link svg {
+    margin-top:2px;
 }
 
 .see-more-link:hover {
@@ -42,15 +47,15 @@
 /* === ИНТЕРАКТИВНАЯ СЕТКА === */
 .build-interactive {
     display: grid;
-    grid-template-columns: 1fr 380px 1fr;
-    gap: 40px; /* Этот gap важен для длины стрелки */
-    align-items: stretch;
+    grid-template-columns: auto 380px auto;
+    gap: 90px;
+    align-items: center; /* Изменили со stretch на start */
     max-width: 1600px;
     margin: 0 auto;
     position: relative;
     z-index: 2;
-    /* background: #0D0D0F url('../../../../assets/img/portfolio/build/bg.png') center/cover no-repeat;
-    background-size: 70%; */
+    justify-content: center;
+    font-family: 'RobotoLight';
 }
 
 .build-interactive::before {
@@ -86,38 +91,31 @@
 .features-left,
 .features-right {
     display: grid;
-    grid-template-rows: repeat(3, 1fr);
-    gap: 0px;
-    align-content: stretch;
+    grid-template-rows: repeat(3, auto); /* auto вместо 1fr */
+    gap: 20px;
+    align-content: start; /* вместо stretch */
+    width: max-content;
 }
 
+.features-left .feature-card,
+.features-right .feature-card {
+    padding: 20px;
+    min-height: auto; /* Убрали фиксированную высоту */
+    height: auto; /* Высота по контенту */
+    gap: 16px;
+    margin: 0;
+    width: 300px; /* ОДИНАКОВАЯ ширина для всех карточек */
+}
 /* ==========================================
-   ЛЕВЫЕ КАРТОЧКИ (СДЕЛАНЫ МЕНЬШЕ)
+   ЛЕВЫЕ КАРТОЧКИ
    ========================================== */
 .features-left .feature-card {
-    padding: 10px;
-    min-height: 90px;
-    
-    gap: 12px;
-    margin: 10px 20px 10px 0; 
-    transform-origin: center right; 
-
-    margin:50px;
+    transform-origin: center right;
 }
-
-/* .features-left .feature-card:first-child {
-    align-self: end;
-} */
 
 .features-left .feature-icon {
-    
-     align-self: center;
-     padding:0px 20px;
-}
-
-.features-left .feature-icon svg {
-    
-   
+    align-self: center;
+    padding: 0;
 }
 
 .features-left .feature-title {
@@ -126,29 +124,19 @@
 
 .features-left .feature-description {
     font-size: 0.8rem;
-    line-height: 1.3;
+    line-height: 1.2;
 }
 
 /* ==========================================
    ПРАВЫЕ КАРТОЧКИ (БОЛЬШЕ, БАЗОВЫЕ)
    ========================================== */
 .features-right .feature-card {
-    padding: 10px;
-    min-height: 130px;
-    gap: 16px;
-    margin: 10px 0 10px 20px; /* Прижаты к телефону */
-    transform-origin: center left; /* Увеличиваются в сторону телефона */
-     margin:30px;
+    transform-origin: center left;
 }
 
 .features-right .feature-icon {
-    
     align-self: center;
-    padding: 0px 20px;
-}
-
-.features-right .feature-icon svg {
-    
+    padding: 0;
 }
 
 .features-right .feature-title {
@@ -157,11 +145,9 @@
 
 .features-right .feature-description {
     font-size: 0.9rem;
-    line-height: 1.4;
-}
-
-.feature-content{
-    align-self: center;
+    line-height: 1.2;
+    max-width: 200px;
+    
 }
 
 /* ==========================================
@@ -169,7 +155,7 @@
    ========================================== */
 .feature-card {
     position: relative;
-    background: rgba(255, 255, 255, 0.05);
+    background: rgba(255, 255, 255, 0.01);
     border: 1px solid transparent;
     border-radius: 12px;
     cursor: pointer;
@@ -227,7 +213,7 @@
 /* Стрелка направо (для левых карточек) */
 .arrow-right {
     width: 100px;
-    top:58px;
+    top:68px;
     right: -100px; 
 }
 .arrow-right::after {
@@ -245,9 +231,9 @@
 /* Стрелка налево (для правых карточек) */
 .arrow-left {
     
-    width: 80px;
+    width: 100px;
     top:80px;
-    left: -80px; 
+    left: -100px; 
 }
 .arrow-left::after {
     content: '';
@@ -392,45 +378,63 @@
    ========================================== */
 @media (max-width: 1200px) {
     .build-interactive {
-        grid-template-columns: 1fr 340px 1fr;
-        gap: 30px;
+        grid-template-columns: auto 340px auto;
+        gap: 40px; /* Уменьшили gap, чтобы влезало */
     }
     
     .build-header h2 {
         font-size: 2rem;
     }
     
-    .features-left,
-    .features-right {
-        grid-template-rows: repeat(3, minmax(120px, 1fr));
+    .features-left .feature-card,
+    .features-right .feature-card {
+        width: 260px; /* Чуть уже карточки для средних экранов */
     }
     
-    /* Корректируем длину стрелки под новый gap */
     .feature-arrow {
-        width: 30px;
+        width: 40px;
     }
-    .arrow-right { right: -30px; }
-    .arrow-left { left: -30px; }
+    .arrow-right { right: -40px; }
+    .arrow-left { left: -40px; }
 }
 
 @media (max-width: 1024px) {
     .build-interactive {
-        grid-template-columns: 1fr;
+        grid-template-columns: 1fr; /* Одна колонка */
         gap: 40px;
+    }
+    
+    /* === ПРАВИЛЬНЫЙ ПОРЯДОК НА ПЛАНШЕТАХ И МОБИЛЬНЫХ === */
+    .features-left {
+        order: 1;
+        width: 100%;
+    }
+    
+    .phone-container {
+        order: 2; /* Телефон строго посередине */
+        margin: 20px 0;
+    }
+    
+    .features-right {
+        order: 3;
+        width: 100%;
     }
     
     .features-left,
     .features-right {
-        grid-template-columns: repeat(2, 1fr);
-        grid-template-rows: repeat(2, minmax(140px, 1fr));
+        grid-template-columns: 1fr; /* Одна колонка карточек для удобства чтения */
+        grid-template-rows: auto;
+    }
+    
+    .features-left .feature-card,
+    .features-right .feature-card {
+        width: 100%;
+        max-width: 500px; /* Ограничиваем максимальную ширину, чтобы не было слишком растянуто */
+        margin: 0 auto;
     }
     
     .feature-arrow {
-        display: none; /* На планшетах стрелки не нужны */
-    }
-    
-    .phone-container {
-        order: -1;
+        display: none; /* На планшетах и ниже стрелки не нужны */
     }
     
     .phone-frame {
@@ -458,15 +462,8 @@
         font-size: 1.8rem;
     }
     
-    .features-left,
-    .features-right {
-        grid-template-columns: 1fr;
-        grid-template-rows: repeat(3, auto);
-    }
-    
-    .feature-card {
-        min-height: auto;
-        margin: 10px 0;
+    .see-more-link {
+        font-size: 1rem;
     }
     
     .phone-frame {
