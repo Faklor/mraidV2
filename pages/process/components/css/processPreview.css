@@ -7,7 +7,7 @@
 }
 
 .preview-card {
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 16 / 12;
     border-radius: 12px;
     overflow: hidden;
     background: #1a1a1a;
@@ -19,7 +19,7 @@
 .preview-card img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    /* object-fit: cover; */
 }
 
 /* Адаптация */

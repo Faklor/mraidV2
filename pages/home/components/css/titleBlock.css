@@ -55,6 +55,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    backdrop-filter: blur(10px); 
+     -webkit-backdrop-filter: blur(10px); 
 } 
 
 .btn-primary {

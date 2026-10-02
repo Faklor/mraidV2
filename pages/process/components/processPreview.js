@@ -11,7 +11,7 @@ class ProcessPreviews extends HTMLElement {
             'assets/img/process/preview/preview4.png',
             'assets/img/process/preview/preview5.png',
             'assets/img/process/preview/preview1.png',
-            'assets/img/process/preview/preview1.png'
+            'assets/img/process/preview/preview6.png'
         ];
 
         this.shadowRoot.innerHTML = `
