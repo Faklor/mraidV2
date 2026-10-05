@@ -87,6 +87,16 @@
     <script id="cookieyes" type="text/javascript" src="https://cdn-cookieyes.com/client_data/9a4978d95b4e3ca608b3bf23/script.js" defer></script>
 
    
+
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+            }
+        }
+    </script>
+
     
 </head>
 <body>
@@ -189,7 +199,7 @@
     <script src="components/nav-bar.js"></script>
     <script src="components/app-footer.js"></script>
     <script src="components/playableModal.js"></script>
-    <script src="components/networkBackground.js"></script>
+    <script type="module" src="components/networkBackground.js"></script>
     <!-- Pages -->
 
    
@@ -256,7 +266,7 @@
 
     <!-- <script src="router.js"></script> -->
     <script>
-       const ENABLE_PRELOADER = true; 
+       const ENABLE_PRELOADER = false; 
 
         document.addEventListener('DOMContentLoaded', () => {
             const preloader = document.getElementById('main-preloader');
@@ -371,53 +381,76 @@
    <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19/dist/lil-gui.umd.min.js"></script>
 
     <!-- Скрипт настройки с правильным поиском через Shadow DOM -->
-    <script>
-        window.addEventListener('load', () => {
-            // Шаг 1: Находим page-home в основном DOM
-            const pageHome = document.querySelector('page-home');
+  <script>
+    // window.addEventListener('load', () => {
+    //     const pageHome = document.querySelector('page-home');
+    //     let networkBg = null;
+        
+    //     if (pageHome && pageHome.shadowRoot) {
+    //         networkBg = pageHome.shadowRoot.querySelector('network-background');
+    //     }
+        
+    //     if (networkBg && networkBg.config) {
+    //         const config = networkBg.config;
+    //         const gui = new lil.GUI({ title: '🎛 WebGL Matrix' });
+
+    //         gui.add(networkBg, 'isPaused').name('⏸ Пауза').onChange((val) => {
+    //             val ? networkBg.pause() : networkBg.resume();
+    //         });
+
+    //         const folder3D = gui.addFolder('3D Камера');
+    //         folder3D.add(config, 'rotationX', -90, 90).name('Наклон X').onChange(v => networkBg.setRotationX(v));
+    //         folder3D.add(config, 'rotationY', -180, 180).name('Наклон Y').onChange(v => networkBg.setRotationY(v));
+    //         folder3D.add(config, 'rotationZ', -180, 180).name('Наклон Z').onChange(v => networkBg.setRotationZ(v));
+    //         folder3D.add(config, 'offsetX', -500, 500).name('Сдвиг X').onChange(v => networkBg.setOffsetX(v));
+    //         folder3D.add(config, 'offsetY', -500, 500).name('Сдвиг Y').onChange(v => networkBg.setOffsetY(v));
+
+    //         const folderStyle = gui.addFolder('Стиль и Анимация');
+    //         folderStyle.add(config, 'dotSize', 1, 100).name('Размер точки').onChange(v => networkBg.setDotSize(v));
+    //         folderStyle.add(config, 'maxLift', 0, 50).name('Высота прыжка').onChange(v => networkBg.setMaxLift(v));
+    //         folderStyle.add(config, 'speed', 0.01, 2.0).name('Скорость').onChange(v => networkBg.setSpeed(v));
+    //         folderStyle.add(config, 'coreBrightness', 0.5, 2.5).name('Яркость белых ядер').onChange(v => networkBg.setCoreBrightness(v));
+    //         folderStyle.add(config, 'lineWidth', 1, 5).name('Толщина линий').onChange(v => networkBg.setLineWidth(v));
+    //         folderStyle.add(config, 'lineBrightness', 0.5, 3.0).name('Яркость линий').onChange(v => networkBg.setLineBrightness(v));
+
+    //         const folderLines = gui.addFolder('Линии');
+    //         folderLines.add(config, 'lineWidth', 1, 3).name('Толщина (макс 2-3)').onChange(v => networkBg.setLineWidth(v));
+
+    //         // const folderMask = gui.addFolder('Маска (Круг)');
+    //         // folderMask.add(config, 'circleRadius', 0, 100).name('Радиус круга (%)').onChange(v => networkBg.setCircleRadius(v));
+    //         // folderMask.add(config, 'circleFeather', 0, 100).name('Плавность краев (%)').onChange(v => networkBg.setCircleFeather(v));
+
+    //         folder3D.open();
+    //         folderStyle.open();
+    //         folderLines.open();
+    //         // folderMask.open(); 
             
-            // Шаг 2: Заглядываем в его Shadow DOM и ищем network-background
-            let networkBg = null;
+
+    //         const folderPhone = gui.addFolder('📱 Телефон');
+    //         folderPhone.add(config, 'phoneScale', 0.1, 3.0).name('Масштаб').onChange(v => networkBg.setPhoneScale(v));
+    //         folderPhone.add(config, 'phonePosX', -100, 100).name('Позиция X').onChange(v => networkBg.setPhonePosX(v));
+    //         folderPhone.add(config, 'phonePosY', -100, 100).name('Позиция Y').onChange(v => networkBg.setPhonePosY(v));
+    //         folderPhone.add(config, 'phonePosZ', -100, 100).name('Позиция Z').onChange(v => networkBg.setPhonePosZ(v));
+
+
+    //         folderPhone.add(config, 'phoneRotX', -180, 180).name('Поворот X').onChange(v => networkBg.setPhoneRotX(v));
+    //         folderPhone.add(config, 'phoneRotY', -180, 180).name('Поворот Y').onChange(v => networkBg.setPhoneRotY(v));
+    //         folderPhone.add(config, 'phoneRotZ', -180, 180).name('Поворот Z').onChange(v => networkBg.setPhoneRotZ(v));
+
+    //         folderPhone.open();
+
+    //        const folderScreen = gui.addFolder('📱 Подгонка экрана (относительно стекла)');
+    //         // Теперь эти значения прибавляются к центру найденного меша GLASS
+    //         folderScreen.add(config, 'screenOffsetX', -10, 10).name('Сдвиг X').onChange(v => networkBg.setScreenOffsetX(v));
+    //         folderScreen.add(config, 'screenOffsetY', -10, 10).name('Сдвиг Y').onChange(v => networkBg.setScreenOffsetY(v));
+    //         folderScreen.add(config, 'screenOffsetZ', 0, 10).name('Сдвиг Z (глубина)').onChange(v => networkBg.setScreenOffsetZ(v));
+    //         folderScreen.open();
+
+
             
-            if (pageHome && pageHome.shadowRoot) {
-                networkBg = pageHome.shadowRoot.querySelector('network-background');
-            }
-            
-            console.log("page-home:", pageHome);
-            console.log("network-background:", networkBg);
-
-            if (networkBg && networkBg.config) {
-                const config = networkBg.config;
-                
-                const gui = new lil.GUI({ title: '🎛 Matrix Settings' });
-
-                const folder3D = gui.addFolder('3D Камера');
-                folder3D.add(config, 'rotationX', -90, 90).name('Наклон Вверх/Вниз (X)');
-                folder3D.add(config, 'rotationY', -180, 180).name('Наклон Влево/Вправо (Y)');
-                folder3D.add(config, 'rotationZ', -180, 180).name('Поворот по кругу (Z)');
-                folder3D.add(config, 'perspective', 200, 2000).name('Глубина перспективы');
-
-                const folderGrid = gui.addFolder('Размер и Позиция');
-                folderGrid.add(config, 'spacing', 40, 300).name('Расстояние между точками');
-                folderGrid.add(config, 'offsetX', -2000, 2000).name('Сдвиг по горизонтали (X)');
-                folderGrid.add(config, 'offsetY', -2000, 2000).name('Сдвиг по вертикали (Высота камеры)');
-                folderGrid.add(config, 'gridBuffer', 2, 15, 1).name('Запас по краям (Buffer)');
-
-                const folderStyle = gui.addFolder('Стиль');
-                folderStyle.add(config, 'lineOpacity', 0, 1).name('Прозрачность линий');
-                folderStyle.add(config, 'lineWidth', 0.5, 5).name('Толщина линий');
-                folderStyle.add(config, 'dotSize', 1, 10).name('Размер точек');
-                folderStyle.add(config, 'dotGlow', 0, 30).name('Свечение точек');
-
-                folder3D.open();
-                folderGrid.open();
-                
-                console.log("✅ Панель управления успешно создана!");
-            } else {
-                console.error("❌ ОШИБКА: Не удалось найти network-background через Shadow DOM page-home");
-            }
-        });
-    </script>
+    //     }
+    // });
+</script>
     
 </body>
 </html>

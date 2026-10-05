@@ -17,7 +17,8 @@ class HomePage extends HTMLElement {
                 
                 <section class="hero-section">
                     <div class="hero-content"><hero-block></hero-block></div>
-                    <div class="phone-showcase"><phone-showcase></phone-showcase></div>
+                    <div></div>
+                     <!-- <div class="phone-showcase"><phone-showcase></phone-showcase></div> -->
                     <div class="features-list"><features-list></features-list></div>
                 </section>
                 

@@ -5,6 +5,8 @@
     animation: fadeIn 0.8s ease-out;
     font-family: 'RobotoMedium';
     overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */
+    
+    /* background-color: #000000; */
 }
 
 .hero-blick {
@@ -55,7 +57,7 @@
     top: 0;
     left: 0;
     width: 100%;      /* Фиксированная ширина "окна" */
-    height: 600px;     /* Фиксированная высота "окна" */
+    height: 800px;     /* Фиксированная высота "окна" */
     overflow: hidden;  /* Обрезаем всё, что выходит за границы */
     z-index: 0;
 }
@@ -78,6 +80,7 @@
 .slider-section {
     position: relative;
     z-index: 1; /* Гарантированно выше, чем z-index: 0 у фона */
+    pointer-events: none;
 }
 
 /* === HERO СЕКЦИЯ: 3 КОЛОНКИ === */
@@ -87,11 +90,19 @@
     gap: 60px;
     align-items: start;
     padding: 0 20px;
+
+    
 }
+
+/* .hero-content{
+    backdrop-filter: blur(1px); 
+     -webkit-backdrop-filter: blur(1px); 
+} */
 
 .trusted-section {
     margin-bottom: 40px;
     padding: 0 20px;
+    
 }
 
 .stats-section {
