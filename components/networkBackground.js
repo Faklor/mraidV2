@@ -16,7 +16,7 @@ class NetworkBackground extends HTMLElement {
             spacing: 30,
             rotationX: -60.48,          
             rotationY: 2.88,           
-            rotationZ: -134.28,  
+            rotationZ: -134.28,   
             gridZ: 20,           
             dotSize: 96.729,              
             maxLift: 3,
