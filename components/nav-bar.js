@@ -4,10 +4,9 @@ class NavBar extends HTMLElement {
         this.attachShadow({ mode: 'open' });
     }
 
-    connectedCallback() {
+        connectedCallback() {
         this.renderBase();
 
-       
         window.addEventListener('portfolio-data-loaded', (e) => {
             this.updatePortfolioCount(e.detail.count);
         });
@@ -15,7 +14,11 @@ class NavBar extends HTMLElement {
         const hamburger = this.shadowRoot.querySelector('.hamburger');
         if (hamburger) {
             hamburger.addEventListener('click', () => {
-                this.classList.toggle('menu-open');
+                const isOpen = !this.classList.contains('menu-open');
+                this.classList.toggle('menu-open', isOpen);
+                
+                // === НОВОЕ: Блокируем скролл body при открытии меню ===
+                document.body.style.overflow = isOpen ? 'hidden' : '';
             });
         }
 
@@ -27,15 +30,16 @@ class NavBar extends HTMLElement {
                     const href = targetLink.getAttribute('href');
                     const isPortfolio = href === '#portfolio' || targetLink.textContent.toLowerCase().includes('portfolio');
 
-                  
                     if (isPortfolio) {
                         this.resetPortfolioBadge();
                     }
 
-                    
                     if (href === '#pricing' || href === '#pricing-section' || targetLink.textContent.toLowerCase().includes('pricing')) {
                         e.preventDefault();
+                        
+                        // === НОВОЕ: Разблокируем скролл при закрытии меню ===
                         this.classList.remove('menu-open');
+                        document.body.style.overflow = '';
                         
                         const priceCards = document.querySelector('price-cards');
                         if (priceCards && typeof priceCards.render === 'function') {
@@ -49,7 +53,9 @@ class NavBar extends HTMLElement {
                             }
                         }, 50);
                     } else {
+                        // === НОВОЕ: Разблокируем скролл при закрытии меню ===
                         this.classList.remove('menu-open');
+                        document.body.style.overflow = '';
                     }
                 }
             });
@@ -57,10 +63,8 @@ class NavBar extends HTMLElement {
 
         this.updateCTAVisibility();
         
-       
         const initialHash = window.location.hash.replace('#', '') || 'home';
         this.setActiveLink(initialHash);
-       
 
         window.addEventListener('hashchange', () => {
             this.updateCTAVisibility();

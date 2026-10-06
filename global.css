@@ -38,6 +38,7 @@
 
 /* global.css */
 
+
 * {
   margin: 0;
   padding: 0;
@@ -46,11 +47,12 @@
   scrollbar-color: #FF0036 #0D0D0F;
 }
 
+
 html, body {
   font-family: 'RobotoMedium', system-ui, -apple-system, sans-serif;
   font-weight: 300; /* По умолчанию используем Light версию */
   width: 100%;
-  
+   /* overflow-x: hidden; */
 }
 
 
@@ -157,6 +159,11 @@ main.preloader-active,
   
   main {
     padding: 0px 0;
+  }
+
+  body {
+   
+    overflow-x: hidden;
   }
 }
 
