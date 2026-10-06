@@ -38,7 +38,6 @@ class NetworkBackground extends HTMLElement {
             
             baseColor: '#da0404', 
             
-            
             maskRadius: 120,     
             maskFeather: 40,      
             maskCenterX: -50,    
@@ -98,7 +97,6 @@ class NetworkBackground extends HTMLElement {
             redLightPosY: 0,
             redLightPosZ: 80,
 
-            
             vignetteInner: 20,
             vignetteOuter: 80,
             vignetteFeather: 30,
@@ -148,8 +146,13 @@ class NetworkBackground extends HTMLElement {
         this.helperSpotRight = null;
         this.helperPointBack = null;
 
+        this.redColor = 0xff1a1a;
 
-        this.redColor = 0xff1a1a
+        // === Переменные для интерактивности мыши ===
+        this.mouse = { x: 0, y: 0 }; 
+        this.isHoveringPhone = false; 
+        this.smoothRotation = { x: 0, y: 0, z: 0 }; 
+        this.handleMouseMove = this.handleMouseMove.bind(this);
     }
 
     hexToRgb(hex) {
@@ -174,7 +177,7 @@ class NetworkBackground extends HTMLElement {
                     top: 0;
                     left: 0;
                     z-index: 0;
-                    background: #0D0D0F;
+                    background: transparent; /* Прозрачный, чтобы не перекрывать фон страницы */
                     overflow: hidden;
                 }
                 canvas {
@@ -256,50 +259,32 @@ class NetworkBackground extends HTMLElement {
 
         this.resizeObserver = new ResizeObserver(() => this.onResize());
         this.resizeObserver.observe(this);
+        
+        window.addEventListener('mousemove', this.handleMouseMove);
     }
 
     createPhoneBacklights() {
         const c = this.config;
       
-
-        // 1. Левый задний спотлайт
-        this.redSpotLightLeft = new THREE.SpotLight( this.redColor , 80); 
-        this.redSpotLightLeft.position.set(c.phonePosX + 50, c.phonePosY - 20, c.phonePosZ +0);
+        this.redSpotLightLeft = new THREE.SpotLight(this.redColor, 80); 
+        this.redSpotLightLeft.position.set(c.phonePosX + 50, c.phonePosY - 20, c.phonePosZ + 0);
         this.redSpotLightLeft.target.position.set(c.phonePosX, c.phonePosY, c.phonePosZ);
         this.redSpotLightLeft.angle = Math.PI / 5;      
         this.redSpotLightLeft.penumbra = 0.6;         
         this.redSpotLightLeft.decay = 1.2;               
-        this.redSpotLightLeft.distance = 0; // Бесконечный свет
+        this.redSpotLightLeft.distance = 0; 
         this.scene.add(this.redSpotLightLeft);
         this.scene.add(this.redSpotLightLeft.target);    
 
-        // ХЕЛПЕР для левого спота (Ярко-красный)
-        // this.helperSpotLeft = new THREE.SpotLightHelper(this.redSpotLightLeft, 0xff0000);
-        // this.scene.add(this.helperSpotLeft);
-
-        // 2. Правый задний спотлайт
         this.redSpotLightRight = new THREE.SpotLight(this.redColor, 80);
         this.redSpotLightRight.position.set(c.phonePosX - 50, c.phonePosY + 0, c.phonePosZ + 30);
         this.redSpotLightRight.target.position.set(c.phonePosX, c.phonePosY, c.phonePosZ);
         this.redSpotLightRight.angle = Math.PI / 5;
         this.redSpotLightRight.penumbra = 0.6;
         this.redSpotLightRight.decay = 1.2;
-        this.redSpotLightRight.distance = 0; // Тоже сделал 0 для симметрии, как вы хотели
+        this.redSpotLightRight.distance = 0; 
         this.scene.add(this.redSpotLightRight);
         this.scene.add(this.redSpotLightRight.target);
-
-        // ХЕЛПЕР для правого спота (Ярко-зеленый, чтобы отличать)
-        // this.helperSpotRight = new THREE.SpotLightHelper(this.redSpotLightRight, 0x00ff00);
-        // this.scene.add(this.helperSpotRight);
-
-        // // 3. Фоновый PointLight прямо за телефоном
-        // this.redBackGlowLight = new THREE.PointLight(redColor, 30, 0, 1.5); // distance = 0
-        // this.redBackGlowLight.position.set(c.phonePosX, c.phonePosY, c.phonePosZ + 60);
-        // this.scene.add(this.redBackGlowLight);
-
-        // // ХЕЛПЕР для точечного света (Ярко-синяя сфера размером 5 единиц)
-        // this.helperPointBack = new THREE.PointLightHelper(this.redBackGlowLight, 5, 0x0088ff);
-        // this.scene.add(this.helperPointBack);
     }
 
     applyGridPosition() {
@@ -321,6 +306,23 @@ class NetworkBackground extends HTMLElement {
         this.style.setProperty('--vignette-mid1', mid1 + '%');
         this.style.setProperty('--vignette-mid2', mid2 + '%');
         this.style.setProperty('--vignette-outer', outer + '%');
+    }
+
+    handleMouseMove(event) {
+        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+        if (this.phonePivot && this.camera) {
+            const phonePos = new THREE.Vector3();
+            this.phonePivot.getWorldPosition(phonePos);
+            phonePos.project(this.camera);
+            
+            const screenX = (phonePos.x * 0.5 + 0.5) * window.innerWidth;
+            const screenY = (-(phonePos.y * 0.5) + 0.5) * window.innerHeight;
+            
+            const distance = Math.hypot(event.clientX - screenX, event.clientY - screenY);
+            this.isHoveringPhone = distance < 250; 
+        }
     }
 
     initThreeJS() {
@@ -355,8 +357,6 @@ class NetworkBackground extends HTMLElement {
     }
 
     setupLighting() {
-        
-
         this.ambientLight = new THREE.AmbientLight(0xffffff, 1);
         this.scene.add(this.ambientLight);
 
@@ -364,13 +364,9 @@ class NetworkBackground extends HTMLElement {
         this.keyLight.position.set(100, 100, 30);
         this.scene.add(this.keyLight);
 
-        this.fillLight = new THREE.DirectionalLight(0xFED9D9 , 10);
+        this.fillLight = new THREE.DirectionalLight(0xFED9D9, 10);
         this.fillLight.position.set(-100, 100, 200);
         this.scene.add(this.fillLight);
-
-        //  this.redColor 
-
-        
     }
 
     async loadPlayablesData() {
@@ -419,14 +415,12 @@ class NetworkBackground extends HTMLElement {
         this.loader.load(this.config.phoneModelPath, (gltf) => {
             this.phoneModel = gltf.scene;
             
-            // 1. ЖЕСТКО обнуляем корневую модель, чтобы она НЕ вращалась и НЕ двигалась
             this.phoneModel.position.set(0, 0, 0);
             this.phoneModel.rotation.set(0, 0, 0);
             this.phoneModel.scale.set(1, 1, 1);
 
             this.phonePivot = null;
             this.phoneModel.traverse((child) => {
-                // Используем includes для надежности (на случай Empty-phone.001 и т.п.)
                 if (child.name && child.name.includes('Empty-phone')) {
                     this.phonePivot = child;
                 }
@@ -443,11 +437,7 @@ class NetworkBackground extends HTMLElement {
             if (this.phonePivot) {
                 console.log("✅ Найдена нода для вращения:", this.phonePivot.name);
                 
-                // === КЛЮЧЕВОЕ ИСПРАВЛЕНИЕ ===
-                // Меняем порядок вращения на 'YXZ', чтобы избежать Gimbal Lock.
-                // Это применяет поворот Y первым, предотвращая совпадение осей X и Z при Y = -90.
                 this.phonePivot.rotation.order = 'YXZ';
-
                 this.phonePivot.position.set(this.config.phonePosX, this.config.phonePosY, this.config.phonePosZ);
                 
                 const rad = Math.PI / 180;
@@ -514,9 +504,8 @@ class NetworkBackground extends HTMLElement {
         wrapper.className = 'screen-wrapper';
         wrapper.style.width = this.config.frameWidth + 'px';
         wrapper.style.height = this.config.frameHeight + 'px';
-        wrapper.style.position = 'relative'; // ВАЖНО: для позиционирования прелоадера поверх iframe
+        wrapper.style.position = 'relative';
 
-        // === ДОБАВЛЕНИЕ ПРЕЛОАДЕРА ===
         this.preloaderElement = document.createElement('div');
         this.preloaderElement.className = 'iframe-preloader';
         this.preloaderElement.innerHTML = `
@@ -524,7 +513,7 @@ class NetworkBackground extends HTMLElement {
                 .iframe-preloader {
                     position: absolute;
                     top: 0; left: 0; width: 100%; height: 100%;
-                    background: #0D0D0F; /* Цвет фона, совпадающий с темой */
+                    background: #0D0D0F; 
                     display: flex;
                     align-items: center;
                     justify-content: center;
@@ -538,8 +527,8 @@ class NetworkBackground extends HTMLElement {
                 .red-spinner {
                     width: 60px;
                     height: 60px;
-                    border: 4px solid rgba(218, 4, 4, 0.2); /* Тусклый красный контур */
-                    border-top: 4px solid #da0404; /* Яркий красный (ваш baseColor) */
+                    border: 4px solid rgba(218, 4, 4, 0.2); 
+                    border-top: 4px solid #da0404; 
                     border-radius: 50%;
                     animation: spin 1s linear infinite;
                 }
@@ -551,7 +540,6 @@ class NetworkBackground extends HTMLElement {
             <div class="red-spinner"></div>
         `;
         wrapper.appendChild(this.preloaderElement);
-        // ==============================
 
         this.playableIframe = document.createElement('iframe');
         this.playableIframe.src = 'about:blank';
@@ -561,7 +549,6 @@ class NetworkBackground extends HTMLElement {
         this.playableIframe.style.width = '100%';
         this.playableIframe.style.height = '100%';
         
-        // === СОБЫТИЕ: когда iframe загрузился, скрываем прелоадер ===
         this.playableIframe.onload = () => {
             if (this.preloaderElement) {
                 this.preloaderElement.classList.add('hidden');
@@ -759,7 +746,6 @@ class NetworkBackground extends HTMLElement {
 
         const rgb = this.hexToRgb(this.config.baseColor);
 
-        // === ШЕЙДЕР ТОЧЕК С МАСКОЙ ===
         const pointMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 },
@@ -812,7 +798,6 @@ class NetworkBackground extends HTMLElement {
                     vIntensity = intensity;
                     vIsHot = aIsHot;
                     
-                    // Вычисляем маску на основе локальных координат XY
                     float dist = length(position.xy - uMaskCenter);
                     vMask = smoothstep(uMaskRadius, uMaskRadius - uMaskFeather, dist);
                     
@@ -820,7 +805,6 @@ class NetworkBackground extends HTMLElement {
                     vec4 mvPosition = modelViewMatrix * vec4(newPos, 1.0);
                     gl_Position = projectionMatrix * mvPosition;
                     
-                    // Если точка за пределами маски, делаем её размер 0
                     if (vMask < 0.01) {
                         gl_PointSize = 0.0;
                     } else {
@@ -840,9 +824,6 @@ class NetworkBackground extends HTMLElement {
                 varying float vMask;
                 
                 void main() {
-                    // Убираем discard - пусть всё рисуется, но с разной прозрачностью
-                    // if (vMask < 0.01) discard;
-                    
                     vec2 coord = gl_PointCoord - 0.5;
                     float dist = length(coord);
                     if (dist > 0.5) discard; 
@@ -859,7 +840,6 @@ class NetworkBackground extends HTMLElement {
                     vec3 finalColor = colorMain * (redRing + outerGlow);
                     finalColor += colorCore * core * uCoreBrightness;
                     
-                    // Плавное затухание: умножаем альфу на vMask
                     float alpha = (core * uCoreBrightness + redRing + outerGlow) * 2.0 * vMask;
                     gl_FragColor = vec4(finalColor, alpha);
                 }
@@ -879,7 +859,7 @@ class NetworkBackground extends HTMLElement {
         this.applyRotations();
     }
 
-       createLines(startX, startY, spacing, w, h) {
+    createLines(startX, startY, spacing, w, h) {
         let lineCount = (w * (h - 1)) + ((w - 1) * h) + (w * 2) + (h * 2);
         this.linePositions = new Float32Array(lineCount * 6);
         this.lineColors = new Float32Array(lineCount * 6);
@@ -888,7 +868,6 @@ class NetworkBackground extends HTMLElement {
         lineGeometry.setAttribute('position', new THREE.BufferAttribute(this.linePositions, 3));
         lineGeometry.setAttribute('color', new THREE.BufferAttribute(this.lineColors, 3));
         
-        // Исправленный шейдер: принудительно держит высокую альфу и яркость внутри маски
         const lineMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uMaskRadius: { value: this.config.maskRadius },
@@ -918,11 +897,7 @@ class NetworkBackground extends HTMLElement {
                 varying float vMask;
                 uniform float uLineBrightness;
                 void main() {
-                    // Убираем discard для плавного затухания
-                    // if (vMask < 0.01) discard; 
-                    
                     vec3 brightColor = vColor * (1.0 + uLineBrightness);
-                    // Умножаем альфу на vMask для плавного затухания
                     gl_FragColor = vec4(brightColor, 0.95 * vMask);
                 }
             `,
@@ -936,8 +911,6 @@ class NetworkBackground extends HTMLElement {
         this.applyRotations();
         this.scene.add(this.lines);
     }
-
-    
 
     applyRotations() {
         const rad = Math.PI / 180;
@@ -975,7 +948,6 @@ class NetworkBackground extends HTMLElement {
 
         const rgb = this.hexToRgb(this.config.baseColor);
         
-        // === ИСПРАВЛЕНИЕ: поднял базовую яркость с 0.02 до 0.15 ===
         const baseR = 0.15 * rgb.r, baseG = 0.15 * rgb.g, baseB = 0.15 * rgb.b;
 
         const addLine = (i1, x1, y1, z1, i2, x2, y2, z2) => {
@@ -985,7 +957,6 @@ class NetworkBackground extends HTMLElement {
             positions[idx] = x1; positions[idx+1] = y1; positions[idx+2] = z1 + this.getPointLift(i1);
             positions[idx+3] = x2; positions[idx+4] = y2; positions[idx+5] = z2 + this.getPointLift(i2);
             
-            // === ИСПРАВЛЕНИЕ: смягчил степень с 2.5 до 1.2, чтобы линии не гасли в ноль ===
             const g1 = Math.pow(int1, 1.2) * this.config.lineBrightness;
             const g2 = Math.pow(int2, 1.2) * this.config.lineBrightness;
             
@@ -1040,29 +1011,41 @@ class NetworkBackground extends HTMLElement {
     }
 
     animatePhone(timestamp) {
-        if (!this.phonePivot) {
-            console.warn("⚠️ phonePivot не найден, анимация телефона пропущена");
-            return; 
-        } 
+        if (!this.phonePivot) return; 
         
-        // Гарантируем правильный порядок вращения каждый кадр для защиты от Gimbal Lock
         this.phonePivot.rotation.order = 'YXZ';
 
         const t = timestamp * 0.01;
         const rad = Math.PI / 180;
         const c = this.config;
+
+        let targetX, targetY, targetZ;
+
+        if (this.isHoveringPhone) {
+            targetX = c.phoneRotX * rad;
+            targetY = c.phoneRotY * rad;
+            targetZ = c.phoneRotZ * rad;
+        } else {
+            const idleX = c.phoneRotX * rad + (c.phoneAnimBiasX * rad) + Math.sin(t * c.phoneAnimSpeedX + 1.5) * (c.phoneAnimAmpX * rad);
+            const idleY = c.phoneRotY * rad + (c.phoneAnimBiasY * rad) + Math.sin(t * c.phoneAnimSpeedY) * (c.phoneAnimAmpY * rad);
+            const idleZ = c.phoneRotZ * rad + (c.phoneAnimBiasZ * rad) + Math.sin(t * c.phoneAnimSpeedZ + 0.8) * (c.phoneAnimAmpZ * rad);
+
+            const tiltIntensity = 0.15; 
+            const mouseTiltX = this.mouse.y * tiltIntensity; 
+            const mouseTiltY = this.mouse.x * tiltIntensity; 
+
+            targetX = idleX + mouseTiltX;
+            targetY = idleY + mouseTiltY;
+            targetZ = idleZ;
+        }
+
+        const lerpFactor = 0.06; 
         
-        this.phonePivot.rotation.x = c.phoneRotX * rad 
-            + (c.phoneAnimBiasX * rad) 
-            + Math.sin(t * c.phoneAnimSpeedX + 1.5) * (c.phoneAnimAmpX * rad);
-        
-        this.phonePivot.rotation.y = c.phoneRotY * rad 
-            + (c.phoneAnimBiasY * rad) 
-            + Math.sin(t * c.phoneAnimSpeedY) * (c.phoneAnimAmpY * rad);
-        
-        this.phonePivot.rotation.z = c.phoneRotZ * rad 
-            + (c.phoneAnimBiasZ * rad) 
-            + Math.sin(t * c.phoneAnimSpeedZ + 0.8) * (c.phoneAnimAmpZ * rad);
+        this.smoothRotation.x += (targetX - this.smoothRotation.x) * lerpFactor;
+        this.smoothRotation.y += (targetY - this.smoothRotation.y) * lerpFactor;
+        this.smoothRotation.z += (targetZ - this.smoothRotation.z) * lerpFactor;
+
+        this.phonePivot.rotation.set(this.smoothRotation.x, this.smoothRotation.y, this.smoothRotation.z);
     }
     
     startAnimation() { this.isPaused = false; this.animationId = requestAnimationFrame(this.animate); }
@@ -1127,17 +1110,16 @@ class NetworkBackground extends HTMLElement {
 
     setPlayableUrl(v) { 
         if (this.playableIframe) {
-           
             if (this.preloaderElement) {
                 this.preloaderElement.classList.remove('hidden');
             }
-            
             this.playableIframe.src = v;
         }
     }
     
     disconnectedCallback() {
         this.pause();
+        window.removeEventListener('mousemove', this.handleMouseMove);
         if (this.resizeObserver) this.resizeObserver.disconnect();
         if (this.inactivityTimer) clearTimeout(this.inactivityTimer);
         if (this._interactionReset) {
