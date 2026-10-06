@@ -152,9 +152,9 @@
 
     .bg-looper-wrapper {
         position: absolute;
-        top: 450px;
-        left: -320px;
-        width: 739px;      /* Фиксированная ширина "окна" */
+        top: 400px;
+        left: -350px;
+        width: 800px;      /* Фиксированная ширина "окна" */
         height: 800px;     /* Фиксированная высота "окна" */
         overflow: hidden;  /* Обрезаем всё, что выходит за границы */
         z-index: 0;
