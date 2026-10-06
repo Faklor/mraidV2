@@ -7,6 +7,8 @@
     overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */
     
     /* background-color: #000000; */
+
+    margin-top: 100px;
 }
 
 .hero-blick {
