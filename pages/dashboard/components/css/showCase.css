@@ -11,11 +11,19 @@
 .bg-looper-wrapper {
     position: absolute;
     top: 0;
-    right: 0%;
-    width: 70%;
-    height: 80%;
+    left: 0;
+    width: 100%;
+    height: 100%; /* Или фиксированная высота, как у вас было */
+    overflow: hidden;
     z-index: 0;
-    pointer-events: none;
+}
+
+.looper-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Или contain, в зависимости от того, как должна выглядеть картинка */
+    object-position: center;
+    display: block;
     opacity: 0.5;
 }
 
