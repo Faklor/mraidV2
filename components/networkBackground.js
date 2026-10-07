@@ -371,8 +371,7 @@ class NetworkBackground extends HTMLElement {
 
     async loadPlayablesData() {
         try {
-            const response = await fetch(this.config.playableJsonUrl);
-            const data = await response.json();
+            const data = await window.PortfolioDataCache.getData();
             this.playablesData = data.previews || (Array.isArray(data) ? data : []);
             if (this.playablesData.length > 0) this.loadRandomPlayable();
         } catch (error) {

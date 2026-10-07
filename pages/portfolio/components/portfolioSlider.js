@@ -36,9 +36,7 @@ class PortfolioSlider extends HTMLElement {
 
     async fetchPortfolioData() {
         try {
-            const response = await fetch('https://dashboard.mraid.io/portfolio.json');
-            if (!response.ok) throw new Error('Network response was not ok');
-            const data = await response.json();
+            const data = await window.PortfolioDataCache.getData();
             
             // 1. Разделяем на две независимые группы
             const favorites = data.previews.filter(item => 

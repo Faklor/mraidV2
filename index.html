@@ -97,6 +97,22 @@
         }
     </script>
 
+    <link rel="preload" href="https://dashboard.mraid.io/portfolio.json" as="fetch" crossorigin>
+
+    <script>
+        
+        window.ENABLE_PRELOADER = true; 
+        
+        if (!window.ENABLE_PRELOADER) {
+            
+            const style = document.createElement('style');
+            style.textContent = `
+                app-preloader#main-preloader { display: none !important; }
+                main#main-content { opacity: 1 !important; visibility: visible !important; }
+            `;
+            document.head.appendChild(style);
+        }
+    </script>
     
 </head>
 <body>
@@ -190,15 +206,16 @@
         <app-footer></app-footer>
     </div>
     <!-- data -->
+    <script src="components/data-cache.js"></script>
    
     <!-- global -->
-    <script src="components/bg-blick.js"></script> 
-    <script src="components/app-preloader.js"></script>
-    <script src="components/app-logo.js"></script>
-    <script src="components/app-header.js"></script>
-    <script src="components/nav-bar.js"></script>
-    <script src="components/app-footer.js"></script>
-    <script src="components/playableModal.js"></script>
+    <script defer src="components/bg-blick.js"></script> 
+    <script defer src="components/app-preloader.js"></script>
+    <script defer src="components/app-logo.js"></script>
+    <script defer src="components/app-header.js"></script>
+    <script defer src="components/nav-bar.js"></script>
+    <script defer src="components/app-footer.js"></script>
+    <script defer src="components/playableModal.js"></script>
     <script type="module" src="components/networkBackground.js"></script>
     <!-- Pages -->
 
@@ -207,91 +224,65 @@
 
     
     <!-- -------------------Home -->
-    <script src="pages/home/HomePage.js"></script>
+    <script defer src="pages/home/HomePage.js"></script>
 
-    <script src="pages/home/components/titleBlock.js"></script>
-    <script src="pages/home/components/phoneBlock.js"></script>
-    <script src="pages/home/components/featuresBlock.js"></script>
-    <script src="pages/home/components/sliderClientsBlock.js"></script>
-    <script src="pages/home/components/staticBlock.js"></script>
-    <script src="pages/home/components/topPlayablesSlider.js"></script>
+    <script defer src="pages/home/components/titleBlock.js"></script>
+    <script defer src="pages/home/components/phoneBlock.js"></script>
+    <script defer src="pages/home/components/featuresBlock.js"></script>
+    <script defer src="pages/home/components/sliderClientsBlock.js"></script>
+    <script defer src="pages/home/components/staticBlock.js"></script>
+    <script defer src="pages/home/components/topPlayablesSlider.js"></script>
     
 
     <!-- -------------------Process -->
-    <script src="pages/process/ProcessPage.js"></script>
+    <script defer src="pages/process/ProcessPage.js"></script>
 
-    <script src="pages/process/components/processStep.js"></script>
-    <script src="pages/process/components/processAI.js"></script>
-    <script src="pages/process/components/processPreview.js"></script>
-    <script src="pages/process/components/processContact.js"></script>
-    <script src="pages/process/components/processPlatform.js"></script>
-    <script src="pages/process/components/processTech.js"></script>
+    <script defer src="pages/process/components/processStep.js"></script>
+    <script defer src="pages/process/components/processAI.js"></script>
+    <script defer src="pages/process/components/processPreview.js"></script>
+    <script defer src="pages/process/components/processContact.js"></script>
+    <script defer src="pages/process/components/processPlatform.js"></script>
+    <script defer src="pages/process/components/processTech.js"></script>
 
     <!-- -------------------Portfolio -->
-    <script src="pages/portfolio/PortfolioPage.js"></script>
+    <script defer src="pages/portfolio/PortfolioPage.js"></script>
 
-    <script src="pages/portfolio/components/portfolioSlider.js"></script>
-    <script src="pages/portfolio/components/portfolioBuild.js"></script>
+    <script defer src="pages/portfolio/components/portfolioSlider.js"></script>
+    <script defer src="pages/portfolio/components/portfolioBuild.js"></script>
 
     <!-- <script src="pages/portfolio/components/priceCards.js"></script> -->
-    <script src="pages/portfolio/components/priceInfo.js"></script>
+    <script defer src="pages/portfolio/components/priceInfo.js"></script>
 
-    <!-- -------------------Portfolio -->
-    <script src="pages/price/PricePage.js"></script>
+    <!-- -------------------Price -->
+    <script defer src="pages/price/PricePage.js"></script>
 
 
     <!-- -------------------Dashboard -->
-    <script src="pages/dashboard/dashboardPage.js"></script>
+    <script defer src="pages/dashboard/dashboardPage.js"></script>
 
-    <script src="pages/dashboard/components/showCase.js"></script>
-    <script src="pages/dashboard/components/features.js"></script>
-    <script src="pages/dashboard/components/info.js"></script>
+    <script defer src="pages/dashboard/components/showCase.js"></script>
+    <script defer src="pages/dashboard/components/features.js"></script>
+    <script defer src="pages/dashboard/components/info.js"></script>
 
     <!-- -------------------Services -->
-    <script src="pages/services/PageServices.js"></script>
-    <script src="pages/services/components/banners.js"></script>
-    <script src="pages/services/components/servicesCards.js"></script>
-    <script src="pages/services/components/dashboardPromo.js"></script>
-    <script src="pages/services/components/featuresSection.js"></script>
+    <script defer src="pages/services/PageServices.js"></script>
+    <script defer src="pages/services/components/banners.js"></script>
+    <script defer src="pages/services/components/servicesCards.js"></script>
+    <script defer src="pages/services/components/dashboardPromo.js"></script>
+    <script defer src="pages/services/components/featuresSection.js"></script>
 
     <!-- -------------------Contact -->
 
-    <script src="pages/contact/ContactPage.js"></script>
+    <script defer src="pages/contact/ContactPage.js"></script>
 
-    <script src="pages/contact/components/about.js"></script>
-    <script src="pages/contact/components/story.js"></script>
-    <script src="pages/contact/components/clientsSlider.js"></script>
+    <script defer src="pages/contact/components/about.js"></script>
+    <script defer src="pages/contact/components/story.js"></script>
+    <script defer src="pages/contact/components/clientsSlider.js"></script>
 
     <!-- other -->
 
     <!-- <script src="router.js"></script> -->
-    <script>
-       const ENABLE_PRELOADER = false; 
-
-        document.addEventListener('DOMContentLoaded', () => {
-            const preloader = document.getElementById('main-preloader');
-            const mainContent = document.getElementById('main-content');
-
-            if (!ENABLE_PRELOADER) {
-                
-                if (preloader) {
-                    preloader.style.display = 'none'; 
-                   
-                }
-                if (mainContent) {
-                    mainContent.classList.add('is-visible'); 
-                }
-                return; 
-            }
-
-            
-            if (preloader && mainContent) {
-                preloader.addEventListener('preloader-complete', () => {
-                    mainContent.classList.add('is-visible');
-                });
-            }
-        });
-    </script>
+    
 
     <script>
         
@@ -378,79 +369,7 @@
         });
     </script>
 
-   <script src="https://cdn.jsdelivr.net/npm/lil-gui@0.19/dist/lil-gui.umd.min.js"></script>
-
-    <!-- Скрипт настройки с правильным поиском через Shadow DOM -->
-  <script>
-    // window.addEventListener('load', () => {
-    //     const pageHome = document.querySelector('page-home');
-    //     let networkBg = null;
-        
-    //     if (pageHome && pageHome.shadowRoot) {
-    //         networkBg = pageHome.shadowRoot.querySelector('network-background');
-    //     }
-        
-    //     if (networkBg && networkBg.config) {
-    //         const config = networkBg.config;
-    //         const gui = new lil.GUI({ title: '🎛 WebGL Matrix' });
-
-    //         gui.add(networkBg, 'isPaused').name('⏸ Пауза').onChange((val) => {
-    //             val ? networkBg.pause() : networkBg.resume();
-    //         });
-
-    //         const folder3D = gui.addFolder('3D Камера');
-    //         folder3D.add(config, 'rotationX', -90, 90).name('Наклон X').onChange(v => networkBg.setRotationX(v));
-    //         folder3D.add(config, 'rotationY', -180, 180).name('Наклон Y').onChange(v => networkBg.setRotationY(v));
-    //         folder3D.add(config, 'rotationZ', -180, 180).name('Наклон Z').onChange(v => networkBg.setRotationZ(v));
-    //         folder3D.add(config, 'offsetX', -500, 500).name('Сдвиг X').onChange(v => networkBg.setOffsetX(v));
-    //         folder3D.add(config, 'offsetY', -500, 500).name('Сдвиг Y').onChange(v => networkBg.setOffsetY(v));
-
-    //         const folderStyle = gui.addFolder('Стиль и Анимация');
-    //         folderStyle.add(config, 'dotSize', 1, 100).name('Размер точки').onChange(v => networkBg.setDotSize(v));
-    //         folderStyle.add(config, 'maxLift', 0, 50).name('Высота прыжка').onChange(v => networkBg.setMaxLift(v));
-    //         folderStyle.add(config, 'speed', 0.01, 2.0).name('Скорость').onChange(v => networkBg.setSpeed(v));
-    //         folderStyle.add(config, 'coreBrightness', 0.5, 2.5).name('Яркость белых ядер').onChange(v => networkBg.setCoreBrightness(v));
-    //         folderStyle.add(config, 'lineWidth', 1, 5).name('Толщина линий').onChange(v => networkBg.setLineWidth(v));
-    //         folderStyle.add(config, 'lineBrightness', 0.5, 3.0).name('Яркость линий').onChange(v => networkBg.setLineBrightness(v));
-
-    //         const folderLines = gui.addFolder('Линии');
-    //         folderLines.add(config, 'lineWidth', 1, 3).name('Толщина (макс 2-3)').onChange(v => networkBg.setLineWidth(v));
-
-    //         // const folderMask = gui.addFolder('Маска (Круг)');
-    //         // folderMask.add(config, 'circleRadius', 0, 100).name('Радиус круга (%)').onChange(v => networkBg.setCircleRadius(v));
-    //         // folderMask.add(config, 'circleFeather', 0, 100).name('Плавность краев (%)').onChange(v => networkBg.setCircleFeather(v));
-
-    //         folder3D.open();
-    //         folderStyle.open();
-    //         folderLines.open();
-    //         // folderMask.open(); 
-            
-
-    //         const folderPhone = gui.addFolder('📱 Телефон');
-    //         folderPhone.add(config, 'phoneScale', 0.1, 3.0).name('Масштаб').onChange(v => networkBg.setPhoneScale(v));
-    //         folderPhone.add(config, 'phonePosX', -100, 100).name('Позиция X').onChange(v => networkBg.setPhonePosX(v));
-    //         folderPhone.add(config, 'phonePosY', -100, 100).name('Позиция Y').onChange(v => networkBg.setPhonePosY(v));
-    //         folderPhone.add(config, 'phonePosZ', -100, 100).name('Позиция Z').onChange(v => networkBg.setPhonePosZ(v));
-
-
-    //         folderPhone.add(config, 'phoneRotX', -180, 180).name('Поворот X').onChange(v => networkBg.setPhoneRotX(v));
-    //         folderPhone.add(config, 'phoneRotY', -180, 180).name('Поворот Y').onChange(v => networkBg.setPhoneRotY(v));
-    //         folderPhone.add(config, 'phoneRotZ', -180, 180).name('Поворот Z').onChange(v => networkBg.setPhoneRotZ(v));
-
-    //         folderPhone.open();
-
-    //        const folderScreen = gui.addFolder('📱 Подгонка экрана (относительно стекла)');
-    //         // Теперь эти значения прибавляются к центру найденного меша GLASS
-    //         folderScreen.add(config, 'screenOffsetX', -10, 10).name('Сдвиг X').onChange(v => networkBg.setScreenOffsetX(v));
-    //         folderScreen.add(config, 'screenOffsetY', -10, 10).name('Сдвиг Y').onChange(v => networkBg.setScreenOffsetY(v));
-    //         folderScreen.add(config, 'screenOffsetZ', 0, 10).name('Сдвиг Z (глубина)').onChange(v => networkBg.setScreenOffsetZ(v));
-    //         folderScreen.open();
-
-
-            
-    //     }
-    // });
-</script>
+   
     
 </body>
 </html>

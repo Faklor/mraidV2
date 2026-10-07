@@ -43,10 +43,7 @@ class TopPlayablesSlider extends HTMLElement {
 
     async loadData() {
         try {
-            const response = await fetch('https://dashboard.mraid.io/portfolio.json');
-            if (!response.ok) throw new Error('Failed to load JSON');
-            
-            const data = await response.json();
+            const data = await window.PortfolioDataCache.getData();
             
             const favoriteProjects = data.previews.filter(item => 
                 item.favorite === 1 || item.favorite === true || item.favorite === "1"
