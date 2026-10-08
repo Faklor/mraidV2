@@ -320,7 +320,84 @@
 
    
 
-   
+    <script>
+        // 1. Создаем ЕДИНЫЙ глобальный лист стилей для анимаций
+        const revealStyles = new CSSStyleSheet();
+        revealStyles.replaceSync(`
+            .auto-reveal {
+                opacity: 0;
+                transform: translateY(30px);
+                transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                            transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                will-change: opacity, transform;
+            }
+            .auto-reveal.is-visible {
+                opacity: 1;
+                transform: translateY(0);
+            }
+            .auto-reveal.delay-100 { transition-delay: 0.1s; }
+            .auto-reveal.delay-200 { transition-delay: 0.2s; }
+            .auto-reveal.delay-300 { transition-delay: 0.3s; }
+        `);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const revealObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -50px 0px'
+            });
+
+            function initAutoReveal() {
+                // Укажите здесь ВСЕ ваши кастомные теги (и родительские, и вложенные)
+                const shadowHosts = [
+                    'page-home', 'page-process', 'page-portfolio', 'price-cards',
+                    'page-dashboard', 'page-services', 'page-contact',
+                    'app-header', 'app-footer', 'top-playables-slider', 'portfolio-slider',
+                    
+                    'process-steps', 'process-previews', 'process-ai', 'process-contact', 'process-platforms', 'process-tech'
+                ];
+
+                shadowHosts.forEach(tag => {
+                    document.querySelectorAll(tag).forEach(host => {
+                        if (host.shadowRoot) {
+                            // МАГИЯ: Внедряем общие стили в Shadow DOM (без дублирования!)
+                            if (!host.shadowRoot.adoptedStyleSheets?.includes(revealStyles)) {
+                                host.shadowRoot.adoptedStyleSheets = [
+                                    ...(host.shadowRoot.adoptedStyleSheets || []), 
+                                    revealStyles
+                                ];
+                            }
+
+                            // АВТОМАТИЗАЦИЯ: Находим все <section> внутри компонента
+                            const sections = host.shadowRoot.querySelectorAll('section');
+                            sections.forEach((section, index) => {
+                                // Добавляем класс анимации автоматически
+                                section.classList.add('auto-reveal');
+                                
+                                // Добавляем каскадную задержку для красоты (вторая секция задержится на 0.1с, третья на 0.2с и т.д.)
+                                if (index > 0 && index <= 3) {
+                                    section.classList.add(`delay-${index * 50}`);
+                                }
+                                
+                                // Запускаем наблюдение
+                                revealObserver.observe(section);
+                            });
+                        }
+                    });
+                });
+            }
+
+            // Небольшая задержка, чтобы все вложенные компоненты успели создаться
+            setTimeout(initAutoReveal, 150);
+        });
+
+
+    </script>
     
 </body>
 </html>

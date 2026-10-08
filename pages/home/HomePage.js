@@ -7,6 +7,7 @@ class HomePage extends HTMLElement {
     connectedCallback() {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/HomePage.css">
+            
             <div class="home-page">
                 <img class="hero-blick" src="assets/img/blick.png" alt="">
                 

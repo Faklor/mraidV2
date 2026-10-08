@@ -347,7 +347,7 @@ class PriceCards extends HTMLElement {
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/price/PricePage.css"> 
 
-            <section class="pricing-wrapper" id="pricing-section">
+            <section class="pricing-wrapper " id="pricing-section">
                 <div class="pricing-header">
                     <h1 class="pricing-title">Packages & pricing</h1>
                     <p class="pricing-description">Choose a package that fits your needs. All playables are ad network ready and can be customized for your game or campaign.</p>

@@ -153,6 +153,9 @@ class NetworkBackground extends HTMLElement {
         this.isHoveringPhone = false; 
         this.smoothRotation = { x: 0, y: 0, z: 0 }; 
         this.handleMouseMove = this.handleMouseMove.bind(this);
+
+        this.isMuted = false;
+        this.muteBtn = null; 
     }
 
     hexToRgb(hex) {
@@ -240,6 +243,45 @@ class NetworkBackground extends HTMLElement {
                     background: rgba(255, 255, 255, 0.9);
                     border-radius: 3px;
                     margin-bottom: 10px;
+                }
+
+
+                .playable-mute-btn {
+                    position: absolute;
+                    top: 20px;       
+                    left: 20px;     
+                    width: 60px;   
+                    height: 60px;   
+                    border-radius: 50%;
+                    background: rgba(13, 13, 15, 0.7); /* Чуть плотнее фон */
+                    border: 1px solid rgba(255, 255, 255, 0.2);
+                    color: #ffffff;
+                    cursor: pointer;
+                    z-index: 101;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    transition: all 0.25s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                    backdrop-filter: blur(8px);
+                    -webkit-backdrop-filter: blur(8px);
+                    box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+                    display:none;
+                }
+                .playable-mute-btn:hover {
+                    background: rgba(218, 4, 4, 0.9);
+                    border-color: rgba(218, 4, 4, 1);
+                    transform: scale(1.15); 
+                    box-shadow: 0 6px 20px rgba(218, 4, 4, 0.4);
+                }
+                .playable-mute-btn:active {
+                    transform: scale(0.95);
+                }
+                .playable-mute-btn svg {
+                    width: 28px;       
+                    height: 28px;
+                }
+                .iframe-preloader {
+                    z-index: 102 !important; 
                 }
             </style>
             <canvas id="network-canvas"></canvas>
@@ -464,6 +506,42 @@ class NetworkBackground extends HTMLElement {
         }, undefined, (error) => console.error('Ошибка GLB:', error));
     }
 
+        toggleMute() {
+        this.isMuted = !this.isMuted;
+
+        // 1. Визуальное обновление иконки
+        const iconUnmuted = this.muteBtn.querySelector('.icon-unmuted');
+        const iconMuted = this.muteBtn.querySelector('.icon-muted');
+        if (this.isMuted) {
+            iconUnmuted.style.display = 'none';
+            iconMuted.style.display = 'block';
+        } else {
+            iconUnmuted.style.display = 'block';
+            iconMuted.style.display = 'none';
+        }
+
+        // 2. Прямое управление звуком (СРАБОТАЕТ ТОЛЬКО ЕСЛИ ДОМЕНЫ СОВПАДАЮТ)
+        try {
+            const iframeDoc = this.playableIframe.contentDocument || this.playableIframe.contentWindow.document;
+            
+            // Выключаем стандартные теги
+            iframeDoc.querySelectorAll('video, audio').forEach(media => {
+                media.muted = this.isMuted;
+                if (this.isMuted) media.pause();
+            });
+
+            // Выключаем Web Audio API (если игра использует его, как большинство HTML5 игр)
+            // Это работает, если игра использует стандартные глобальные переменные
+            if (iframeDoc.defaultView.Howler) {
+                iframeDoc.defaultView.Howler.mute(this.isMuted);
+            }
+            
+            console.log(`[MRAID] Звук успешно переключен на: ${this.isMuted ? 'ВЫКЛ' : 'ВКЛ'}`);
+        } catch (e) {
+            console.error('[MRAID] ОШИБКА: Домены не совпадают (CORS). Невозможно управлять звуком iframe.');
+        }
+    }
+
     createScreenObject() {
         const glass = this.glassMesh;
         glass.updateWorldMatrix(true, false);
@@ -505,6 +583,29 @@ class NetworkBackground extends HTMLElement {
         wrapper.style.height = this.config.frameHeight + 'px';
         wrapper.style.position = 'relative';
 
+
+
+        // === 1. MUTE/UNMUTE ===
+        this.muteBtn = document.createElement('button');
+        this.muteBtn.className = 'playable-mute-btn';
+        this.muteBtn.title = this.isMuted ? 'Unmute' : 'Mute';
+        this.muteBtn.innerHTML = `
+            <!-- Иконка звука включен -->
+            <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+            </svg>
+            <!-- Иконка звука выключен -->
+            <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+        `;
+        this.muteBtn.addEventListener('click', () => this.toggleMute());
+        wrapper.appendChild(this.muteBtn);
+        // ==========================================
+
         this.preloaderElement = document.createElement('div');
         this.preloaderElement.className = 'iframe-preloader';
         this.preloaderElement.innerHTML = `
@@ -542,7 +643,9 @@ class NetworkBackground extends HTMLElement {
 
         this.playableIframe = document.createElement('iframe');
         this.playableIframe.src = 'about:blank';
-        this.playableIframe.setAttribute('allow', 'autoplay; fullscreen');
+        //  this.playableIframe.setAttribute('allow', 'fullscreen'); 
+         this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
+        
         this.playableIframe.style.background = 'transparent';
         this.playableIframe.style.border = 'none';
         this.playableIframe.style.width = '100%';
