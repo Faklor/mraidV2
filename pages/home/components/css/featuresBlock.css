@@ -12,7 +12,7 @@
 .features-list {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 8px;
     z-index: 10;
 
     background-color: rgba(22,16,19,0.1);
