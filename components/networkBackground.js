@@ -106,6 +106,9 @@ class NetworkBackground extends HTMLElement {
             vignetteInner: 20,
             vignetteOuter: 80,
             vignetteFeather: 30,
+
+            showPhone: false,
+
         };
 
         this.scene = null;
@@ -162,6 +165,7 @@ class NetworkBackground extends HTMLElement {
 
         this.isMuted = false;
         this.muteBtn = null; 
+
     }
 
     hexToRgb(hex) {
@@ -298,7 +302,10 @@ class NetworkBackground extends HTMLElement {
         this.initThreeJS();
         this.createPhoneBacklights();
         this.createGrid();
-        this.loadPhoneModel();
+        if (this.config.showPhone) {
+            this.loadPhoneModel();
+        }
+        // this.loadPhoneModel();
         this.loadPlayablesData();
         this.setupInteractionListeners();
         
