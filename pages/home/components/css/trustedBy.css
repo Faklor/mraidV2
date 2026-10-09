@@ -1,7 +1,7 @@
 /* === СЕКЦИЯ TRUSTED BY === */
 .trusted-section {
     text-align: left;
-    padding: 40px 0px 0 0;
+    padding: 40px 0 0 0;
 }
 
 .trusted-section h2 {
@@ -23,8 +23,8 @@
     display: flex;
     justify-content: space-between; 
     align-items: center;
-    width: 100%; 
-    gap: 24px;
+    width: 100%;
+    gap: 10px;
 }
 
 /* === ЛОГОТИП === */
@@ -32,122 +32,32 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex: 1; 
-    max-width: 150px;
     height: 30px;
-    transition: all 0.3s ease;
+    flex-shrink: 0; 
+    transition: transform 0.3s ease; 
 }
 
 .logo-item img {
     max-height: 100%;
-    max-width: 100%;
+    max-width: 150px; 
     width: auto;
+    height: auto;
     object-fit: contain;
-    transition: all 0.3s ease;
-   
+    display: block;
 }
 
-.logo-item:hover img {
-    opacity: 1;
-    transform: scale(1.1);
-}
+
 
 /* === АДАПТАЦИЯ === */
-@media (max-width: 1024px) {
-    .marquee-track {
-        flex-wrap: wrap; 
-        justify-content: center;
-        gap: 32px;
-    }
-    
-    .logo-item {
-        flex: 0 0 calc(25% - 32px); 
-        height: 50px;
-        max-width: 120px;
-    }
-}
-
-@media (max-width: 768px) {
-    .trusted-section h2 {
-        font-size: 1.25rem;
-        margin-bottom: 32px;
-    }
-    
-    .logo-item {
-        flex: 0 0 calc(33.333% - 24px);
-        height: 40px;
-        max-width: 100px;
-    }
-}
-
-@media (max-width: 480px) {
-    .logo-item {
-        flex: 0 0 calc(50% - 16px);
-        height: 35px;
-        max-width: 80px;
-    }
-}
-/*
-.trusted-section {
-    text-align: left;
-    padding: 0 0px;
-    overflow: hidden;
-}
-
-.trusted-section h2 {
-    font-size: 1.5rem;
-    font-weight: 300;
-    color: #bbbbbb;
-    margin-bottom: 48px;
-    margin-left: 0;
-}
-
-
-.marquee-container {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    
-
-
-.marquee-track {
-    display: flex;
-    gap: 48px;
-    width: max-content;
-   
-    will-change: transform;
-}
-
-
-.logo-item {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 30px;
-    flex-shrink: 0;
-    transition: all 0.3s ease;
-   
-}
-
-
-.logo-item img {
-    max-height: 100%;
-    max-width: 150px;
-    width: auto;
-    object-fit: contain;
-    transition: all 0.3s ease;
-}
 
 
 @media (max-width: 1024px) {
     .marquee-track {
         gap: 32px;
     }
-    
     .logo-item {
         height: 50px;
     }
-    
     .logo-item img {
         max-width: 120px;
     }
@@ -158,15 +68,12 @@
         font-size: 1.25rem;
         margin-bottom: 32px;
     }
-    
     .marquee-track {
         gap: 24px;
     }
-    
     .logo-item {
         height: 40px;
     }
-    
     .logo-item img {
         max-width: 100px;
     }
@@ -176,17 +83,10 @@
     .marquee-track {
         gap: 16px;
     }
-    
     .logo-item {
         height: 35px;
     }
-    
     .logo-item img {
         max-width: 80px;
     }
 }
-*/
-
-
-
-

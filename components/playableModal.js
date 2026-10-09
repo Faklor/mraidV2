@@ -184,7 +184,12 @@ class PlayableModal extends HTMLElement {
                         </svg>
                     </button>
                     <div class="device-frame">
-                        <iframe class="playable-iframe" src="" frameborder="0" allow="autoplay; fullscreen; microphone; camera"></iframe>
+                        <iframe class="playable-iframe" 
+                                src="" 
+                                frameborder="0" 
+                                allow="webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking"
+                                sandbox="allow-scripts allow-same-origin allow-popups allow-forms">
+                        </iframe>
                     </div>
                     <button class="nav-btn next" aria-label="Next playable">
                         <svg width="32" height="32" viewBox="0 0 24 24" fill="none">

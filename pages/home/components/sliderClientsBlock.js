@@ -2,12 +2,9 @@ class TrustedBy extends HTMLElement {
     constructor() {
         super();
         this.attachShadow({ mode: 'open' });
-        this.animationId = null;
-        this.position = 0;
-        this.speed = 0.3; // Скорость прокрутки (пикселей за кадр)
     }
 
-    // Функция перемешивания массива (Fisher-Yates shuffle)
+    // Функция перемешивания массива (Fisher-Yates)
     shuffleArray(array) {
         const shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -30,98 +27,111 @@ class TrustedBy extends HTMLElement {
             { name: 'Ubisoft', file: 'ubisoft.png' },
             { name: 'Lionsgate', file: 'lionsgate.png' },
             { name: 'Kama Games', file: 'kama-games.png' },
-            { name: 'MG', file: 'mg.png' }
+            { name: 'Fusebox', file: 'fusebox.png' },
+            { name: 'Game story', file: 'game-story.png' },
+            { name: 'Tale monster', file: 'tale-monster.png' },
+            { name: 'Venatus', file: 'venatus.png' },
+            { name: 'Yallaplay', file: 'yallaplay.png' },
+            { name: 'Kefir', file: 'kefir.png' },
         ];
 
-        // Перемешиваем логотипы
+        // 1. Перемешиваем массив ПЕРЕД расчетом, чтобы каждый раз были случайные логотипы
         const shuffledStudios = this.shuffleArray(studios);
 
         this.shadowRoot.innerHTML = `
             <link rel="stylesheet" href="pages/home/components/css/trustedBy.css">
-            
             <div class="trusted-section">
                 <h2>Trusted by leading game studios & brands</h2>
-                
                 <div class="marquee-container">
-                    <div class="marquee-track">
-                        ${shuffledStudios.map(s => `
-                            <div class="logo-item">
-                                <img src="assets/img/clients/${s.file}" alt="${s.name}" loading="lazy">
-                            </div>
-                        `).join('')}
-                    </div>
+                    <div class="marquee-track" id="track"></div>
                 </div>
             </div>
         `;
 
-        // Клонируем логотипы для бесшовной прокрутки
-        //this.setupInfiniteScroll();
-        
-        // Запускаем анимацию
-        //this.startAnimation();
-    }
-
-    setupInfiniteScroll() {
-        const track = this.shadowRoot.querySelector('.marquee-track');
-        const logos = track.querySelectorAll('.logo-item');
-        
-        // Клонируем каждый логотип и добавляем в конец
-        logos.forEach(logo => {
-            const clone = logo.cloneNode(true);
-            track.appendChild(clone);
+        requestAnimationFrame(() => {
+            this.renderFittingLogos(shuffledStudios);
         });
     }
 
-    startAnimation() {
-        const track = this.shadowRoot.querySelector('.marquee-track');
+    async renderFittingLogos(studios) {
         const container = this.shadowRoot.querySelector('.marquee-container');
+        const track = this.shadowRoot.querySelector('#track');
         
-        let animationFrameId;
-        let isPaused = false;
+        // ВАЖНО: Это значение должно совпадать с базовым gap в CSS!
+        // 2px слишком мало, логотипы сольются. 24px или 32px — оптимально.
+        const gap = 10; 
+        const maxLogos = 14; // Жесткое ограничение: максимум 14 логотипов
 
-        // Пауза при наведении
-        container.addEventListener('mouseenter', () => {
-            // isPaused = true;
+        // Создаем скрытый контейнер для точного измерения
+        const tempContainer = document.createElement('div');
+        tempContainer.style.cssText = `
+            position: absolute; 
+            visibility: hidden; 
+            top: -9999px; 
+            left: -9999px; 
+            display: flex; 
+            gap: ${gap}px;
+        `;
+        this.shadowRoot.appendChild(tempContainer);
+
+        // Загружаем изображения и измеряем их ширину
+        const loadPromises = studios.map(s => {
+            return new Promise(resolve => {
+                const div = document.createElement('div');
+                div.className = 'logo-item';
+                const img = document.createElement('img');
+                img.src = `assets/img/clients/${s.file}`;
+                img.alt = s.name;
+                
+                img.onload = () => {
+                    div.appendChild(img);
+                    tempContainer.appendChild(div);
+                    // Принудительный reflow для получения точного offsetWidth
+                    const width = div.offsetWidth; 
+                    resolve({ studio: s, width: width });
+                };
+                
+                img.onerror = () => {
+                    resolve({ studio: s, width: 100 }); // Fallback
+                };
+            });
         });
 
-        container.addEventListener('mouseleave', () => {
-            // isPaused = false;
-        });
+        const results = await Promise.all(loadPromises);
+        
+        const containerWidth = container.offsetWidth || window.innerWidth;
+        let currentWidth = 0;
+        let fittedCount = 0;
 
-        const animate = () => {
-            if (!isPaused) {
-                this.position -= this.speed;
-                
-                // Получаем ширину первого логотипа
-                const firstLogo = track.firstElementChild;
-                const logoWidth = firstLogo.offsetWidth + 48; // 48px - это gap
-                
-                // Когда прокрутили больше ширины одного логотипа
-                if (Math.abs(this.position) >= logoWidth) {
-                    // Перемещаем первый логотип в конец
-                    track.appendChild(track.firstElementChild);
-                    // Сбрасываем позицию
-                    this.position += logoWidth;
-                }
-                
-                // Применяем трансформацию
-                track.style.transform = `translateX(${this.position}px)`;
+        // 2. Считаем, сколько влезает, но не больше maxLogos
+        for (let i = 0; i < results.length; i++) {
+            if (fittedCount >= maxLogos) {
+                break; // Достигли лимита в 14 штук
             }
+
+            const itemWidth = results[i].width;
+            const spaceNeeded = itemWidth + (i === 0 ? 0 : gap);
             
-            animationFrameId = requestAnimationFrame(animate);
-        };
-
-        animate();
-        
-        // Сохраняем ID для очистки
-        this.animationId = animationFrameId;
-    }
-
-    disconnectedCallback() {
-        // Очищаем анимацию при удалении компонента
-        if (this.animationId) {
-            cancelAnimationFrame(this.animationId);
+            if (currentWidth + spaceNeeded <= containerWidth) {
+                currentWidth += spaceNeeded;
+                fittedCount++;
+            } else {
+                break; // Следующий логотип не влезет в одну строку
+            }
         }
+
+        tempContainer.remove();
+
+        // 3. Гарантируем минимум 2, максимум 14 логотипов
+        const countToRender = Math.min(maxLogos, Math.max(2, fittedCount));
+        const studiosToRender = results.slice(0, countToRender).map(r => r.studio);
+
+        // 4. Рендерим итоговый набор
+        track.innerHTML = studiosToRender.map(s => `
+            <div class="logo-item">
+                <img src="assets/img/clients/${s.file}" alt="${s.name}" loading="lazy">
+            </div>
+        `).join('');
     }
 }
 

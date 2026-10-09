@@ -18,7 +18,7 @@ class NetworkBackground extends HTMLElement {
             rotationY: 2.88,           
             rotationZ: -134.28,   
             gridZ: 20,           
-            dotSize: 96.729,              
+                       
             maxLift: 3,
             speed: 0.3,             
             
@@ -29,12 +29,18 @@ class NetworkBackground extends HTMLElement {
             gridPosX: 16.4,       
             gridPosZ: 65, 
             
+            //lines
             lineWidth: 2,            
             lineBrightness: 0.3,     
-            coreBrightness: 1.3,
-            
-            redGlowSize: 0.8,        
-            redGlowIntensity: 1,  
+           
+            //points
+            coreBrightness: 6.0,       // Яркость белого ядра
+            dotSize: 100.0,             // ОБЩИЙ размер точки (мастер-параметр)
+            coreSize: 0.15,            // Размер белого ядра (от 0.0 до 1.0, где 1.0 = вся точка)
+            coreSharpness: 24.0,       // Резкость белого ядра (чем больше, тем четче край, как лазер)
+            glowSize: 0.55,            // Размер основного красного свечения (от 0.0 до 1.0)
+            glowSharpness: 3.0,        // Мягкость красного свечения (1.5-3.0 = очень мягко, 8.0 = резко)
+            redGlowIntensity: 0.5,     // Общая яркость красного свечения 
             
             baseColor: '#da0404', 
             
@@ -644,12 +650,27 @@ class NetworkBackground extends HTMLElement {
         this.playableIframe = document.createElement('iframe');
         this.playableIframe.src = 'about:blank';
         //  this.playableIframe.setAttribute('allow', 'fullscreen'); 
-         this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
+        this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking');
+        this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+        
+        //  this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
         
         this.playableIframe.style.background = 'transparent';
         this.playableIframe.style.border = 'none';
         this.playableIframe.style.width = '100%';
         this.playableIframe.style.height = '100%';
+
+         this.playableIframe.style.transform = 'translate3d(0, 0, 0)';
+        this.playableIframe.style.willChange = 'transform';
+        this.playableIframe.style.backfaceVisibility = 'hidden';
+
+        this.playableIframe.onload = () => {
+            if (this.preloaderElement) {
+                this.preloaderElement.classList.add('hidden');
+            }
+        };
+
+        
         
         this.playableIframe.onload = () => {
             if (this.preloaderElement) {
@@ -848,7 +869,7 @@ class NetworkBackground extends HTMLElement {
 
         const rgb = this.hexToRgb(this.config.baseColor);
 
-        const pointMaterial = new THREE.ShaderMaterial({
+    const pointMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 },
                 uSpeed: { value: this.config.speed },
@@ -858,12 +879,20 @@ class NetworkBackground extends HTMLElement {
                 uColorR: { value: rgb.r },
                 uColorG: { value: rgb.g },
                 uColorB: { value: rgb.b },
-                uRedGlowSize: { value: this.config.redGlowSize },
+                
+                // ===  ===
+                uCoreSize: { value: this.config.coreSize },
+                uCoreSharpness: { value: this.config.coreSharpness },
+                uGlowSize: { value: this.config.glowSize },
+                uGlowSharpness: { value: this.config.glowSharpness },
                 uRedGlowIntensity: { value: this.config.redGlowIntensity },
+                // ==============================================
+                
                 uMaskRadius: { value: this.config.maskRadius },
                 uMaskFeather: { value: this.config.maskFeather },
                 uMaskCenter: { value: new THREE.Vector2(this.config.maskCenterX, this.config.maskCenterY) }
             },
+   
             vertexShader: `
                 uniform float uTime;
                 uniform float uSpeed;
@@ -919,8 +948,13 @@ class NetworkBackground extends HTMLElement {
                 uniform float uColorR;
                 uniform float uColorG;
                 uniform float uColorB;
-                uniform float uRedGlowSize;
+                
+                uniform float uCoreSize;
+                uniform float uCoreSharpness;
+                uniform float uGlowSize;
+                uniform float uGlowSharpness;
                 uniform float uRedGlowIntensity;
+                
                 varying float vIntensity;
                 varying float vIsHot;
                 varying float vMask;
@@ -930,19 +964,33 @@ class NetworkBackground extends HTMLElement {
                     float dist = length(coord);
                     if (dist > 0.5) discard; 
                     
-                    float glow = 1.0 - (dist * 2.0);
                     
-                    float core = pow(glow, 10.0) * vIntensity; 
-                    float redRing = pow(glow * uRedGlowSize, 2.5) * vIntensity * uRedGlowIntensity; 
-                    float outerGlow = pow(glow * uRedGlowSize, 1.2) * vIntensity * (uRedGlowIntensity * 0.5); 
+                    float coreFactor = max(0.0, 1.0 - (dist / uCoreSize));
+                    float core = pow(coreFactor, uCoreSharpness) * vIntensity * uCoreBrightness;
+                    
+                    
+                    float glowFactor = max(0.0, 1.0 - (dist / uGlowSize));
+                    float redGlow = pow(glowFactor, uGlowSharpness) * vIntensity * uRedGlowIntensity;
+                    
+                    
+                    float outerGlowFactor = max(0.0, 1.0 - (dist / (uGlowSize * 1.5)));
+                    float outerGlow = pow(outerGlowFactor, 4.0) * vIntensity * uRedGlowIntensity * 0.3;
+                    
                     
                     vec3 colorCore = vec3(1.0, 1.0, 1.0);
-                    vec3 colorMain = vec3(uColorR, uColorG, uColorB); 
+                    vec3 colorRed = vec3(uColorR, uColorG, uColorB);
                     
-                    vec3 finalColor = colorMain * (redRing + outerGlow);
-                    finalColor += colorCore * core * uCoreBrightness;
+                    vec3 finalColor = colorCore * core;
+                    finalColor += colorRed * redGlow;
+                    finalColor += colorRed * outerGlow;
                     
-                    float alpha = (core * uCoreBrightness + redRing + outerGlow) * 2.0 * vMask;
+                    
+                    if (vIsHot > 0.5) {
+                        finalColor += colorRed * 0.2 * vIntensity;
+                    }
+                    
+                    // Честная прозрачность: сумма всех световых слоев
+                    float alpha = (core + redGlow + outerGlow) * 1.5 * vMask;
                     gl_FragColor = vec4(finalColor, alpha);
                 }
             `,
