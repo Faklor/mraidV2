@@ -334,7 +334,7 @@ class PortfolioSlider extends HTMLElement {
         nextBtn.style.pointerEvents = this.mechanicsScrollPosition >= maxScroll ? 'none' : 'auto';
     }
 
-    initEvents() {
+    initEvents() { 
         const filterSection = this.shadowRoot.querySelector('.filter-section');
         if (filterSection) {
             filterSection.addEventListener('click', (e) => {
