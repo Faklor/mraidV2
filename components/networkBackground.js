@@ -12,6 +12,10 @@ class NetworkBackground extends HTMLElement {
         this.time = 0;
         this.animationId = null;
         
+        // 🔥 НОВОЕ: Флаги для отложенной загрузки
+        this._isInitialized = false;
+        this._observer = null;
+
         this.config = {
             spacing: 20,
             rotationX: -60.48,          
@@ -24,23 +28,21 @@ class NetworkBackground extends HTMLElement {
             
             offsetY: -50,
             offsetX: -100,
-            gridWidth: 25,
-            gridHeight: 15,
+            gridWidth: 25,      // <-- ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ
+            gridHeight: 15,     // <-- ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ
             gridPosX: 16.4,       
             gridPosZ: 65, 
             
-            //lines
             lineWidth: 2,            
             lineBrightness: 0.3,     
            
-            //points
-            coreBrightness: 6.0,       // Яркость белого ядра
-            dotSize: 100.0,             // ОБЩИЙ размер точки (мастер-параметр)
-            coreSize: 0.15,            // Размер белого ядра (от 0.0 до 1.0, где 1.0 = вся точка)
-            coreSharpness: 24.0,       // Резкость белого ядра (чем больше, тем четче край, как лазер)
-            glowSize: 0.55,            // Размер основного красного свечения (от 0.0 до 1.0)
-            glowSharpness: 3.0,        // Мягкость красного свечения (1.5-3.0 = очень мягко, 8.0 = резко)
-            redGlowIntensity: 0.5,     // Общая яркость красного свечения 
+            coreBrightness: 3.0,       
+            dotSize: 100.0,             
+            coreSize: 0.15,            
+            coreSharpness: 24.0,       
+            glowSize: 0.55,            
+            glowSharpness: 3.0,        
+            redGlowIntensity: 0.5,     
             
             baseColor: '#da0404', 
             
@@ -108,7 +110,6 @@ class NetworkBackground extends HTMLElement {
             vignetteFeather: 30,
 
             showPhone: true,
-
         };
 
         this.scene = null;
@@ -157,7 +158,6 @@ class NetworkBackground extends HTMLElement {
 
         this.redColor = 0xff1a1a;
 
-        // === Переменные для интерактивности мыши ===
         this.mouse = { x: 0, y: 0 }; 
         this.isHoveringPhone = false; 
         this.smoothRotation = { x: 0, y: 0, z: 0 }; 
@@ -165,7 +165,6 @@ class NetworkBackground extends HTMLElement {
 
         this.isMuted = false;
         this.muteBtn = null; 
-
     }
 
     hexToRgb(hex) {
@@ -180,6 +179,7 @@ class NetworkBackground extends HTMLElement {
     }
 
     connectedCallback() {
+        // 1. МГНОВЕННО рендерим только HTML и CSS (занимает < 1 мс)
         this.shadowRoot.innerHTML = `
             <style>
                 :host {
@@ -190,7 +190,7 @@ class NetworkBackground extends HTMLElement {
                     top: 0;
                     left: 0;
                     z-index: 0;
-                    background: transparent; /* Прозрачный, чтобы не перекрывать фон страницы */
+                    background: transparent;
                     overflow: hidden;
                 }
                 canvas {
@@ -229,14 +229,8 @@ class NetworkBackground extends HTMLElement {
                     backface-visibility: hidden;
                     -webkit-backface-visibility: hidden;
                 }
-                .status-bar .time {
-                    margin-left: 30px;
-                }
-                .status-bar .icons {
-                    display: flex;
-                    gap: 10px;
-                    align-items: center;
-                }
+                .status-bar .time { margin-left: 30px; }
+                .status-bar .icons { display: flex; gap: 10px; align-items: center; }
                 .home-indicator {
                     width: 100%;
                     height: 100%;
@@ -254,8 +248,6 @@ class NetworkBackground extends HTMLElement {
                     border-radius: 3px;
                     margin-bottom: 10px;
                 }
-
-
                 .playable-mute-btn {
                     position: absolute;
                     top: 20px;       
@@ -263,7 +255,7 @@ class NetworkBackground extends HTMLElement {
                     width: 60px;   
                     height: 60px;   
                     border-radius: 50%;
-                    background: rgba(13, 13, 15, 0.7); /* Чуть плотнее фон */
+                    background: rgba(13, 13, 15, 0.7);
                     border: 1px solid rgba(255, 255, 255, 0.2);
                     color: #ffffff;
                     cursor: pointer;
@@ -275,7 +267,7 @@ class NetworkBackground extends HTMLElement {
                     backdrop-filter: blur(8px);
                     -webkit-backdrop-filter: blur(8px);
                     box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
-                    display:none;
+                    display: none;
                 }
                 .playable-mute-btn:hover {
                     background: rgba(218, 4, 4, 0.9);
@@ -283,29 +275,45 @@ class NetworkBackground extends HTMLElement {
                     transform: scale(1.15); 
                     box-shadow: 0 6px 20px rgba(218, 4, 4, 0.4);
                 }
-                .playable-mute-btn:active {
-                    transform: scale(0.95);
-                }
-                .playable-mute-btn svg {
-                    width: 28px;       
-                    height: 28px;
-                }
-                .iframe-preloader {
-                    z-index: 102 !important; 
-                }
+                .playable-mute-btn:active { transform: scale(0.95); }
+                .playable-mute-btn svg { width: 28px; height: 28px; }
+                .iframe-preloader { z-index: 102 !important; }
             </style>
             <canvas id="network-canvas"></canvas>
             <div class="vignette-overlay"></div>
         `;
 
         this.applyVignetteCSS();
+
+        // 2. 🔥 ГЛАВНАЯ ОПТИМИЗАЦИЯ: Отложенная инициализация
+        // Мы не грузим Three.js сразу. Мы ждем, пока элемент появится на экране (с запасом 300px)
+        this._observer = new IntersectionObserver((entries) => {
+            if (entries[0].isIntersecting && !this._isInitialized) {
+                this._isInitialized = true;
+                this._observer.disconnect(); // Отключаем наблюдение, оно больше не нужно
+                
+                // Используем requestIdleCallback, чтобы выполнить тяжелый код, когда процессор свободен
+                if ('requestIdleCallback' in window) {
+                    requestIdleCallback(() => this._heavyInit(), { timeout: 1000 });
+                } else {
+                    setTimeout(() => this._heavyInit(), 100); // Фолбэк для Safari
+                }
+            }
+        }, { rootMargin: '300px' });
+
+        this._observer.observe(this);
+    }
+
+    // 3. Вся тяжелая логика вынесена в отдельный метод
+    _heavyInit() {
         this.initThreeJS();
         this.createPhoneBacklights();
         this.createGrid();
+        
         if (this.config.showPhone) {
             this.loadPhoneModel();
         }
-        // this.loadPhoneModel();
+        
         this.loadPlayablesData();
         this.setupInteractionListeners();
         
@@ -397,7 +405,9 @@ class NetworkBackground extends HTMLElement {
 
         this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
         this.renderer.setSize(rect.width, rect.height);
-        this.renderer.setPixelRatio(2);
+        
+        // 🔥 ОПТИМИЗАЦИЯ: Ограничиваем pixelRatio максимумом 2, чтобы не убивать слабые ноутбуки (4K экраны)
+        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
         this.cssRenderer = new CSS3DRenderer();
         this.cssRenderer.setSize(rect.width, rect.height);
@@ -489,8 +499,6 @@ class NetworkBackground extends HTMLElement {
             });
 
             if (this.phonePivot) {
-                console.log("✅ Найдена нода для вращения:", this.phonePivot.name);
-                
                 this.phonePivot.rotation.order = 'YXZ';
                 this.phonePivot.position.set(this.config.phonePosX, this.config.phonePosY, this.config.phonePosZ);
                 
@@ -502,7 +510,7 @@ class NetworkBackground extends HTMLElement {
                 );
                 this.phonePivot.scale.setScalar(this.config.phoneScale);
             } else {
-                console.error(`❌ ОШИБКА: Нода "Empty-phone" не найдена! Проверьте имена в консоли ниже:`);
+                console.error(`❌ ОШИБКА: Нода "Empty-phone" не найдена!`);
                 this.phoneModel.traverse(c => console.log("-", c.name));
             }
             
@@ -519,10 +527,9 @@ class NetworkBackground extends HTMLElement {
         }, undefined, (error) => console.error('Ошибка GLB:', error));
     }
 
-        toggleMute() {
+    toggleMute() {
         this.isMuted = !this.isMuted;
 
-        // 1. Визуальное обновление иконки
         const iconUnmuted = this.muteBtn.querySelector('.icon-unmuted');
         const iconMuted = this.muteBtn.querySelector('.icon-muted');
         if (this.isMuted) {
@@ -533,25 +540,18 @@ class NetworkBackground extends HTMLElement {
             iconMuted.style.display = 'none';
         }
 
-        // 2. Прямое управление звуком (СРАБОТАЕТ ТОЛЬКО ЕСЛИ ДОМЕНЫ СОВПАДАЮТ)
         try {
             const iframeDoc = this.playableIframe.contentDocument || this.playableIframe.contentWindow.document;
-            
-            // Выключаем стандартные теги
             iframeDoc.querySelectorAll('video, audio').forEach(media => {
                 media.muted = this.isMuted;
                 if (this.isMuted) media.pause();
             });
 
-            // Выключаем Web Audio API (если игра использует его, как большинство HTML5 игр)
-            // Это работает, если игра использует стандартные глобальные переменные
             if (iframeDoc.defaultView.Howler) {
                 iframeDoc.defaultView.Howler.mute(this.isMuted);
             }
-            
-            console.log(`[MRAID] Звук успешно переключен на: ${this.isMuted ? 'ВЫКЛ' : 'ВКЛ'}`);
         } catch (e) {
-            console.error('[MRAID] ОШИБКА: Домены не совпадают (CORS). Невозможно управлять звуком iframe.');
+            // CORS ошибка - это нормально для чужих доменов
         }
     }
 
@@ -596,19 +596,14 @@ class NetworkBackground extends HTMLElement {
         wrapper.style.height = this.config.frameHeight + 'px';
         wrapper.style.position = 'relative';
 
-
-
-        // === 1. MUTE/UNMUTE ===
         this.muteBtn = document.createElement('button');
         this.muteBtn.className = 'playable-mute-btn';
         this.muteBtn.title = this.isMuted ? 'Unmute' : 'Mute';
         this.muteBtn.innerHTML = `
-            <!-- Иконка звука включен -->
             <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                 <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
             </svg>
-            <!-- Иконка звука выключен -->
             <svg class="icon-muted" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none;">
                 <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
                 <line x1="23" y1="9" x2="17" y2="15"></line>
@@ -617,38 +612,22 @@ class NetworkBackground extends HTMLElement {
         `;
         this.muteBtn.addEventListener('click', () => this.toggleMute());
         wrapper.appendChild(this.muteBtn);
-        // ==========================================
 
         this.preloaderElement = document.createElement('div');
         this.preloaderElement.className = 'iframe-preloader';
         this.preloaderElement.innerHTML = `
             <style>
                 .iframe-preloader {
-                    position: absolute;
-                    top: 0; left: 0; width: 100%; height: 100%;
-                    background: #0D0D0F; 
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    z-index: 100;
-                    transition: opacity 0.4s ease-out;
+                    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+                    background: #0D0D0F; display: flex; align-items: center; justify-content: center;
+                    z-index: 100; transition: opacity 0.4s ease-out;
                 }
-                .iframe-preloader.hidden {
-                    opacity: 0;
-                    pointer-events: none;
-                }
+                .iframe-preloader.hidden { opacity: 0; pointer-events: none; }
                 .red-spinner {
-                    width: 60px;
-                    height: 60px;
-                    border: 4px solid rgba(218, 4, 4, 0.2); 
-                    border-top: 4px solid #da0404; 
-                    border-radius: 50%;
-                    animation: spin 1s linear infinite;
+                    width: 60px; height: 60px; border: 4px solid rgba(218, 4, 4, 0.2); 
+                    border-top: 4px solid #da0404; border-radius: 50%; animation: spin 1s linear infinite;
                 }
-                @keyframes spin {
-                    0% { transform: rotate(0deg); }
-                    100% { transform: rotate(360deg); }
-                }
+                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
             </style>
             <div class="red-spinner"></div>
         `;
@@ -656,29 +635,18 @@ class NetworkBackground extends HTMLElement {
 
         this.playableIframe = document.createElement('iframe');
         this.playableIframe.src = 'about:blank';
-        //  this.playableIframe.setAttribute('allow', 'fullscreen'); 
         this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking');
         this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
-        
-        //  this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
         
         this.playableIframe.style.background = 'transparent';
         this.playableIframe.style.border = 'none';
         this.playableIframe.style.width = '100%';
         this.playableIframe.style.height = '100%';
-
-         this.playableIframe.style.transform = 'translate3d(0, 0, 0)';
+        this.playableIframe.style.transform = 'translate3d(0, 0, 0)';
         this.playableIframe.style.willChange = 'transform';
         this.playableIframe.style.backfaceVisibility = 'hidden';
 
-        this.playableIframe.onload = () => {
-            if (this.preloaderElement) {
-                this.preloaderElement.classList.add('hidden');
-            }
-        };
-
-        
-        
+        // 🔥 ИСПРАВЛЕНО: Убрано дублирование этого блока
         this.playableIframe.onload = () => {
             if (this.preloaderElement) {
                 this.preloaderElement.classList.add('hidden');
@@ -701,7 +669,6 @@ class NetworkBackground extends HTMLElement {
         this.screenLocalCenter = localCenter.clone();
         
         this.applyScreenOffsets();
-
         this.createStatusBar(glass, localCenter, n, up, right, cssScale, ps);
         this.createHomeIndicator(glass, localCenter, n, up, right, cssScale, ps);
 
@@ -722,13 +689,7 @@ class NetworkBackground extends HTMLElement {
     createStatusBar(glass, localCenter, n, up, right, cssScale, ps) {
         const wrapper = document.createElement('div');
         wrapper.className = 'status-bar';
-        wrapper.innerHTML = `
-            <span class="time">${this.getCurrentTime()}</span>
-            <div class="icons">
-                <span>📶</span>
-                <span>🔋</span>
-            </div>
-        `;
+        wrapper.innerHTML = `<span class="time">${this.getCurrentTime()}</span><div class="icons"><span>📶</span><span>🔋</span></div>`;
         
         const barHeightPx = this.config.statusBarHeight;
         wrapper.style.width = this.config.frameWidth + 'px';
@@ -736,11 +697,8 @@ class NetworkBackground extends HTMLElement {
         
         this.statusBarObject = new CSS3DObject(wrapper);
         glass.add(this.statusBarObject);
-        
         this.statusBarObject.scale.set(cssScale, cssScale, cssScale);
-        this.statusBarObject.quaternion.setFromRotationMatrix(
-            new THREE.Matrix4().makeBasis(right, up, n)
-        );
+        this.statusBarObject.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, up, n));
         
         const frameHWorld = this.config.frameHeight * cssScale;
         const barHWorld = barHeightPx * cssScale;
@@ -767,11 +725,8 @@ class NetworkBackground extends HTMLElement {
         
         this.homeBarObject = new CSS3DObject(wrapper);
         glass.add(this.homeBarObject);
-        
         this.homeBarObject.scale.set(cssScale, cssScale, cssScale);
-        this.homeBarObject.quaternion.setFromRotationMatrix(
-            new THREE.Matrix4().makeBasis(right, up, n)
-        );
+        this.homeBarObject.quaternion.setFromRotationMatrix(new THREE.Matrix4().makeBasis(right, up, n));
         
         const frameHWorld = this.config.frameHeight * cssScale;
         const barHWorld = barHeightPx * cssScale;
@@ -876,7 +831,7 @@ class NetworkBackground extends HTMLElement {
 
         const rgb = this.hexToRgb(this.config.baseColor);
 
-    const pointMaterial = new THREE.ShaderMaterial({
+        const pointMaterial = new THREE.ShaderMaterial({
             uniforms: {
                 uTime: { value: 0 },
                 uSpeed: { value: this.config.speed },
@@ -886,20 +841,15 @@ class NetworkBackground extends HTMLElement {
                 uColorR: { value: rgb.r },
                 uColorG: { value: rgb.g },
                 uColorB: { value: rgb.b },
-                
-                // ===  ===
                 uCoreSize: { value: this.config.coreSize },
                 uCoreSharpness: { value: this.config.coreSharpness },
                 uGlowSize: { value: this.config.glowSize },
                 uGlowSharpness: { value: this.config.glowSharpness },
                 uRedGlowIntensity: { value: this.config.redGlowIntensity },
-                // ==============================================
-                
                 uMaskRadius: { value: this.config.maskRadius },
                 uMaskFeather: { value: this.config.maskFeather },
                 uMaskCenter: { value: new THREE.Vector2(this.config.maskCenterX, this.config.maskCenterY) }
             },
-   
             vertexShader: `
                 uniform float uTime;
                 uniform float uSpeed;
@@ -955,13 +905,11 @@ class NetworkBackground extends HTMLElement {
                 uniform float uColorR;
                 uniform float uColorG;
                 uniform float uColorB;
-                
                 uniform float uCoreSize;
                 uniform float uCoreSharpness;
                 uniform float uGlowSize;
                 uniform float uGlowSharpness;
                 uniform float uRedGlowIntensity;
-                
                 varying float vIntensity;
                 varying float vIsHot;
                 varying float vMask;
@@ -971,18 +919,14 @@ class NetworkBackground extends HTMLElement {
                     float dist = length(coord);
                     if (dist > 0.5) discard; 
                     
-                    
                     float coreFactor = max(0.0, 1.0 - (dist / uCoreSize));
                     float core = pow(coreFactor, uCoreSharpness) * vIntensity * uCoreBrightness;
-                    
                     
                     float glowFactor = max(0.0, 1.0 - (dist / uGlowSize));
                     float redGlow = pow(glowFactor, uGlowSharpness) * vIntensity * uRedGlowIntensity;
                     
-                    
                     float outerGlowFactor = max(0.0, 1.0 - (dist / (uGlowSize * 1.5)));
                     float outerGlow = pow(outerGlowFactor, 4.0) * vIntensity * uRedGlowIntensity * 0.3;
-                    
                     
                     vec3 colorCore = vec3(1.0, 1.0, 1.0);
                     vec3 colorRed = vec3(uColorR, uColorG, uColorB);
@@ -991,12 +935,10 @@ class NetworkBackground extends HTMLElement {
                     finalColor += colorRed * redGlow;
                     finalColor += colorRed * outerGlow;
                     
-                    
                     if (vIsHot > 0.5) {
                         finalColor += colorRed * 0.2 * vIntensity;
                     }
                     
-                    // Честная прозрачность: сумма всех световых слоев
                     float alpha = (core + redGlow + outerGlow) * 1.5 * vMask;
                     gl_FragColor = vec4(finalColor, alpha);
                 }
@@ -1044,7 +986,6 @@ class NetworkBackground extends HTMLElement {
                     vColor = color;
                     float dist = length(position.xy - uMaskCenter);
                     vMask = smoothstep(uMaskRadius, uMaskRadius - uMaskFeather, dist);
-                    
                     vec4 mvPosition = modelViewMatrix * vec4(position, 1.0);
                     gl_Position = projectionMatrix * mvPosition;
                 }
@@ -1104,7 +1045,6 @@ class NetworkBackground extends HTMLElement {
         let idx = 0;
 
         const rgb = this.hexToRgb(this.config.baseColor);
-        
         const baseR = 0.15 * rgb.r, baseG = 0.15 * rgb.g, baseB = 0.15 * rgb.b;
 
         const addLine = (i1, x1, y1, z1, i2, x2, y2, z2) => {
@@ -1171,7 +1111,6 @@ class NetworkBackground extends HTMLElement {
         if (!this.phonePivot) return; 
         
         this.phonePivot.rotation.order = 'YXZ';
-
         const t = timestamp * 0.01;
         const rad = Math.PI / 180;
         const c = this.config;
@@ -1197,7 +1136,6 @@ class NetworkBackground extends HTMLElement {
         }
 
         const lerpFactor = 0.06; 
-        
         this.smoothRotation.x += (targetX - this.smoothRotation.x) * lerpFactor;
         this.smoothRotation.y += (targetY - this.smoothRotation.y) * lerpFactor;
         this.smoothRotation.z += (targetZ - this.smoothRotation.z) * lerpFactor;
@@ -1239,15 +1177,23 @@ class NetworkBackground extends HTMLElement {
     }
 
     createGridGlow() {
-        const box = new THREE.Box3().setFromObject(this.phoneModel);
-        this.phoneBottomY = box.min.y;
-        
         this.gridGlowLight = new THREE.PointLight(0xff1a1a, 0, this.config.gridGlowDistance, 2);
-        this.gridGlowLight.position.set(
-            this.config.phonePosX,
-            this.phoneBottomY + this.config.gridGlowHeight,
-            this.config.phonePosZ
-        );
+        
+        if (this.config.showPhone && this.phoneModel) {
+            const box = new THREE.Box3().setFromObject(this.phoneModel);
+            this.phoneBottomY = box.min.y;
+            this.gridGlowLight.position.set(
+                this.config.phonePosX,
+                this.phoneBottomY + this.config.gridGlowHeight,
+                this.config.phonePosZ
+            );
+        } else {
+            this.gridGlowLight.position.set(
+                this.config.phonePosX,
+                0,
+                this.config.phonePosZ
+            );
+        }
         this.scene.add(this.gridGlowLight);
     }
 
@@ -1261,7 +1207,6 @@ class NetworkBackground extends HTMLElement {
             cnt++;
         }
         const avg = cnt ? sum / cnt : 0;
-        
         this.gridGlowLight.intensity = avg * this.config.gridGlowIntensity;
     }
 
@@ -1276,6 +1221,7 @@ class NetworkBackground extends HTMLElement {
     
     disconnectedCallback() {
         this.pause();
+        if (this._observer) this._observer.disconnect(); // 🔥 Очистка наблюдателя
         window.removeEventListener('mousemove', this.handleMouseMove);
         if (this.resizeObserver) this.resizeObserver.disconnect();
         if (this.inactivityTimer) clearTimeout(this.inactivityTimer);
