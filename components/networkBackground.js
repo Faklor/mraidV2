@@ -107,7 +107,7 @@ class NetworkBackground extends HTMLElement {
             vignetteOuter: 80,
             vignetteFeather: 30,
 
-            showPhone: false,
+            showPhone: true,
 
         };
 
@@ -619,95 +619,95 @@ class NetworkBackground extends HTMLElement {
         wrapper.appendChild(this.muteBtn);
         // ==========================================
 
-        // this.preloaderElement = document.createElement('div');
-        // this.preloaderElement.className = 'iframe-preloader';
-        // this.preloaderElement.innerHTML = `
-        //     <style>
-        //         .iframe-preloader {
-        //             position: absolute;
-        //             top: 0; left: 0; width: 100%; height: 100%;
-        //             background: #0D0D0F; 
-        //             display: flex;
-        //             align-items: center;
-        //             justify-content: center;
-        //             z-index: 100;
-        //             transition: opacity 0.4s ease-out;
-        //         }
-        //         .iframe-preloader.hidden {
-        //             opacity: 0;
-        //             pointer-events: none;
-        //         }
-        //         .red-spinner {
-        //             width: 60px;
-        //             height: 60px;
-        //             border: 4px solid rgba(218, 4, 4, 0.2); 
-        //             border-top: 4px solid #da0404; 
-        //             border-radius: 50%;
-        //             animation: spin 1s linear infinite;
-        //         }
-        //         @keyframes spin {
-        //             0% { transform: rotate(0deg); }
-        //             100% { transform: rotate(360deg); }
-        //         }
-        //     </style>
-        //     <div class="red-spinner"></div>
-        // `;
-        // wrapper.appendChild(this.preloaderElement);
+        this.preloaderElement = document.createElement('div');
+        this.preloaderElement.className = 'iframe-preloader';
+        this.preloaderElement.innerHTML = `
+            <style>
+                .iframe-preloader {
+                    position: absolute;
+                    top: 0; left: 0; width: 100%; height: 100%;
+                    background: #0D0D0F; 
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    z-index: 100;
+                    transition: opacity 0.4s ease-out;
+                }
+                .iframe-preloader.hidden {
+                    opacity: 0;
+                    pointer-events: none;
+                }
+                .red-spinner {
+                    width: 60px;
+                    height: 60px;
+                    border: 4px solid rgba(218, 4, 4, 0.2); 
+                    border-top: 4px solid #da0404; 
+                    border-radius: 50%;
+                    animation: spin 1s linear infinite;
+                }
+                @keyframes spin {
+                    0% { transform: rotate(0deg); }
+                    100% { transform: rotate(360deg); }
+                }
+            </style>
+            <div class="red-spinner"></div>
+        `;
+        wrapper.appendChild(this.preloaderElement);
 
-        // this.playableIframe = document.createElement('iframe');
-        // this.playableIframe.src = 'about:blank';
-        // //  this.playableIframe.setAttribute('allow', 'fullscreen'); 
-        // this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking');
-        // this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
+        this.playableIframe = document.createElement('iframe');
+        this.playableIframe.src = 'about:blank';
+        //  this.playableIframe.setAttribute('allow', 'fullscreen'); 
+        this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking');
+        this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
         
-        // //  this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
+        //  this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms allow-pointer-lock');
         
-        // this.playableIframe.style.background = 'transparent';
-        // this.playableIframe.style.border = 'none';
-        // this.playableIframe.style.width = '100%';
-        // this.playableIframe.style.height = '100%';
+        this.playableIframe.style.background = 'transparent';
+        this.playableIframe.style.border = 'none';
+        this.playableIframe.style.width = '100%';
+        this.playableIframe.style.height = '100%';
 
-        //  this.playableIframe.style.transform = 'translate3d(0, 0, 0)';
-        // this.playableIframe.style.willChange = 'transform';
-        // this.playableIframe.style.backfaceVisibility = 'hidden';
+         this.playableIframe.style.transform = 'translate3d(0, 0, 0)';
+        this.playableIframe.style.willChange = 'transform';
+        this.playableIframe.style.backfaceVisibility = 'hidden';
 
-        // this.playableIframe.onload = () => {
-        //     if (this.preloaderElement) {
-        //         this.preloaderElement.classList.add('hidden');
-        //     }
-        // };
+        this.playableIframe.onload = () => {
+            if (this.preloaderElement) {
+                this.preloaderElement.classList.add('hidden');
+            }
+        };
 
         
         
-        // this.playableIframe.onload = () => {
-        //     if (this.preloaderElement) {
-        //         this.preloaderElement.classList.add('hidden');
-        //     }
-        // };
+        this.playableIframe.onload = () => {
+            if (this.preloaderElement) {
+                this.preloaderElement.classList.add('hidden');
+            }
+        };
         
-        // wrapper.appendChild(this.playableIframe);
+        wrapper.appendChild(this.playableIframe);
 
-        // this.screenObject = new CSS3DObject(wrapper);
-        // glass.add(this.screenObject);
+        this.screenObject = new CSS3DObject(wrapper);
+        glass.add(this.screenObject);
 
-        // const cssScale = dims[wAxis] / this.config.frameWidth;
-        // this.screenObject.scale.set(cssScale, cssScale, cssScale);
+        const cssScale = dims[wAxis] / this.config.frameWidth;
+        this.screenObject.scale.set(cssScale, cssScale, cssScale);
 
-        // this.screenObject.quaternion.setFromRotationMatrix(
-        //     new THREE.Matrix4().makeBasis(right, up, n)
-        // );
+        this.screenObject.quaternion.setFromRotationMatrix(
+            new THREE.Matrix4().makeBasis(right, up, n)
+        );
 
-        // const localCenter = glass.worldToLocal(center.clone());
-        // this.screenLocalCenter = localCenter.clone();
+        const localCenter = glass.worldToLocal(center.clone());
+        this.screenLocalCenter = localCenter.clone();
         
-        // this.applyScreenOffsets();
+        this.applyScreenOffsets();
 
-        // this.createStatusBar(glass, localCenter, n, up, right, cssScale, ps);
-        // this.createHomeIndicator(glass, localCenter, n, up, right, cssScale, ps);
+        this.createStatusBar(glass, localCenter, n, up, right, cssScale, ps);
+        this.createHomeIndicator(glass, localCenter, n, up, right, cssScale, ps);
 
-        // if (this.currentPlayableUrl) {
-        //     this.playableIframe.src = this.currentPlayableUrl;
-        // }
+        if (this.currentPlayableUrl) {
+            this.playableIframe.src = this.currentPlayableUrl;
+        }
     }
 
     applyScreenOffsets() {

@@ -64,7 +64,7 @@
 .filter-buttons {
     display: flex;
     flex-wrap: nowrap;
-    gap: 8px;
+    gap: 2px;
     align-items: center;
     overflow-x: auto;
     overflow-y: hidden;
@@ -102,7 +102,7 @@
 .filter-btn.active {
     color: #FF0036;
     border-bottom-color: #FF0036;
-    font-weight: 600;
+    /* font-weight: 600; */
 }
 
 .category-nav {
@@ -240,6 +240,7 @@
     flex-shrink: 0;
     display: flex;
     align-items: center;
+    width: 250px;
 }
 
 .filter-buttons-dimensions {
@@ -278,6 +279,10 @@
     display: flex;
     align-items: center;
     gap: 20px;
+
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box; 
 }
 
 .slider-btn {
@@ -302,8 +307,9 @@
 
 .slider-track-wrapper {
     overflow: hidden;
-    flex: 1;
+     flex: 1 1 0%; 
     padding: 20px 0;
+    min-width: 0; 
 }
 
 .slider-track {
@@ -311,6 +317,7 @@
     gap: 24px;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: transform;
+     width: max-content;
 }
 
 .slider-card {
@@ -320,6 +327,8 @@
     transition: all 0.4s ease;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.05);
+     box-sizing: border-box; 
+     
 }
 
 .slider-card:hover {
@@ -378,15 +387,11 @@
     transform: translateY(-10px);
 }
 
-@media (max-width: 1440px) {
-    .slider-card { width: calc((100% - 72px) / 4); }
-    .header-left h2 { font-size: 2.2rem; }
-}
 
 @media (max-width: 1024px) {
     .slider-header { flex-direction: column; gap: 16px; padding: 0 30px; }
     .header-right p { text-align: left; }
-    .slider-card { width: calc((100% - 48px) / 3); }
+    
     .filter-section, .slider-container { padding: 0 30px; }
     .line-after-categories { margin: 20px 30px; }
 }
@@ -400,7 +405,7 @@
     .filter-row { flex-direction: column; align-items: flex-start; gap: 20px; }
     .filter-group.mechanics-group, .filter-group.dimension-group { width: 100%; }
     
-    .slider-card { width: calc((100% - 24px) / 2); }
+    
     .slider-btn { width: 40px; height: 40px; }
     
     .categories-slider {
@@ -414,6 +419,16 @@
 }
 
 @media (max-width: 480px) {
-    .slider-card { width: calc((100% - 24px) / 2); }
+    
     .filter-btn { font-size: 0.9rem; padding: 8px 8px; }
+}
+
+
+@media (min-width: 2560px) {
+    .filter-group.dimension-group {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        width: 290px;
+    }
 }

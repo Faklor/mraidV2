@@ -37,7 +37,7 @@ class DashboardPromo extends HTMLElement {
                                     <rect id="rect-br" x="22.8333" y="22.8333" width="13.6667" height="13.6667" stroke="#FF0034" stroke-width="3" stroke-linejoin="round" fill="none" rx="2"/>
                                 </svg>
                             </div>
-                            <span class="logo-text">MMRAID.IO Dashboard</span>
+                            <span class="logo-text">MRAID.IO Dashboard</span>
                         </div>
                         
                         <h2 class="promo-title">

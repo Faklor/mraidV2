@@ -76,13 +76,29 @@
 }
 
 /* === КОНТЕНТ ВЫШЕ ФОНА === */
+/* Отключаем события у контейнеров-сеток, чтобы пустое место пропускало клики к телефону */
 .hero-section,
 .trusted-section,
 .stats-section,
 .slider-section {
     position: relative;
-    z-index: 1; /* Гарантированно выше, чем z-index: 0 у фона */
-    pointer-events: none;
+    z-index: 1; 
+    pointer-events: none; /* КЛИКИ ПРОХОДЯТ СКВОЗЬ ПУСТОЕ МЕСТО КОНТЕЙНЕРА */
+}
+
+/* Включаем события ТОЛЬКО для конкретных интерактивных компонентов */
+hero-block,
+features-list,
+trusted-by,
+stats-grid,
+top-playables-slider {
+    pointer-events: auto; /* ВОЗВРАЩАЕМ КЛИКИ КНОПКАМ И КОНТЕНТУ */
+}
+
+/* Убедимся, что сами кнопки внутри hero-block тоже активны (на всякий случай) */
+.hero-block .buttons,
+.hero-block .btn {
+    pointer-events: auto;
 }
 
 /* === HERO СЕКЦИЯ: 3 КОЛОНКИ === */
@@ -92,7 +108,7 @@
     gap: 60px;
     align-items: start;
     padding: 0 20px;
-
+  
     
 }
 

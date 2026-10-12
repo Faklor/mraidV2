@@ -6,6 +6,9 @@ class TopPlayablesSlider extends HTMLElement {
         this.cardsPerView = 6;
         this.cardsData = [];
         this.resizeObserver = null;
+        
+        // === НОВОЕ: флаг для блокировки кликов во время анимации ===
+        this.isAnimating = false;
     }
 
     async connectedCallback() {
@@ -49,22 +52,7 @@ class TopPlayablesSlider extends HTMLElement {
                 item.favorite === 1 || item.favorite === true || item.favorite === "1"
             );
 
-            // this.cardsData = favoriteProjects.map(item => {
-            //     const category = (item.categories && item.categories.length > 0) 
-            //         ? item.categories[0] 
-            //         : 'Playable';
-                
-            //     return {
-            //         title: item.project || 'Unknown Project',
-            //         image: item.screenshot || 'assets/img/portfolio/ex_slider.png',
-            //         url: item.url || '#',
-            //         category: category
-            //     };
-            // });
-
-            const shuffledFavorites = this.shuffleArray(favoriteProjects);
-
-            this.cardsData = shuffledFavorites.map(item => {
+            this.cardsData = favoriteProjects.map(item => {
                 const category = (item.categories && item.categories.length > 0) 
                     ? item.categories[0] 
                     : 'Playable';
@@ -146,19 +134,40 @@ class TopPlayablesSlider extends HTMLElement {
         return dots;
     }
 
+    // === НОВЫЙ ХЕЛПЕР: включает анимацию с блокировкой ===
+    startAnimation() {
+        this.isAnimating = true;
+        
+        // Снимаем блокировку после завершения CSS-анимации (transitionend)
+        // + запасной таймаут на случай, если событие не сработает
+        const track = this.shadowRoot.querySelector('.slider-track');
+        const unlock = () => {
+            this.isAnimating = false;
+            if (track) track.removeEventListener('transitionend', unlock);
+        };
+        
+        if (track) {
+            track.addEventListener('transitionend', unlock, { once: true });
+        }
+        
+        // Запасной план: если transitionend не сработает — разблокируем через 500мс
+        // (должно совпадать со значением в CSS: transition: transform 0.5s)
+        setTimeout(() => {
+            this.isAnimating = false;
+        }, 550);
+    }
+
     initSlider() {
         const track = this.shadowRoot.querySelector('.slider-track');
         const prevBtn = this.shadowRoot.querySelector('.prev-btn');
         const nextBtn = this.shadowRoot.querySelector('.next-btn');
         const cards = this.shadowRoot.querySelectorAll('.slider-card');
 
-        // === ИЗМЕНЕНИЕ ЗДЕСЬ: Открытие модального окна вместо новой вкладки ===
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
                 e.preventDefault();
                 const clickedIndex = parseInt(card.getAttribute('data-index'));
                 
-                // Собираем все валидные ссылки из top playables
                 const allLinks = this.cardsData
                     .map(card => card.url)
                     .filter(link => link && link !== '#');
@@ -168,7 +177,6 @@ class TopPlayablesSlider extends HTMLElement {
                     if (modal && typeof modal.open === 'function') {
                         modal.open(allLinks, clickedIndex);
                     } else {
-                        // Запасной вариант, если модалка по какой-то причине не загрузилась
                         window.open(allLinks[clickedIndex] || allLinks[0], '_blank');
                     }
                 }
@@ -204,17 +212,22 @@ class TopPlayablesSlider extends HTMLElement {
             nextBtn.style.pointerEvents = this.currentIndex >= maxIndex ? 'none' : 'auto';
         };
 
+        // === ИСПРАВЛЕНО: клики на стрелки с проверкой isAnimating ===
         prevBtn.addEventListener('click', () => {
+            if (this.isAnimating) return; // <-- блок, если анимация ещё идёт
             if (this.currentIndex > 0) {
                 this.currentIndex--;
+                this.startAnimation();      // <-- включаем флаг
                 this.updateSliderPosition();
             }
         });
 
         nextBtn.addEventListener('click', () => {
+            if (this.isAnimating) return; // <-- блок
             const maxIndex = Math.max(0, Math.ceil(this.cardsData.length / this.cardsPerView) - 1);
             if (this.currentIndex < maxIndex) {
                 this.currentIndex++;
+                this.startAnimation();      // <-- включаем флаг
                 this.updateSliderPosition();
             }
         });
@@ -222,8 +235,13 @@ class TopPlayablesSlider extends HTMLElement {
         const attachDotListeners = () => {
             this.shadowRoot.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => {
-                    this.currentIndex = parseInt(dot.dataset.page);
-                    this.updateSliderPosition();
+                    if (this.isAnimating) return; // <-- блок и для точек
+                    const newIndex = parseInt(dot.dataset.page);
+                    if (newIndex !== this.currentIndex) {
+                        this.currentIndex = newIndex;
+                        this.startAnimation();
+                        this.updateSliderPosition();
+                    }
                 });
             });
         };
@@ -236,7 +254,9 @@ class TopPlayablesSlider extends HTMLElement {
 
     updateCardsPerView() {
         const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
-        const width = wrapper ? wrapper.offsetWidth : window.innerWidth;
+        if (!wrapper) return;
+        
+        const width = wrapper.offsetWidth;
         
         if (width <= 768) {
             this.cardsPerView = 2;
@@ -248,17 +268,42 @@ class TopPlayablesSlider extends HTMLElement {
             this.cardsPerView = 6;
         }
         
+        // === ГЛАВНОЕ ИСПРАВЛЕНИЕ ===
+        // Считаем ширину на основе видимой области wrapper, а не абстрактных 100%
+        const gap = 24;
+        const cardWidth = (width - gap * (this.cardsPerView - 1)) / this.cardsPerView;
+        
+        // Применяем ширину ко всем карточкам
+        const cards = this.shadowRoot.querySelectorAll('.slider-card');
+        cards.forEach(card => {
+            card.style.width = `${cardWidth}px`;
+            card.style.flexShrink = '0'; // Гарантируем, что они не будут сжиматься
+        });
+        // ============================
+        
         const dotsContainer = this.shadowRoot.querySelector('.slider-dots');
         if (dotsContainer) {
             dotsContainer.innerHTML = this.generateDots();
             
             dotsContainer.querySelectorAll('.dot').forEach((dot) => {
-                dot.addEventListener('click', () => {
-                    this.currentIndex = parseInt(dot.dataset.page);
-                    this.updateSliderPosition();
+                // Удаляем старые слушатели, чтобы не дублировались (хотя innerHTML и так их стирает, но для чистоты)
+                const newDot = dot.cloneNode(true);
+                dot.parentNode.replaceChild(newDot, dot);
+                
+                newDot.addEventListener('click', () => {
+                    if (this.isAnimating) return;
+                    const newIndex = parseInt(newDot.dataset.page);
+                    if (newIndex !== this.currentIndex) {
+                        this.currentIndex = newIndex;
+                        this.startAnimation();
+                        this.updateSliderPosition();
+                    }
                 });
             });
         }
+        
+        // После пересчета размеров сразу обновляем позицию, чтобы не было скачков
+        this.updateSliderPosition();
     }
 }
 

@@ -69,6 +69,8 @@ class PortfolioSlider extends HTMLElement {
                 detail: { count: this.allProjects.length } 
             }));
 
+            
+
         } catch (error) {
             console.error('Failed to load portfolio data:', error);
             this.allProjects = [];
@@ -78,6 +80,8 @@ class PortfolioSlider extends HTMLElement {
 
     applyFilters() {
         if (this.isAnimating) return;
+
+         this.updateCardsPerView();
         
         this.filteredProjects = this.allProjects.filter(p => {
             const matchCategory = this.currentCategory === 'all' || p.categories.includes(this.currentCategory);
@@ -145,6 +149,8 @@ class PortfolioSlider extends HTMLElement {
             track.innerHTML = '<p style="color:#888; padding:40px; width:100%; text-align:center;">No projects match these filters.</p>';
             return;
         }
+
+        
 
         track.innerHTML = this.filteredProjects.map((p, i) => `
             <div class="slider-card" data-index="${i}" data-link="${p.link}">
@@ -247,7 +253,7 @@ class PortfolioSlider extends HTMLElement {
         this.initEvents();
         this.renderCards();
         this.renderDots();
-        setTimeout(() => this.updateSlider(), 50);
+        setTimeout(() => this.updateSlider(), 1000);
     }
 
     generateDots() {
@@ -263,11 +269,18 @@ class PortfolioSlider extends HTMLElement {
     scrollCategories(direction) {
         const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
         if (!buttonsContainer) return;
+        
         const firstBtn = buttonsContainer.querySelector('.filter-btn');
         if (!firstBtn) return;
+        
         const btnWidth = firstBtn.offsetWidth;
         const gap = 8;
-        const scrollAmount = btnWidth + gap;
+        const containerWidth = buttonsContainer.offsetWidth;
+        
+        // Считаем сколько кнопок помещается в видимой области
+        const visibleCount = Math.floor(containerWidth / (btnWidth + gap));
+        const scrollAmount = visibleCount * (btnWidth + gap);
+        
         const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
 
         if (direction === 'left') {
@@ -275,6 +288,7 @@ class PortfolioSlider extends HTMLElement {
         } else {
             this.categoryScrollPosition = Math.min(maxScroll, this.categoryScrollPosition + scrollAmount);
         }
+        
         buttonsContainer.scrollTo({ left: this.categoryScrollPosition, behavior: 'smooth' });
         this.updateCategoryNavButtons();
     }
@@ -294,11 +308,18 @@ class PortfolioSlider extends HTMLElement {
     scrollMechanics(direction) {
         const container = this.shadowRoot.querySelector('.filter-buttons-mechanics');
         if (!container) return;
+        
         const firstBtn = container.querySelector('.filter-btn-mechanics');
         if (!firstBtn) return;
+        
         const btnWidth = firstBtn.offsetWidth;
         const gap = 10;
-        const scrollAmount = btnWidth + gap;
+        const containerWidth = container.offsetWidth;
+        
+        // Для механик всегда показываем 8 кнопок (или меньше если их всего меньше)
+        const buttonsPerPage = 8;
+        const scrollAmount = buttonsPerPage * (btnWidth + gap);
+        
         const maxScroll = container.scrollWidth - container.offsetWidth;
 
         if (direction === 'left') {
@@ -306,6 +327,7 @@ class PortfolioSlider extends HTMLElement {
         } else {
             this.mechanicsScrollPosition = Math.min(maxScroll, this.mechanicsScrollPosition + scrollAmount);
         }
+        
         container.scrollTo({ left: this.mechanicsScrollPosition, behavior: 'smooth' });
         this.updateMechanicsNavButtons();
     }
@@ -442,23 +464,34 @@ class PortfolioSlider extends HTMLElement {
         const dots = this.shadowRoot.querySelectorAll('.dot');
 
         if (!track || !wrapper || this.filteredProjects.length === 0) return;
+        
         const cards = track.querySelectorAll('.slider-card');
         if (cards.length === 0) return;
 
+        // 1. ВСЕГДА пересчитываем количество карточек перед замером ширины
+        this.updateCardsPerView();
+
+        // 2. Замеряем ширину обертки
         const wrapperWidth = wrapper.offsetWidth;
         const gap = 24;
+        
+        // 3. Рассчитываем точную ширину одной карточки
         const cardWidth = (wrapperWidth - gap * (this.cardsPerView - 1)) / this.cardsPerView;
 
+        // 4. Применяем ширину жестко через инлайн-стили
         cards.forEach(card => {
-            card.style.width = cardWidth + 'px';
+            card.style.width = `${cardWidth}px`;
         });
 
+        // 5. Сдвигаем трек
         const step = cardWidth + gap;
         const offset = -(this.currentIndex * step);
         track.style.transform = `translateX(${offset}px)`;
 
+        // 6. Обновляем точки
         dots.forEach((dot, index) => dot.classList.toggle('active', index === this.currentIndex));
 
+        // 7. Обновляем состояние кнопок
         const maxIndex = Math.max(0, Math.ceil(this.filteredProjects.length / this.cardsPerView) - 1);
         
         if (prevBtn) {
