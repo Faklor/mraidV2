@@ -104,7 +104,7 @@ class TopPlayablesSlider extends HTMLElement {
                             ${this.cardsData.map((card, index) => `
                                 <div class="slider-card" data-index="${index}" data-url="${card.url}">
                                     <div class="card-image">
-                                        <img src="${card.image}" alt="${card.title}" loading="lazy">
+                                        <img src="${card.image}" alt="${card.title}" loading="lazy" decoding="async">
                                     </div>
                                 </div>
                             `).join('')}

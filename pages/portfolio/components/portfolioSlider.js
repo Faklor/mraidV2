@@ -155,7 +155,7 @@ class PortfolioSlider extends HTMLElement {
         track.innerHTML = this.filteredProjects.map((p, i) => `
             <div class="slider-card" data-index="${i}" data-link="${p.link}">
                 <div class="card-image">
-                    <img src="${p.image}" alt="${p.title}" loading="lazy">
+                    <img src="${p.image}" alt="${p.title}" loading="lazy" decoding="async">
                 </div>
             </div>
         `).join('');

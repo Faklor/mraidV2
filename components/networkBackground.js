@@ -192,6 +192,7 @@ class NetworkBackground extends HTMLElement {
                     z-index: 0;
                     background: transparent;
                     overflow: hidden;
+                    transform: translate3d(0, 0, 0); 
                 }
                 canvas {
                     display: block;
