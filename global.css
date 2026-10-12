@@ -1,17 +1,17 @@
-/* Roboto Condensed Light (Тонкий/Обычный текст) */
+
 @font-face {
   font-family: 'Roboto Condensed';
   src: url('assets/fonts/Roboto_Condensed-Light.ttf') format('truetype');
-  font-weight: 300; /* Light обычно соответствует 300 */
+  font-weight: 300; 
   font-style: normal;
-  font-display: swap; /* Показывает текст сразу, даже если шрифт еще грузится (важно для скорости) */
+  font-display: swap;
 }
 
-/* Roboto Condensed Bold (Жирный текст/Заголовки) */
+
 @font-face {
   font-family: 'Roboto Condensed';
   src: url('assets/fonts/Roboto_Condensed-Bold.ttf') format('truetype');
-  font-weight: 700; /* Bold обычно соответствует 700 */
+  font-weight: 700; 
   font-style: normal;
   font-display: swap;
 }
@@ -19,18 +19,21 @@
 @font-face {
   font-family: 'RobotoLight';
   src: url('assets/fonts/Roboto-Light.ttf') format('truetype');
+   font-display: swap;
   
 }
 
 @font-face {
   font-family: 'RobotoMedium';
   src: url('assets/fonts/Roboto-Medium.ttf') format('truetype');
+   font-display: swap;
   
 }
 
 @font-face {
   font-family: 'RobotoBold';
   src: url('assets/fonts/Roboto-Bold.ttf') format('truetype');
+   font-display: swap;
   
 }
 
