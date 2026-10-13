@@ -13,7 +13,7 @@
     border-radius: 12px;
     padding: 84px 20px 20px;
     z-index: 1;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transition: transform 0.3s ease;
 }
 
 .step-card:not(:last-child)::before {
@@ -52,8 +52,8 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
-    box-shadow: 0 0 0 0 rgba(255, 0, 54, 0.4);
-    animation: icon-pulse 3s ease-in-out infinite;
+    /* box-shadow: 0 0 0 0 rgba(255, 0, 54, 0.4); */
+    /* animation: icon-pulse 3s ease-in-out infinite; */
 }
 
 .step-card:nth-child(1) .step-icon-wrapper { animation-delay: 0s; }

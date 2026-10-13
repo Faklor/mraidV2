@@ -40,7 +40,7 @@
 .price-card.popular {
     border: 2px solid #FF0036;
     background: #1f1f1f;
-    box-shadow: 0 0 30px rgba(255, 0, 54, 0.15);
+    /* box-shadow: 0 0 30px rgba(255, 0, 54, 0.15); */
 }
 
 .popular-badge {

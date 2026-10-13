@@ -161,7 +161,7 @@
     z-index: 20;
     pointer-events: none;
     backdrop-filter: blur(4px);
-    box-shadow: 0 4px 12px rgba(255, 0, 54, 0.4);
+    /* box-shadow: 0 4px 12px rgba(255, 0, 54, 0.4); */
 }
 
 .inactivity-indicator .countdown {

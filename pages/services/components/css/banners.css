@@ -111,7 +111,7 @@
 .banners-cta-btn:hover {
     background: #ff1a44;
     transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(255, 0, 54, 0.4);
+    /* box-shadow: 0 8px 24px rgba(255, 0, 54, 0.4); */
 }
 
 .banners-cta-btn svg {

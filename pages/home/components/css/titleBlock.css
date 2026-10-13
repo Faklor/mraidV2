@@ -1,10 +1,12 @@
+/* === БАЗОВЫЕ СТИЛИ (мобильные по умолчанию) === */
 .hero-block h1 {
-    font-size: 52px;
+    font-size: clamp(28px, 5vw, 52px);
     font-weight: 800;
     line-height: 1.2;
+    margin:0;
     margin-bottom: 24px;
     color: #ffffff;
-    
+
 }
 
 .hero-block h1 span {
@@ -12,7 +14,7 @@
 }
 
 .hero-block p {
-    font-size: 20px;
+    font-size: clamp(16px, 2vw, 20px);
     color: #c2c2c2;
     line-height: 1.2;
     margin-bottom: 40px;
@@ -21,8 +23,8 @@
 }
 
 .buttons {
-    --btn-width: 240px;   
-    --btn-height: 56px;   
+    --btn-width: 240px;
+    --btn-height: 56px;
     
     display: flex;
     gap: 16px;
@@ -31,11 +33,9 @@
 }
 
 .btn {
-    /* Фиксированные размеры */
     width: var(--btn-width);
     height: var(--btn-height);
     
-    /* Центрирование содержимого */
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -52,13 +52,12 @@
     gap: 8px;
     box-sizing: border-box;
     
-    /* Защита от переноса текста */
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    backdrop-filter: blur(10px); 
-     -webkit-backdrop-filter: blur(10px); 
-} 
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
 
 .btn-primary {
     background-color: #FF0036;
@@ -66,32 +65,31 @@
 }
 
 .btn-primary:hover {
-    
     transform: translateY(-2px);
 }
 
 .btn-secondary {
-    background-color:transparent;
+    background-color: transparent;
     color: #ffffff;
     border: 1px solid #333;
 }
 
 .btn-secondary:hover {
-    
     transform: translateY(-2px);
 }
 
-@media (max-width: 768px) {
+/* === 480px: Маленькие мобильные === */
+@media (max-width: 480px) {
     .hero-block h1 {
-        font-size: 2rem;
+        font-size: 28px;
     }
     
     .hero-block p {
-        font-size: 1rem;
+        font-size: 16px;
+        margin-bottom: 32px;
     }
     
     .buttons {
-        /* На мобильных можно задать другую ширину */
         --btn-width: 100%;
         --btn-height: 52px;
         
@@ -104,5 +102,131 @@
         max-width: 100%;
         padding: 0 24px;
         justify-content: center;
+    }
+}
+
+/* === 768px: Планшеты портрет / Большие мобильные === */
+@media (min-width: 481px) and (max-width: 768px) {
+    .hero-block h1 {
+        font-size: 36px;
+    }
+    
+    .hero-block p {
+        font-size: 18px;
+    }
+    
+    .buttons {
+        --btn-width: 100%;
+        --btn-height: 52px;
+        
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .btn {
+        width: 100%;
+        max-width: 100%;
+    }
+}
+
+/* === 1024px: Планшеты альбом === */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .hero-block h1 {
+        font-size: 40px;
+    }
+    
+    .hero-block p {
+        font-size: 18px;
+    }
+    
+    .buttons {
+        --btn-width: 200px;
+        --btn-height: 52px;
+    }
+}
+
+/* === 1280px: Маленькие ноутбуки / FullHD с масштабом 150% === */
+@media (min-width: 1025px) and (max-width: 1280px) {
+    .hero-block h1 {
+        font-size: 35px;
+    }
+    
+    .hero-block p {
+        font-size: 18px;
+    }
+    
+    .buttons {
+        --btn-width: 220px;
+        --btn-height: 54px;
+    }
+}
+
+/* === 1440px: Стандартные ноутбуки === */
+@media (min-width: 1281px) and (max-width: 1440px) {
+    .hero-block h1 {
+        font-size: 40px;
+    }
+    
+    .hero-block p {
+        font-size: 19px;
+    }
+    
+    .buttons {
+        --btn-width: 230px;
+        --btn-height: 54px;
+    }
+}
+
+/* === 1536px: FullHD (1920px) с масштабом 125% === */
+/* При масштабе 125% браузер видит viewport ~1536px */
+@media (min-width: 1441px) and (max-width: 1750px) {
+    .hero-block h1 {
+        font-size: 45px;
+    }
+    
+    .hero-block p {
+        font-size: 20px;
+    }
+    
+    .buttons {
+        --btn-width: 235px;
+        --btn-height: 56px;
+    }
+}
+
+/* === 1920px: FullHD с масштабом 100% (твой текущий дизайн) === */
+@media (min-width: 1751px) and (max-width: 2048px) {
+    .hero-block h1 {
+        font-size: 52px;
+    }
+    
+    .hero-block p {
+        font-size: 20px;
+    }
+    
+    .buttons {
+        --btn-width: 240px;
+        --btn-height: 56px;
+    }
+}
+
+/* === 2560px+: 2K/4K мониторы === */
+@media (min-width: 2049px) {
+    .hero-block h1 {
+        font-size: 64px;
+    }
+    
+    .hero-block p {
+        font-size: 24px;
+        max-width: 560px;
+    }
+    
+    .buttons {
+        --btn-width: 260px;
+        --btn-height: 60px;
+    }
+    
+    .btn {
+        font-size: 1.1rem;
     }
 }

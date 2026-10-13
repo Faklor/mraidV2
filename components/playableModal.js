@@ -185,6 +185,7 @@ class PlayableModal extends HTMLElement {
                     </button>
                     <div class="device-frame">
                         <iframe class="playable-iframe" 
+                                title="modalScreen"
                                 src="" 
                                 frameborder="0" 
                                 allow="webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking"

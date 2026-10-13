@@ -93,7 +93,7 @@
 .promo-cta-btn:hover {
     background: #ff1a44;
     transform: translateY(-2px) translateX(4px);
-    box-shadow: 0 12px 32px rgba(255, 0, 54, 0.4);
+    /* box-shadow: 0 12px 32px rgba(255, 0, 54, 0.4); */
 }
 
 .promo-cta-btn svg {
@@ -109,7 +109,7 @@
     position: relative;
     border-radius: 16px;
     overflow: hidden;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+    /* box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6); */
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 

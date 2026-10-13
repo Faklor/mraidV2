@@ -149,9 +149,9 @@ a:not(.nav-cta-btn).active .nav-count.visible {
   display: none;
 }
 
-/* === МОБИЛЬНЫЕ СТИЛИ (до 1200px) === */
-/* === МОБИЛЬНЫЕ СТИЛИ (до 1200px) === */
-@media (max-width: 1200px) {
+/* === burger === */
+
+@media (max-width: 1350px) {
   .hamburger {
     display: flex;
     flex-direction: column;

@@ -442,7 +442,7 @@ class NetworkBackground extends HTMLElement {
             if (this.playablesData.length > 0) this.loadRandomPlayable();
         } catch (error) {
             console.error('Ошибка загрузки JSON:', error);
-            this.playablesData = [{ url: 'https://mraid.io/' }];
+            this.playablesData = [{ url: ''}];
             this.loadRandomPlayable();
         }
     }
@@ -636,7 +636,7 @@ class NetworkBackground extends HTMLElement {
 
         this.playableIframe = document.createElement('iframe');
         this.playableIframe.src = 'about:blank';
-        this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking');
+        this.playableIframe.setAttribute('allow', 'webgl; autoplay; fullscreen; microphone; camera; xr-spatial-tracking;title="customPhone"');
         this.playableIframe.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-popups allow-forms');
         
         this.playableIframe.style.background = 'transparent';
