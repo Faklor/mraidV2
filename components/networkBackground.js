@@ -407,8 +407,11 @@ class NetworkBackground extends HTMLElement {
         this.renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
         this.renderer.setSize(rect.width, rect.height);
         
-        // 🔥 ОПТИМИЗАЦИЯ: Ограничиваем pixelRatio максимумом 2, чтобы не убивать слабые ноутбуки (4K экраны)
-        this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        const dpr = window.devicePixelRatio;
+        const limit = window.innerWidth > 1200 ? 1.25 : 1.5; 
+
+        this.renderer.setPixelRatio(Math.min(dpr, limit));
+        // this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
 
         this.cssRenderer = new CSS3DRenderer();
         this.cssRenderer.setSize(rect.width, rect.height);
