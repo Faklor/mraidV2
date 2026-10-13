@@ -1,12 +1,12 @@
 class HeroBlock extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/home/components/css/titleBlock.css">
+        this.innerHTML = `
+           
             
             <div class="hero-block">
                 <h1>Developing playables that people <span>want to play</span></h1>

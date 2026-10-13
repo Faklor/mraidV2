@@ -395,10 +395,10 @@ class AppPreloader extends HTMLElement {
         }
 
         // Fallback: если что-то зависло, через 8 секунд принудительно показываем сайт
-        setTimeout(() => {
-            this.setProgress(100);
-            this.hide();
-        }, 8000);
+        // setTimeout(() => {
+        //     this.setProgress(100);
+        //     this.hide();
+        // }, 8000);
     }
 
     async waitForImagesAndFinish() {

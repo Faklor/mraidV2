@@ -1,7 +1,7 @@
 class TopPlayablesSlider extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.currentIndex = 0;
         this.cardsPerView = 6;
         this.cardsData = [];
@@ -12,7 +12,7 @@ class TopPlayablesSlider extends HTMLElement {
     }
 
     async connectedCallback() {
-        this.shadowRoot.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">Loading top playables...</div>`;
+        this.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">Loading top playables...</div>`;
         
         await this.loadData();
         this.render();
@@ -23,7 +23,7 @@ class TopPlayablesSlider extends HTMLElement {
             this.updateSliderPosition();
         });
         
-        const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
+        const wrapper = this.querySelector('.slider-track-wrapper');
         if (wrapper) {
             this.resizeObserver.observe(wrapper);
         }
@@ -72,12 +72,12 @@ class TopPlayablesSlider extends HTMLElement {
 
     render() {
         if (this.cardsData.length === 0) {
-            this.shadowRoot.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">No favorite playables found.</div>`;
+            this.innerHTML = `<div style="padding: 40px; text-align: center; color: #888;">No favorite playables found.</div>`;
             return;
         }
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/home/components/css/topPlayablesSlider.css">
+        this.innerHTML = `
+            
             
             <div class="slider-section">
                 <div class="slider-header">
@@ -140,7 +140,7 @@ class TopPlayablesSlider extends HTMLElement {
         
         // Снимаем блокировку после завершения CSS-анимации (transitionend)
         // + запасной таймаут на случай, если событие не сработает
-        const track = this.shadowRoot.querySelector('.slider-track');
+        const track = this.querySelector('.slider-track');
         const unlock = () => {
             this.isAnimating = false;
             if (track) track.removeEventListener('transitionend', unlock);
@@ -158,10 +158,10 @@ class TopPlayablesSlider extends HTMLElement {
     }
 
     initSlider() {
-        const track = this.shadowRoot.querySelector('.slider-track');
-        const prevBtn = this.shadowRoot.querySelector('.prev-btn');
-        const nextBtn = this.shadowRoot.querySelector('.next-btn');
-        const cards = this.shadowRoot.querySelectorAll('.slider-card');
+        const track = this.querySelector('.slider-track');
+        const prevBtn = this.querySelector('.prev-btn');
+        const nextBtn = this.querySelector('.next-btn');
+        const cards = this.querySelectorAll('.slider-card');
 
         cards.forEach(card => {
             card.addEventListener('click', (e) => {
@@ -192,7 +192,7 @@ class TopPlayablesSlider extends HTMLElement {
             
             track.style.transform = `translateX(${offset}px)`;
 
-            const currentDots = this.shadowRoot.querySelectorAll('.dot');
+            const currentDots = this.querySelectorAll('.dot');
             currentDots.forEach((dot, index) => {
                 dot.classList.toggle('active', index === this.currentIndex);
             });
@@ -233,7 +233,7 @@ class TopPlayablesSlider extends HTMLElement {
         });
 
         const attachDotListeners = () => {
-            this.shadowRoot.querySelectorAll('.dot').forEach((dot) => {
+            this.querySelectorAll('.dot').forEach((dot) => {
                 dot.addEventListener('click', () => {
                     if (this.isAnimating) return; // <-- блок и для точек
                     const newIndex = parseInt(dot.dataset.page);
@@ -253,7 +253,7 @@ class TopPlayablesSlider extends HTMLElement {
     }
 
     updateCardsPerView() {
-        const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
+        const wrapper = this.querySelector('.slider-track-wrapper');
         if (!wrapper) return;
         
         const width = wrapper.offsetWidth;
@@ -274,14 +274,14 @@ class TopPlayablesSlider extends HTMLElement {
         const cardWidth = (width - gap * (this.cardsPerView - 1)) / this.cardsPerView;
         
         // Применяем ширину ко всем карточкам
-        const cards = this.shadowRoot.querySelectorAll('.slider-card');
+        const cards = this.querySelectorAll('.slider-card');
         cards.forEach(card => {
             card.style.width = `${cardWidth}px`;
             card.style.flexShrink = '0'; // Гарантируем, что они не будут сжиматься
         });
         // ============================
         
-        const dotsContainer = this.shadowRoot.querySelector('.slider-dots');
+        const dotsContainer = this.querySelector('.slider-dots');
         if (dotsContainer) {
             dotsContainer.innerHTML = this.generateDots();
             

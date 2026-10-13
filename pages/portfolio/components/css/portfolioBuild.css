@@ -65,7 +65,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('../../../../assets/img/looper.png') center right/cover no-repeat;
+    
     background-position: 50% center; /* Сдвиг вправо (0% - лево, 50% - центр, 100% - право) */
     opacity: 0.1; /* Дополнительное затемнение */
     z-index: 0;
@@ -80,7 +80,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: url('../../../../assets/img/main-blick.png') center right/cover no-repeat;
+   
     background-position: 50% center; /* Сдвиг вправо (0% - лево, 50% - центр, 100% - право) */
     opacity: 0.5; /* Дополнительное затемнение */
     z-index: 0;

@@ -1,10 +1,10 @@
 class TrustedBy extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
-    // Функция перемешивания массива (Fisher-Yates)
+   
     shuffleArray(array) {
         const shuffled = [...array];
         for (let i = shuffled.length - 1; i > 0; i--) {
@@ -35,11 +35,11 @@ class TrustedBy extends HTMLElement {
             { name: 'Kefir', file: 'kefir.png' },
         ];
 
-        // 1. Перемешиваем массив ПЕРЕД расчетом, чтобы каждый раз были случайные логотипы
+        
         const shuffledStudios = this.shuffleArray(studios);
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/home/components/css/trustedBy.css">
+        this.innerHTML = `
+            
             <div class="trusted-section">
                 <h2>Trusted by leading game studios & brands</h2>
                 <div class="marquee-container">
@@ -57,12 +57,11 @@ class TrustedBy extends HTMLElement {
         const container = this.shadowRoot.querySelector('.marquee-container');
         const track = this.shadowRoot.querySelector('#track');
         
-        // ВАЖНО: Это значение должно совпадать с базовым gap в CSS!
-        // 2px слишком мало, логотипы сольются. 24px или 32px — оптимально.
+        
         const gap = 10; 
-        const maxLogos = 14; // Жесткое ограничение: максимум 14 логотипов
+        const maxLogos = 14; 
 
-        // Создаем скрытый контейнер для точного измерения
+        
         const tempContainer = document.createElement('div');
         tempContainer.style.cssText = `
             position: absolute; 
@@ -74,7 +73,7 @@ class TrustedBy extends HTMLElement {
         `;
         this.shadowRoot.appendChild(tempContainer);
 
-        // Загружаем изображения и измеряем их ширину
+       
         const loadPromises = studios.map(s => {
             return new Promise(resolve => {
                 const div = document.createElement('div');
@@ -86,13 +85,13 @@ class TrustedBy extends HTMLElement {
                 img.onload = () => {
                     div.appendChild(img);
                     tempContainer.appendChild(div);
-                    // Принудительный reflow для получения точного offsetWidth
+                    
                     const width = div.offsetWidth; 
                     resolve({ studio: s, width: width });
                 };
                 
                 img.onerror = () => {
-                    resolve({ studio: s, width: 100 }); // Fallback
+                    resolve({ studio: s, width: 100 }); 
                 };
             });
         });
@@ -103,10 +102,10 @@ class TrustedBy extends HTMLElement {
         let currentWidth = 0;
         let fittedCount = 0;
 
-        // 2. Считаем, сколько влезает, но не больше maxLogos
+       
         for (let i = 0; i < results.length; i++) {
             if (fittedCount >= maxLogos) {
-                break; // Достигли лимита в 14 штук
+                break; 
             }
 
             const itemWidth = results[i].width;
@@ -116,17 +115,17 @@ class TrustedBy extends HTMLElement {
                 currentWidth += spaceNeeded;
                 fittedCount++;
             } else {
-                break; // Следующий логотип не влезет в одну строку
+                break;
             }
         }
 
         tempContainer.remove();
 
-        // 3. Гарантируем минимум 2, максимум 14 логотипов
+        
         const countToRender = Math.min(maxLogos, Math.max(2, fittedCount));
         const studiosToRender = results.slice(0, countToRender).map(r => r.studio);
 
-        // 4. Рендерим итоговый набор
+        
         track.innerHTML = studiosToRender.map(s => `
             <div class="logo-item">
                 <img src="assets/img/clients/${s.file}" alt="${s.name}" loading="lazy">

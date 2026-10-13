@@ -1,7 +1,7 @@
 class StatsGrid extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -13,8 +13,7 @@ class StatsGrid extends HTMLElement {
             { number: 'Full-cycle', label: 'From concept to support' }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/home/components/css/staticBlock.css">
+        this.innerHTML = `
 
             
             <div class="stats-grid">

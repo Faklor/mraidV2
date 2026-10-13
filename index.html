@@ -99,7 +99,7 @@
 
     <!-- data json -->
     <!-- <link rel="preload" href="https://dashboard.mraid.io/portfolio.json" as="fetch" crossorigin> -->
-    <script src="components/data-cache.js"></script>
+    <script defer src="components/data-cache.js"></script>
 
     <!-- <script>
         
@@ -119,6 +119,14 @@
     <link rel="preload" href="https://www.gstatic.com/draco/versioned/decoders/1.5.6/draco_wasm_wrapper.js" as="script" crossorigin>
     <link rel="preload" href="https://www.gstatic.com/draco/versioned/decoders/1.5.6/draco_decoder.wasm" as="fetch" crossorigin>
     
+
+
+    <link rel="stylesheet" href="pages/home/HomePage.css">
+    <link rel="stylesheet" href="pages/home/components/css/titleBlock.css">
+    <link rel="stylesheet" href="pages/home/components/css/featuresBlock.css">
+    <link rel="stylesheet" href="pages/home/components/css/staticBlock.css">
+    <link rel="stylesheet" href="pages/home/components/css/topPlayablesSlider.css">
+    <link rel="stylesheet" href="pages/home/components/css/trustedBy.css">
 </head>
 <body>
 
@@ -174,8 +182,30 @@
         <main id="main-content" class="landing-main">
             
             <!-- 1. HOME -->
-            <section id="home" class="landing-section">
+            <!-- <section id="home" class="landing-section">
                 <page-home></page-home>
+            </section> -->
+            <section id="home" class="landing-section">
+                <page-home>
+                    <!-- ЭТОТ HTML БУДЕТ ПОКАЗАН МГНОВЕННО, ДО ЗАГРУЗКИ JS -->
+                    <div class="home-page">
+                        <div class="bg-looper-wrapper">
+                            <network-background></network-background>
+                        </div>
+                        <section class="hero-section">
+                            <div class="hero-content">
+                                <hero-block></hero-block> <!-- Или вставь сюда реальный текст/кнопки из hero-block -->
+                            </div>
+                            <div class="empty"></div>
+                            <div class="features-list">
+                                <features-list></features-list>
+                            </div>
+                        </section>
+                        <section class="trusted-section"><trusted-by></trusted-by></section>
+                        <section class="stats-section"><stats-grid></stats-grid></section>
+                        <section class="slider-section"><top-playables-slider></top-playables-slider></section>
+                    </div>
+                </page-home>
             </section>
 
             <!-- 2. PROCESS -->
@@ -215,7 +245,7 @@
     
    
     <!-- global -->
-    <script defer src="components/bg-blick.js"></script> 
+   
     <script defer src="components/app-preloader.js"></script>
     <script defer src="components/app-logo.js"></script>
     <script defer src="components/app-header.js"></script>
@@ -230,7 +260,7 @@
 
     
     <!-- -------------------Home -->
-    <script defer src="pages/home/HomePage.js"></script>
+    <!-- <script defer src="pages/home/HomePage.js"></script> -->
 
     <script defer src="pages/home/components/titleBlock.js"></script>
     <script defer src="pages/home/components/phoneBlock.js"></script>
@@ -241,49 +271,47 @@
     
 
     <!-- -------------------Process -->
-    <script defer src="pages/process/ProcessPage.js"></script>
+    <!-- <script defer src="pages/process/ProcessPage.js"></script>
 
     <script defer src="pages/process/components/processStep.js"></script>
     <script defer src="pages/process/components/processAI.js"></script>
     <script defer src="pages/process/components/processPreview.js"></script>
     <script defer src="pages/process/components/processContact.js"></script>
     <script defer src="pages/process/components/processPlatform.js"></script>
-    <script defer src="pages/process/components/processTech.js"></script>
+    <script defer src="pages/process/components/processTech.js"></script> -->
 
     <!-- -------------------Portfolio -->
-    <script defer src="pages/portfolio/PortfolioPage.js"></script>
+    <!-- <script defer src="pages/portfolio/PortfolioPage.js"></script>
 
     <script defer src="pages/portfolio/components/portfolioSlider.js"></script>
     <script defer src="pages/portfolio/components/portfolioBuild.js"></script>
-
-    <!-- <script src="pages/portfolio/components/priceCards.js"></script> -->
-    <script defer src="pages/portfolio/components/priceInfo.js"></script>
+    <script defer src="pages/portfolio/components/priceInfo.js"></script> -->
 
     <!-- -------------------Price -->
-    <script defer src="pages/price/PricePage.js"></script>
+    <!-- <script defer src="pages/price/PricePage.js"></script> -->
 
 
     <!-- -------------------Dashboard -->
-    <script defer src="pages/dashboard/dashboardPage.js"></script>
+    <!-- <script defer src="pages/dashboard/dashboardPage.js"></script>
 
     <script defer src="pages/dashboard/components/showCase.js"></script>
     <script defer src="pages/dashboard/components/features.js"></script>
-    <script defer src="pages/dashboard/components/info.js"></script>
+    <script defer src="pages/dashboard/components/info.js"></script> -->
 
     <!-- -------------------Services -->
-    <script defer src="pages/services/PageServices.js"></script>
+    <!-- <script defer src="pages/services/PageServices.js"></script>
     <script defer src="pages/services/components/banners.js"></script>
     <script defer src="pages/services/components/servicesCards.js"></script>
     <script defer src="pages/services/components/dashboardPromo.js"></script>
-    <script defer src="pages/services/components/featuresSection.js"></script>
+    <script defer src="pages/services/components/featuresSection.js"></script> -->
 
     <!-- -------------------Contact -->
 
-    <script defer src="pages/contact/ContactPage.js"></script>
+    <!-- <script defer src="pages/contact/ContactPage.js"></script>
 
     <script defer src="pages/contact/components/about.js"></script>
     <script defer src="pages/contact/components/story.js"></script>
-    <script defer src="pages/contact/components/clientsSlider.js"></script>
+    <script defer src="pages/contact/components/clientsSlider.js"></script> -->
 
     <!-- other -->
 

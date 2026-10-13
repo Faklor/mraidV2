@@ -1,7 +1,7 @@
 class FeaturesList extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -34,8 +34,8 @@ class FeaturesList extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/home/components/css/featuresBlock.css">
+        this.innerHTML = `
+            
             
             <div class="features-list">
                 ${features.map(f => `

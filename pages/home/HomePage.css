@@ -79,8 +79,7 @@
 /* Отключаем события у контейнеров-сеток, чтобы пустое место пропускало клики к телефону */
 .hero-section,
 .trusted-section,
-.stats-section,
-.slider-section {
+.stats-section{
     position: relative;
     z-index: 1; 
     pointer-events: none; /* КЛИКИ ПРОХОДЯТ СКВОЗЬ ПУСТОЕ МЕСТО КОНТЕЙНЕРА */
@@ -110,6 +109,9 @@ top-playables-slider {
     padding: 0 20px;
   
     
+}
+.empty{
+    pointer-events: none;
 }
 
 /* .hero-content{

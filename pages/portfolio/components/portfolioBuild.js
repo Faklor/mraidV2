@@ -312,12 +312,12 @@ class PortfolioBuild extends HTMLElement {
 
                     <!-- Телефон по центру -->
                     <div class="phone-container">
-                        <img src="assets/img/main-blick.png" alt="Blick" class="phone-blick-bg">
+                        
                         <div class="phone-frame">
                             <img src="assets/img/phone.png" alt="Phone frame" class="phone-image">
                             <div class="phone-screen">
                                 <div class="playable-wrapper">
-                                    <img src="assets/playables/build/preview.jpg" alt="Loading..." class="preview-image active">
+                                    
                                     <div class="playable-preloader active">
                                         <div class="preloader-spinner"></div>
                                     </div>
