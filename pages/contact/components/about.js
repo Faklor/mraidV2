@@ -1,7 +1,7 @@
 class AboutContact extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.currentPlan = null;
         this.handlePlanChange = this.handlePlanChange.bind(this);
         
@@ -78,7 +78,7 @@ class AboutContact extends HTMLElement {
 
     // НОВЫЙ МЕТОД: Делегирование событий (гарантирует работу кнопок всегда)
     initPackageActions() {
-        const container = this.shadowRoot.getElementById('selected-package-container');
+        const container = this.querySelector('#selected-package-container');
         if (!container) return;
 
         container.addEventListener('click', (e) => {
@@ -127,7 +127,7 @@ class AboutContact extends HTMLElement {
     }
 
     updateSelectedPackage() {
-        const container = this.shadowRoot.getElementById('selected-package-container');
+        const container = this.querySelector('#selected-package-container');
         if (!container) return;
 
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
@@ -146,8 +146,8 @@ class AboutContact extends HTMLElement {
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
         this.currentPlan = this.currentPlan || storedPlan || null;
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/contact/components/css/about.css"> 
+        this.innerHTML = `
+            
             
             <section class="about-contact" id="contact">
                 <div class="contact-container">
@@ -248,15 +248,15 @@ class AboutContact extends HTMLElement {
     }
 
     initForm() {
-        const form = this.shadowRoot.querySelector('#contactForm');
-        const nameInput = this.shadowRoot.querySelector('#name');
-        const emailInput = this.shadowRoot.querySelector('#email');
-        const messageInput = this.shadowRoot.querySelector('#message');
-        const offerInput = this.shadowRoot.querySelector('#offer');
-        const honeypotInput = this.shadowRoot.querySelector('#company-url');
-        const submitBtn = this.shadowRoot.querySelector('#contact-button');
-        const errorEl = this.shadowRoot.querySelector('.form-error');
-        const counter = this.shadowRoot.querySelector('.char-counter');
+        const form = this.querySelector('#contactForm');
+        const nameInput = this.querySelector('#name');
+        const emailInput = this.querySelector('#email');
+        const messageInput = this.querySelector('#message');
+        const offerInput = this.querySelector('#offer');
+        const honeypotInput = this.querySelector('#company-url');
+        const submitBtn = this.querySelector('#contact-button');
+        const errorEl = this.querySelector('.form-error');
+        const counter = this.querySelector('.char-counter');
 
         if (messageInput && counter) {
             messageInput.addEventListener('input', () => {
@@ -306,12 +306,12 @@ class AboutContact extends HTMLElement {
     }
 
     submitFormData(captchaToken) {
-        const nameInput = this.shadowRoot.querySelector('#name');
-        const emailInput = this.shadowRoot.querySelector('#email');
-        const messageInput = this.shadowRoot.querySelector('#message');
-        const honeypotInput = this.shadowRoot.querySelector('#company-url');
-        const submitBtn = this.shadowRoot.querySelector('#contact-button');
-        const errorEl = this.shadowRoot.querySelector('.form-error');
+        const nameInput = this.querySelector('#name');
+        const emailInput = this.querySelector('#email');
+        const messageInput = this.querySelector('#message');
+        const honeypotInput = this.querySelector('#company-url');
+        const submitBtn = this.querySelector('#contact-button');
+        const errorEl = this.querySelector('.form-error');
 
         const gclid = localStorage.getItem('mraid_gclid') || '';
         const planTitle = this.currentPlan ? this.currentPlan.title : '';
@@ -338,7 +338,7 @@ class AboutContact extends HTMLElement {
             if (xhr.readyState !== 4) return;
 
             if (xhr.status === 200) {
-                this.showThanks(this.shadowRoot.querySelector('#contactForm'));
+                this.showThanks(this.querySelector('#contactForm'));
             } else if (xhr.status === 428 || (xhr.responseText && xhr.responseText.includes('captcha_required'))) {
                 this.captchaRequired = true;
                 submitBtn.disabled = false;
@@ -471,7 +471,7 @@ class AboutContact extends HTMLElement {
     }
 
     showCaptchaNote(html) {
-        const noteEl = this.shadowRoot.querySelector('.captcha-note');
+        const noteEl = this.querySelector('.captcha-note');
         if (noteEl) noteEl.innerHTML = html;
     }
 

@@ -1,7 +1,7 @@
 class AboutStory extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -23,8 +23,8 @@ class AboutStory extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/contact/components/css/story.css">
+        this.innerHTML = `
+          
             
             <section class="about-story">
                 <div class="story-container">

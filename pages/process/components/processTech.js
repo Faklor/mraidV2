@@ -1,7 +1,7 @@
 class ProcessTech extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -23,8 +23,8 @@ class ProcessTech extends HTMLElement {
             { name: 'GitHub Copilot', logo: 'assets/img/process/tech/ai5.png' }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/process/components/css/processTech.css">
+        this.innerHTML = `
+           
             
             <section class="tech-section">
                 <div class="tech-container">

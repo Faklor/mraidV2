@@ -1,7 +1,7 @@
 class ProcessPlatforms extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -25,8 +25,8 @@ class ProcessPlatforms extends HTMLElement {
             { name: 'AppLovin', logo: 'assets/img/process/platforms/applovin.png' }
         ];
  
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/process/components/css/processPlatform.css">
+        this.innerHTML = `
+            
             
             <section class="platforms-section">
             

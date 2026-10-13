@@ -1,7 +1,7 @@
 class ServicesCards extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         
         this.services = [
             {
@@ -42,8 +42,7 @@ class ServicesCards extends HTMLElement {
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/services/components/css/servicesCards.css">
+        this.innerHTML = `
             
             <section class="services-cards-section">
                 <div class="services-header">

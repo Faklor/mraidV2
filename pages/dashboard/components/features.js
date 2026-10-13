@@ -1,7 +1,7 @@
 class DashboardFeatures extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.activeFeature = 0;
     }
 
@@ -81,8 +81,7 @@ class DashboardFeatures extends HTMLElement {
 
         this.features = features;
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/dashboard/components/css/features.css">
+        this.innerHTML = `
             
             <section class="dashboard-features">
                 <h2 class="features-heading">Powerful features</h2>
@@ -173,7 +172,7 @@ class DashboardFeatures extends HTMLElement {
     }
 
     initFeatures() {
-        const featureItems = this.shadowRoot.querySelectorAll('.feature-item');
+        const featureItems = this.querySelectorAll('.feature-item');
         
         featureItems.forEach((item) => {
             item.addEventListener('click', (e) => {
@@ -193,7 +192,7 @@ class DashboardFeatures extends HTMLElement {
     // === ИСПРАВЛЕННОЕ ОБНОВЛЕНИЕ КОНТЕНТА ===
     updateContent() {
         const feature = this.features[this.activeFeature];
-        const contentHeader = this.shadowRoot.querySelector('.content-header');
+        const contentHeader = this.querySelector('.content-header');
         
         if (!contentHeader) return;
 
@@ -232,10 +231,10 @@ class DashboardFeatures extends HTMLElement {
     }
 
     switchVideo() {
-        const video = this.shadowRoot.querySelector('.feature-video');
-        const videoWrapper = this.shadowRoot.querySelector('.video-wrapper');
-        const playOverlay = this.shadowRoot.querySelector('.play-overlay');
-        const playPauseBtn = this.shadowRoot.querySelector('.play-pause-btn');
+        const video = this.querySelector('.feature-video');
+        const videoWrapper = this.querySelector('.video-wrapper');
+        const playOverlay = this.querySelector('.play-overlay');
+        const playPauseBtn = this.querySelector('.play-pause-btn');
         
         if (video) {
             video.pause();
@@ -245,14 +244,14 @@ class DashboardFeatures extends HTMLElement {
     }
 
     initVideoControls() {
-        const video = this.shadowRoot.querySelector('.feature-video');
-        const playPauseBtn = this.shadowRoot.querySelector('.play-pause-btn');
-        const restartBtn = this.shadowRoot.querySelector('.restart-btn');
-        const playOverlay = this.shadowRoot.querySelector('.play-overlay');
-        const progressBar = this.shadowRoot.querySelector('.progress-bar');
-        const progressFill = this.shadowRoot.querySelector('.progress-fill');
-        const timeDisplay = this.shadowRoot.querySelector('.time-display');
-        const videoWrapper = this.shadowRoot.querySelector('.video-wrapper');
+        const video = this.querySelector('.feature-video');
+        const playPauseBtn = this.querySelector('.play-pause-btn');
+        const restartBtn = this.querySelector('.restart-btn');
+        const playOverlay = this.querySelector('.play-overlay');
+        const progressBar = this.querySelector('.progress-bar');
+        const progressFill = this.querySelector('.progress-fill');
+        const timeDisplay = this.querySelector('.time-display');
+        const videoWrapper = this.querySelector('.video-wrapper');
 
         if (!video) return;
 
@@ -301,7 +300,7 @@ class DashboardFeatures extends HTMLElement {
             }
         });
 
-        const fullscreenBtn = this.shadowRoot.querySelector('.fullscreen-btn');
+        const fullscreenBtn = this.querySelector('.fullscreen-btn');
         if (fullscreenBtn) {
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {

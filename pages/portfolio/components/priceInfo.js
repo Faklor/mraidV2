@@ -1,7 +1,7 @@
 class PriceInfo extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -39,8 +39,8 @@ class PriceInfo extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/portfolio/components/css/priceInfo.css">
+        this.innerHTML = `
+            
             
             <section class="price-info-row">
                 ${infoCards.map(card => `

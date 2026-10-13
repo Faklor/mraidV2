@@ -40,12 +40,12 @@ class TrustedBy extends HTMLElement {
 
         this.innerHTML = `
             
-            <div class="trusted-section">
-                <h2>Trusted by leading game studios & brands</h2>
-                <div class="marquee-container">
-                    <div class="marquee-track" id="track"></div>
-                </div>
+            
+            <h2>Trusted by leading game studios & brands</h2>
+            <div class="marquee-container">
+                <div class="marquee-track" id="track"></div>
             </div>
+           
         `;
 
         requestAnimationFrame(() => {
@@ -54,14 +54,13 @@ class TrustedBy extends HTMLElement {
     }
 
     async renderFittingLogos(studios) {
-        const container = this.shadowRoot.querySelector('.marquee-container');
-        const track = this.shadowRoot.querySelector('#track');
         
+        const container = this.querySelector('.marquee-container');
+        const track = this.querySelector('#track');
         
         const gap = 10; 
         const maxLogos = 14; 
 
-        
         const tempContainer = document.createElement('div');
         tempContainer.style.cssText = `
             position: absolute; 
@@ -71,9 +70,8 @@ class TrustedBy extends HTMLElement {
             display: flex; 
             gap: ${gap}px;
         `;
-        this.shadowRoot.appendChild(tempContainer);
+        this.appendChild(tempContainer);
 
-       
         const loadPromises = studios.map(s => {
             return new Promise(resolve => {
                 const div = document.createElement('div');
@@ -102,7 +100,6 @@ class TrustedBy extends HTMLElement {
         let currentWidth = 0;
         let fittedCount = 0;
 
-       
         for (let i = 0; i < results.length; i++) {
             if (fittedCount >= maxLogos) {
                 break; 
@@ -121,11 +118,10 @@ class TrustedBy extends HTMLElement {
 
         tempContainer.remove();
 
-        
         const countToRender = Math.min(maxLogos, Math.max(2, fittedCount));
         const studiosToRender = results.slice(0, countToRender).map(r => r.studio);
 
-        
+        // Теперь track найден корректно, и innerHTML сработает
         track.innerHTML = studiosToRender.map(s => `
             <div class="logo-item">
                 <img src="assets/img/clients/${s.file}" alt="${s.name}" loading="lazy">

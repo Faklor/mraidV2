@@ -36,7 +36,7 @@
 
 html, body {
   font-family: 'RobotoMedium', system-ui, -apple-system, sans-serif;
-  font-weight: 300; /* По умолчанию используем Light версию */
+  font-weight: 300; 
   width: 100%;
    /* overflow-x: hidden; */
 }
@@ -48,28 +48,28 @@ html {
     overflow-y: scroll;  */
 }
 
-/* Скрываем стандартный скроллбар и стилизуем свой */
+
 ::-webkit-scrollbar {
-  width: 8px; /* Ширина вертикального скроллбара */
-  height: 8px; /* Высота горизонтального скроллбара */
+  width: 8px; 
+  height: 8px; 
 }
 
-/* Фон скроллбара (трек) */
+
 ::-webkit-scrollbar-track {
-  background: #0D0D0F; /* Цвет фона страницы */
+  background: #0D0D0F; 
   border-radius: 4px;
 }
 
-/* Ползунок скроллбара */
+
 ::-webkit-scrollbar-thumb {
-  background: #FF0036; /* Красный цвет */
+  background: #FF0036; 
   border-radius: 4px;
   transition: background 0.3s ease;
 }
 
-/* Ползунок при наведении */
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #cc002b; /* Чуть темнее при наведении */
+  background: #cc002b; 
 }
 
 
@@ -79,17 +79,17 @@ body {
   color: #fff;
   line-height: 1.6;
   background-color: #0D0D0F;
-  /* Центрируем весь контент через flexbox */
+ 
   display: flex;
   flex-direction: column;
-  align-items: center; /* Центрируем по горизонтали */
+  align-items: center; 
    overflow-x: hidden;
 }
 
 main {
   width: 100%;
   padding: 0px 0 10px;
-  /* margin: 0 auto; <-- убираем, так как body уже центрирует */
+  
 }
 
 h1 {
@@ -104,28 +104,27 @@ h1 {
 
 .landing-section {
     width: 100%;
-    /* Отступ сверху равен высоте твоей шапки + небольшой запас, 
-       чтобы при скролле заголовок секции не прятался под меню */
+    
     scroll-margin-top: 100px; 
 }
 
 
 
-/* === ИДЕАЛЬНЫЙ КОНТЕЙНЕР === */
+
 .container {
   width: 100%;
   max-width: 1920px;
-  /* margin: 0 auto; <-- убираем, body уже центрирует */
+  
   padding: 0 0;
   
 }
 
 
-/* === УПРАВЛЕНИЕ ПОКАЗОМ ОСНОВНОГО КОНТЕНТА === */
+
 html.preloader-active, 
 body.preloader-active {
     overflow: hidden !important;
-    /* Гарантируем, что место под скроллбар резервируется, чтобы контент не прыгал */
+    
     scrollbar-gutter: stable !important; 
 }
 .container.preloader-active,
@@ -195,7 +194,7 @@ main.preloader-active,
     padding: 30px;
     max-width: 420px;
     width: 90%;
-    /* box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5); */
+    
     z-index: 1;
     animation: modalSlideIn 0.3s ease-out;
 }

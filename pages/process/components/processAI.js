@@ -1,7 +1,7 @@
 class ProcessAI extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -14,8 +14,8 @@ class ProcessAI extends HTMLElement {
             'AI analyzes performance data to help improve future results'
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/process/components/css/processAI.css">
+        this.innerHTML = `
+            
             
             <section class="ai-features-row">
             

@@ -1,7 +1,7 @@
 class DashboardShowcase extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -33,8 +33,8 @@ class DashboardShowcase extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/dashboard/components/css/showCase.css">
+        this.innerHTML = `
+            
             
             <section class="dashboard-showcase">
                 <div class="bg-looper-wrapper">

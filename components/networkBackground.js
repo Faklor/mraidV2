@@ -28,8 +28,8 @@ class NetworkBackground extends HTMLElement {
             
             offsetY: -50,
             offsetX: -100,
-            gridWidth: 25,      // <-- ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ
-            gridHeight: 15,     // <-- ОСТАВЛЕНО БЕЗ ИЗМЕНЕНИЙ
+            gridWidth: 25,     
+            gridHeight: 15,     
             gridPosX: 16.4,       
             gridPosZ: 65, 
             
@@ -46,7 +46,7 @@ class NetworkBackground extends HTMLElement {
             
             baseColor: '#da0404', 
             
-            maskRadius: 120,     
+            maskRadius: 110,     
             maskFeather: 40,      
             maskCenterX: -50,    
             maskCenterY: 0,    
@@ -435,15 +435,36 @@ class NetworkBackground extends HTMLElement {
         this.scene.add(this.fillLight);
     }
 
+    // async loadPlayablesData() {
+    //     try {
+    //         const data = await window.PortfolioDataCache.getData();
+    //         this.playablesData = data.previews || (Array.isArray(data) ? data : []);
+    //         if (this.playablesData.length > 0) this.loadRandomPlayable();
+    //     } catch (error) {
+    //         console.error('Ошибка загрузки JSON:', error);
+    //         this.playablesData = [{ url: ''}];
+    //         this.loadRandomPlayable();
+    //     }
+    // }
     async loadPlayablesData() {
         try {
             const data = await window.PortfolioDataCache.getData();
-            this.playablesData = data.previews || (Array.isArray(data) ? data : []);
-            if (this.playablesData.length > 0) this.loadRandomPlayable();
+            const allPreviews = data.previews || (Array.isArray(data) ? data : []);
+            
+            
+            const favoritePreviews = allPreviews.filter(item => 
+                item.favorite === 1 || item.favorite === true || item.favorite === "1" || item.favorite === "true"
+            );
+
+            
+            this.playablesData = favoritePreviews.length > 0 ? favoritePreviews : allPreviews;
+            
+            if (this.playablesData.length > 0) {
+                this.loadRandomPlayable();
+            }
         } catch (error) {
-            console.error('Ошибка загрузки JSON:', error);
-            this.playablesData = [{ url: ''}];
-            this.loadRandomPlayable();
+            console.error('Ошибка загрузки JSON для фона:', error);
+            this.playablesData = [];
         }
     }
 

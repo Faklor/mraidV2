@@ -1,7 +1,7 @@
 class ProcessSteps extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -44,8 +44,8 @@ class ProcessSteps extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/process/components/css/processStep.css">
+        this.innerHTML = `
+            
             
             <section class="steps-row">
                 ${steps.map(step => `

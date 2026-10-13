@@ -1,7 +1,7 @@
 class FeaturesSection extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -9,8 +9,7 @@ class FeaturesSection extends HTMLElement {
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/services/components/css/featuresSection.css">
+        this.innerHTML = `
             
             <section class="features-section">
                 <div class="features-content">

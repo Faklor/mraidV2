@@ -1,7 +1,7 @@
 class PriceCards extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.plans = []; // Храним планы в экземпляре класса
         this.handlePlanCleared = this.handlePlanCleared.bind(this);
     }
@@ -81,7 +81,7 @@ class PriceCards extends HTMLElement {
         this.render();
 
         window.addEventListener('scroll-to-pricing', () => {
-            const section = this.shadowRoot.getElementById('pricing-section');
+            const section = this.getElementById('pricing-section');
             if (section) {
                 section.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
@@ -97,8 +97,8 @@ class PriceCards extends HTMLElement {
         const storedPlan = JSON.parse(localStorage.getItem('selectedPlan'));
         const selectedTitle = storedPlan ? storedPlan.title : null;
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/portfolio/components/css/priceCards.css">
+        this.innerHTML = `
+            
             <section class="price-cards-row" id="pricing-section">
                 ${this.plans.map((plan, index) => {
                     const isSelected = plan.title === selectedTitle;
@@ -139,7 +139,7 @@ class PriceCards extends HTMLElement {
         `;
 
         // Навешиваем обработчики кликов только на кнопки "Choose"
-        this.shadowRoot.querySelectorAll('.choose-button').forEach(button => {
+        this.querySelectorAll('.choose-button').forEach(button => {
             button.addEventListener('click', (e) => {
                 e.preventDefault(); 
                 const planIndex = e.target.getAttribute('data-plan');

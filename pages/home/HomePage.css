@@ -1,14 +1,15 @@
 /* === ОБЩИЕ СТИЛИ СТРАНИЦЫ === */
 .home-page {
     position: relative; /* Важно: делает эту секцию "якорем" для абсолютного фона */
-    padding: 20px 80px 50px 80px;
+    padding: 40px 80px 50px 80px;
     animation: fadeIn 0.8s ease-out;
     font-family: 'RobotoMedium';
     overflow-x: hidden; /* Гарантированно убираем горизонтальный скролл */
     
     /* background-color: #000000; */
 
-    margin-top: 100px;
+    margin-top: 120px;
+    
 }
 
 .hero-blick {

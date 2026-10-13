@@ -1,7 +1,7 @@
 class ProcessPreviews extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -14,8 +14,8 @@ class ProcessPreviews extends HTMLElement {
             'assets/img/process/preview/preview6.png'
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/process/components/css/processPreview.css">
+        this.innerHTML = `
+           
             
             <section class="previews-row">
                 ${previews.map((src, index) => `

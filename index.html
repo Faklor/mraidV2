@@ -119,21 +119,63 @@
     <link rel="preload" href="https://www.gstatic.com/draco/versioned/decoders/1.5.6/draco_wasm_wrapper.js" as="script" crossorigin>
     <link rel="preload" href="https://www.gstatic.com/draco/versioned/decoders/1.5.6/draco_decoder.wasm" as="fetch" crossorigin>
     
+    <!-- GLOBAL -->
+    <link rel="stylesheet" href="components/css/app-footer.css">
+    
 
 
+
+    <!-- HOME -->
     <link rel="stylesheet" href="pages/home/HomePage.css">
     <link rel="stylesheet" href="pages/home/components/css/titleBlock.css">
     <link rel="stylesheet" href="pages/home/components/css/featuresBlock.css">
     <link rel="stylesheet" href="pages/home/components/css/staticBlock.css">
     <link rel="stylesheet" href="pages/home/components/css/topPlayablesSlider.css">
-    <link rel="stylesheet" href="pages/home/components/css/trustedBy.css">
+    <link rel="stylesheet" href="pages/home/components/css/clientsSlider.css">
+
+    <!-- PROCESS -->
+    <link rel="stylesheet" href="pages/process/ProcessPage.css">
+    <link rel="stylesheet" href="pages/process/components/css/processAI.css">
+    <link rel="stylesheet" href="pages/process/components/css/processContact.css">
+    <link rel="stylesheet" href="pages/process/components/css/processPlatform.css">
+    <link rel="stylesheet" href="pages/process/components/css/processPreview.css">
+    <link rel="stylesheet" href="pages/process/components/css/processStep.css">
+    <link rel="stylesheet" href="pages/process/components/css/processTech.css">
+
+    <!-- PORTFOLIO -->
+    <link rel="stylesheet" href="pages/portfolio/PortfolioPage.css">
+    <link rel="stylesheet" href="pages/portfolio/components/css/portfolioBuild.css">
+    <link rel="stylesheet" href="pages/portfolio/components/css/portfolioSlider.css">
+    <link rel="stylesheet" href="pages/portfolio/components/css/priceInfo.css">
+
+    <!-- PRICE -->
+    <link rel="stylesheet" href="pages/price/PricePage.css">
+
+    <!-- DASHBOARD -->
+    <!-- <link rel="stylesheet" href="pages/dashboard/dashboardPage.css">
+    <link rel="stylesheet" href="pages/dashboard/components/css/features.css">
+    <link rel="stylesheet" href="pages/dashboard/components/css/info.css">
+    <link rel="stylesheet" href="pages/dashboard/components/css/showCase.css"> -->
+
+    <!-- CONTACT -->
+    <!-- <link rel="stylesheet" href="pages/contact/ContactPage.css">
+    <link rel="stylesheet" href="pages/contact/components/css/about.css">
+    <link rel="stylesheet" href="pages/contact/components/css/clientsSlider.css">
+    <link rel="stylesheet" href="pages/contact/components/css/story.css"> -->
+
+
+    <!-- SERVICES -->
+    <!-- <link rel="stylesheet" href="pages/services/PageServices.css">
+    <link rel="stylesheet" href="pages/services/components/css/banners.css">
+    <link rel="stylesheet" href="pages/services/components/css/dashboardPromo.css">
+    <link rel="stylesheet" href="pages/services/components/css/featuresSection.css">
+    <link rel="stylesheet" href="pages/services/components/css/servicesCards.css"> -->
+
+
 </head>
 <body>
 
-    
     <app-preloader id="main-preloader"></app-preloader>
-
-    <!-- Глобальное модальное окно для плейаблов -->
     <playable-modal id="global-playable-modal"></playable-modal>
 
 
@@ -154,7 +196,7 @@
         </div>
 
         <app-header>
-            <!-- Вставляем компактный логотип с бликом -->
+          
             <app-logo slot="logo"></app-logo>
             
             <nav-bar slot="nav" 
@@ -172,34 +214,27 @@
 
             <!-- {"href": "#pricing", "text": "Price"}, -->
         </app-header>
-        <!-- Теперь ваш HTML чистый и короткий! -->
-        <my-header></my-header>
         
-        <!-- <main id="main-content">
-            
-        </main> -->
-
+        
         <main id="main-content" class="landing-main">
             
             <!-- 1. HOME -->
-            <!-- <section id="home" class="landing-section">
-                <page-home></page-home>
-            </section> -->
             <section id="home" class="landing-section">
                 <page-home>
-                    <!-- ЭТОТ HTML БУДЕТ ПОКАЗАН МГНОВЕННО, ДО ЗАГРУЗКИ JS -->
+                    
                     <div class="home-page">
                         <div class="bg-looper-wrapper">
                             <network-background></network-background>
                         </div>
                         <section class="hero-section">
                             <div class="hero-content">
-                                <hero-block></hero-block> <!-- Или вставь сюда реальный текст/кнопки из hero-block -->
+                                <hero-block></hero-block> 
                             </div>
                             <div class="empty"></div>
-                            <div class="features-list">
-                                <features-list></features-list>
-                            </div>
+                            
+                            
+                            <section class="features-list"><features-list></features-list></section>
+                            
                         </section>
                         <section class="trusted-section"><trusted-by></trusted-by></section>
                         <section class="stats-section"><stats-grid></stats-grid></section>
@@ -209,33 +244,60 @@
             </section>
 
             <!-- 2. PROCESS -->
-            <section id="process" class="landing-section">
-                <page-process></page-process>
-            </section>
+            <section id="process" class="process-page landing-section" data-reveal >
+              
+                <section class="process-header">
+                    <div class="process-title">
+                        <h1><span>AI</span> isn't our shortcut<br>It's our production <span>advantage</span></h1>
+                    </div>
+                    <div class="process-description">
+                        <p>From the first idea to the final build, AI is integrated into our workflow—helping our team move faster, explore more creative directions and deliver better playables</p>
+                    </div>
+                </section>
+                <process-steps></process-steps>
+                <process-previews></process-previews>
+                <process-ai></process-ai>
+                <process-contact></process-contact>
+                <process-platforms></process-platforms>
+                <process-tech></process-tech>
 
+            </section>
             <!-- 3. PORTFOLIO -->
-            <section id="portfolio" class="landing-section">
-                <page-portfolio></page-portfolio>
+            <section id="portfolio" class="portfolio-page landing-section">
+                
+                <portfolio-slider></portfolio-slider>
+                <portfolio-build></portfolio-build>
+                <price-info></price-info>
+            
             </section>
-
-             <!-- 4. PORTFOLIO -->
-            <section id="pricing" class="landing-section">
+            <!-- 4. PRICE -->
+            <section id="pricing">
                 <price-cards></price-cards>
             </section>
-
             <!-- 5. DASHBOARD -->
-            <section id="dashboard" class="landing-section">
-                <page-dashboard></page-dashboard>
+            <section id="dashboard" class="dashboard-page landing-section">
+               
+                <!-- <dashboard-showcase></dashboard-showcase>
+                <dashboard-features></dashboard-features>
+                <dashboard-info></dashboard-info> -->
+                
             </section>
-
             <!-- 6. SERVICES -->
-            <section id="services" class="landing-section">
-                <page-services></page-services>
-            </section>
+            <section id="services" class="services-wrapper landing-section">
+                
+                <!-- <banners-section></banners-section>
+                <services-cards></services-cards>
+                <dashboard-promo></dashboard-promo>
+                <features-section></features-section> -->
 
+            </section>
             <!-- 7. CONTACT -->
-            <section id="contact" class="landing-section">
-                <page-contact></page-contact>
+            <section id="contact" class="contact-page landing-section">
+                
+                <!-- <about-contact></about-contact>
+                <about-story></about-story>
+                <clients-slider></clients-slider> -->
+                
             </section>
 
         </main>
@@ -243,9 +305,8 @@
         <app-footer></app-footer>
     </div>
     
-   
+    <!-- components -->
     <!-- global -->
-   
     <script defer src="components/app-preloader.js"></script>
     <script defer src="components/app-logo.js"></script>
     <script defer src="components/app-header.js"></script>
@@ -254,70 +315,41 @@
     <script defer src="components/playableModal.js"></script>
     <script type="module" src="components/networkBackground.js"></script>
     <!-- Pages -->
-
-   
-
-
-    
     <!-- -------------------Home -->
-    <!-- <script defer src="pages/home/HomePage.js"></script> -->
-
     <script defer src="pages/home/components/titleBlock.js"></script>
     <script defer src="pages/home/components/phoneBlock.js"></script>
     <script defer src="pages/home/components/featuresBlock.js"></script>
     <script defer src="pages/home/components/sliderClientsBlock.js"></script>
     <script defer src="pages/home/components/staticBlock.js"></script>
     <script defer src="pages/home/components/topPlayablesSlider.js"></script>
-    
-
     <!-- -------------------Process -->
-    <!-- <script defer src="pages/process/ProcessPage.js"></script>
-
     <script defer src="pages/process/components/processStep.js"></script>
     <script defer src="pages/process/components/processAI.js"></script>
     <script defer src="pages/process/components/processPreview.js"></script>
     <script defer src="pages/process/components/processContact.js"></script>
     <script defer src="pages/process/components/processPlatform.js"></script>
-    <script defer src="pages/process/components/processTech.js"></script> -->
-
+    <script defer src="pages/process/components/processTech.js"></script>
     <!-- -------------------Portfolio -->
-    <!-- <script defer src="pages/portfolio/PortfolioPage.js"></script>
-
     <script defer src="pages/portfolio/components/portfolioSlider.js"></script>
     <script defer src="pages/portfolio/components/portfolioBuild.js"></script>
-    <script defer src="pages/portfolio/components/priceInfo.js"></script> -->
-
+    <script defer src="pages/portfolio/components/priceInfo.js"></script>
     <!-- -------------------Price -->
-    <!-- <script defer src="pages/price/PricePage.js"></script> -->
-
-
+    <script defer src="pages/price/PricePage.js"></script>
     <!-- -------------------Dashboard -->
-    <!-- <script defer src="pages/dashboard/dashboardPage.js"></script>
-
     <script defer src="pages/dashboard/components/showCase.js"></script>
     <script defer src="pages/dashboard/components/features.js"></script>
-    <script defer src="pages/dashboard/components/info.js"></script> -->
-
+    <script defer src="pages/dashboard/components/info.js"></script>
     <!-- -------------------Services -->
-    <!-- <script defer src="pages/services/PageServices.js"></script>
     <script defer src="pages/services/components/banners.js"></script>
     <script defer src="pages/services/components/servicesCards.js"></script>
     <script defer src="pages/services/components/dashboardPromo.js"></script>
-    <script defer src="pages/services/components/featuresSection.js"></script> -->
-
+    <script defer src="pages/services/components/featuresSection.js"></script>
     <!-- -------------------Contact -->
-
-    <!-- <script defer src="pages/contact/ContactPage.js"></script>
-
     <script defer src="pages/contact/components/about.js"></script>
     <script defer src="pages/contact/components/story.js"></script>
-    <script defer src="pages/contact/components/clientsSlider.js"></script> -->
-
+    <script defer src="pages/contact/components/clientsSlider.js"></script>
     <!-- other -->
-
-    <!-- <script src="router.js"></script> -->
     
-
     <script>
         
         function trackEvent(name, params) {
@@ -351,10 +383,6 @@
         });
     </script>
 
-   
-
-   
-    
 </body>
 </html>
 

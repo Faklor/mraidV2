@@ -1,12 +1,12 @@
 class AppFooter extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="components/css/app-footer.css">
+        this.innerHTML = `
+            
             
             <footer>
                 <div class="footer-content">
@@ -113,7 +113,7 @@ class AppFooter extends HTMLElement {
         `;
 
         // Обработчик кнопки "Вверх"
-        const scrollTopBtn = this.shadowRoot.querySelector('.scroll-top');
+        const scrollTopBtn = this.querySelector('.scroll-top');
         scrollTopBtn.addEventListener('click', () => {
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });

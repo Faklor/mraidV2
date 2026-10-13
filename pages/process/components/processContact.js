@@ -1,7 +1,7 @@
 class ProcessContact extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -20,7 +20,7 @@ class ProcessContact extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
+        this.innerHTML = `
             <link rel="stylesheet" href="pages/process/components/css/processContact.css">
             
             <section class="contact-cta">

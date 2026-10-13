@@ -79,7 +79,7 @@ class TopPlayablesSlider extends HTMLElement {
         this.innerHTML = `
             
             
-            <div class="slider-section">
+            
                 <div class="slider-header">
                     <h2>Top performing playables</h2>
                     <a href="#portfolio" class="see-more">
@@ -121,7 +121,7 @@ class TopPlayablesSlider extends HTMLElement {
                 <div class="slider-dots">
                     ${this.generateDots()}
                 </div>
-            </div>
+            
         `;
     }
 

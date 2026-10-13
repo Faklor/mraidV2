@@ -1,7 +1,7 @@
 class PortfolioSlider extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.currentIndex = 0;
         this.cardsPerView = 6;
         this.isAnimating = false;
@@ -90,7 +90,7 @@ class PortfolioSlider extends HTMLElement {
             return matchCategory && matchMechanic && matchDimension;
         });
 
-        const track = this.shadowRoot.querySelector('.slider-track');
+        const track = this.querySelector('.slider-track');
         const cards = track ? track.querySelectorAll('.slider-card') : [];
 
         if (cards.length > 0) {
@@ -100,7 +100,7 @@ class PortfolioSlider extends HTMLElement {
                 this.renderCards();
                 this.renderDots();
                 
-                const newCards = this.shadowRoot.querySelectorAll('.slider-card');
+                const newCards = this.querySelectorAll('.slider-card');
                 newCards.forEach(card => {
                     card.classList.add('fade-in');
                     void card.offsetWidth; 
@@ -142,7 +142,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     renderCards() {
-        const track = this.shadowRoot.querySelector('.slider-track');
+        const track = this.querySelector('.slider-track');
         if (!track) return;
 
         if (this.filteredProjects.length === 0) {
@@ -162,7 +162,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     renderDots() {
-        const dotsContainer = this.shadowRoot.querySelector('.slider-dots');
+        const dotsContainer = this.querySelector('.slider-dots');
         if (!dotsContainer) return;
         dotsContainer.innerHTML = this.generateDots();
     }
@@ -173,8 +173,8 @@ class PortfolioSlider extends HTMLElement {
     }
 
     renderSlider() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/portfolio/components/css/portfolioSlider.css">
+        this.innerHTML = `
+            
             <section class="portfolio-slider-section">
                 <div class="slider-header">
                     <div class="header-left"><h2>Portfolio & solutions</h2></div>
@@ -267,7 +267,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     scrollCategories(direction) {
-        const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
+        const buttonsContainer = this.querySelector('.filter-buttons');
         if (!buttonsContainer) return;
         
         const firstBtn = buttonsContainer.querySelector('.filter-btn');
@@ -294,9 +294,9 @@ class PortfolioSlider extends HTMLElement {
     }
 
     updateCategoryNavButtons() {
-        const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons');
-        const prevBtn = this.shadowRoot.querySelector('.cat-prev');
-        const nextBtn = this.shadowRoot.querySelector('.cat-next');
+        const buttonsContainer = this.querySelector('.filter-buttons');
+        const prevBtn = this.querySelector('.cat-prev');
+        const nextBtn = this.querySelector('.cat-next');
         if (!buttonsContainer || !prevBtn || !nextBtn) return;
         const maxScroll = buttonsContainer.scrollWidth - buttonsContainer.offsetWidth;
         prevBtn.style.opacity = this.categoryScrollPosition <= 0 ? '0.3' : '1';
@@ -306,7 +306,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     scrollMechanics(direction) {
-        const container = this.shadowRoot.querySelector('.filter-buttons-mechanics');
+        const container = this.querySelector('.filter-buttons-mechanics');
         if (!container) return;
         
         const firstBtn = container.querySelector('.filter-btn-mechanics');
@@ -333,9 +333,9 @@ class PortfolioSlider extends HTMLElement {
     }
 
     updateMechanicsNavButtons() {
-        const container = this.shadowRoot.querySelector('.filter-buttons-mechanics');
-        const prevBtn = this.shadowRoot.querySelector('.mech-prev');
-        const nextBtn = this.shadowRoot.querySelector('.mech-next');
+        const container = this.querySelector('.filter-buttons-mechanics');
+        const prevBtn = this.querySelector('.mech-prev');
+        const nextBtn = this.querySelector('.mech-next');
         if (!container || !prevBtn || !nextBtn) return;
         const maxScroll = container.scrollWidth - container.offsetWidth;
         prevBtn.style.opacity = this.mechanicsScrollPosition <= 0 ? '0.3' : '1';
@@ -345,7 +345,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     initEvents() {
-        const filterSection = this.shadowRoot.querySelector('.filter-section');
+        const filterSection = this.querySelector('.filter-section');
         if (filterSection) {
             filterSection.addEventListener('click', (e) => {
                 const btn = e.target.closest('.filter-btn, .filter-btn-mechanics, .filter-btn-dimension');
@@ -355,19 +355,19 @@ class PortfolioSlider extends HTMLElement {
                 const value = btn.dataset.value;
                 
                 if (type === 'category') {
-                    this.shadowRoot.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    this.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     this.currentCategory = value;
                     this.updateAvailableFilters('category'); // Сбросит механику и размер
                 } 
                 else if (type === 'mechanic') {
-                    this.shadowRoot.querySelectorAll('.filter-btn-mechanics').forEach(b => b.classList.remove('active'));
+                    this.querySelectorAll('.filter-btn-mechanics').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     this.currentMechanic = value;
                     this.updateAvailableFilters('mechanic'); // НЕ сбросит размер
                 } 
                 else if (type === 'dimension') {
-                    this.shadowRoot.querySelectorAll('.filter-btn-dimension').forEach(b => b.classList.remove('active'));
+                    this.querySelectorAll('.filter-btn-dimension').forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
                     this.currentDimension = value;
                     this.updateAvailableFilters('dimension'); // НЕ сбросит механику
@@ -377,18 +377,18 @@ class PortfolioSlider extends HTMLElement {
             });
         }
 
-        const catPrevBtn = this.shadowRoot.querySelector('.cat-prev');
-        const catNextBtn = this.shadowRoot.querySelector('.cat-next');
+        const catPrevBtn = this.querySelector('.cat-prev');
+        const catNextBtn = this.querySelector('.cat-next');
         if (catPrevBtn) catPrevBtn.addEventListener('click', () => this.scrollCategories('left'));
         if (catNextBtn) catNextBtn.addEventListener('click', () => this.scrollCategories('right'));
 
-        const mechPrevBtn = this.shadowRoot.querySelector('.mech-prev');
-        const mechNextBtn = this.shadowRoot.querySelector('.mech-next');
+        const mechPrevBtn = this.querySelector('.mech-prev');
+        const mechNextBtn = this.querySelector('.mech-next');
         if (mechPrevBtn) mechPrevBtn.addEventListener('click', () => this.scrollMechanics('left'));
         if (mechNextBtn) mechNextBtn.addEventListener('click', () => this.scrollMechanics('right'));
 
-        const prevBtn = this.shadowRoot.querySelector('.prev-btn');
-        const nextBtn = this.shadowRoot.querySelector('.next-btn');
+        const prevBtn = this.querySelector('.prev-btn');
+        const nextBtn = this.querySelector('.next-btn');
 
         if (prevBtn) {
             prevBtn.addEventListener('click', () => {
@@ -411,7 +411,7 @@ class PortfolioSlider extends HTMLElement {
             });
         }
 
-        this.shadowRoot.addEventListener('click', (e) => {
+        this.addEventListener('click', (e) => {
             if (e.target.classList.contains('dot')) {
                 const newIndex = parseInt(e.target.dataset.page);
                 if (this.isAnimating || newIndex === this.currentIndex) return;
@@ -457,11 +457,11 @@ class PortfolioSlider extends HTMLElement {
     }
 
     updateSlider() {
-        const track = this.shadowRoot.querySelector('.slider-track');
-        const wrapper = this.shadowRoot.querySelector('.slider-track-wrapper');
-        const prevBtn = this.shadowRoot.querySelector('.prev-btn');
-        const nextBtn = this.shadowRoot.querySelector('.next-btn');
-        const dots = this.shadowRoot.querySelectorAll('.dot');
+        const track = this.querySelector('.slider-track');
+        const wrapper = this.querySelector('.slider-track-wrapper');
+        const prevBtn = this.querySelector('.prev-btn');
+        const nextBtn = this.querySelector('.next-btn');
+        const dots = this.querySelectorAll('.dot');
 
         if (!track || !wrapper || this.filteredProjects.length === 0) return;
         
@@ -505,7 +505,7 @@ class PortfolioSlider extends HTMLElement {
     }
 
     updateFilterButtons() {
-        const mechContainer = this.shadowRoot.querySelector('.mechanics-group .filter-buttons-mechanics');
+        const mechContainer = this.querySelector('.mechanics-group .filter-buttons-mechanics');
         if (mechContainer) {
             mechContainer.innerHTML = this.uniqueMechanics.map(mech => `
                 <button class="filter-btn-mechanics ${mech === this.currentMechanic ? 'active' : ''}" data-type="mechanic" data-value="${mech}">
@@ -514,7 +514,7 @@ class PortfolioSlider extends HTMLElement {
             `).join('');
         }
 
-        const dimContainer = this.shadowRoot.querySelector('.dimension-group .filter-buttons-dimensions');
+        const dimContainer = this.querySelector('.dimension-group .filter-buttons-dimensions');
         if (dimContainer) {
             dimContainer.innerHTML = this.uniqueDimensions.map(dim => `
                 <button class="filter-btn-dimension ${dim === this.currentDimension ? 'active' : ''}" data-type="dimension" data-value="${dim}">
@@ -524,8 +524,8 @@ class PortfolioSlider extends HTMLElement {
         }
 
         setTimeout(() => {
-            const mechanicsSlider = this.shadowRoot.querySelector('.mechanics-slider');
-            const buttonsContainer = this.shadowRoot.querySelector('.filter-buttons-mechanics');
+            const mechanicsSlider = this.querySelector('.mechanics-slider');
+            const buttonsContainer = this.querySelector('.filter-buttons-mechanics');
             
             if (mechanicsSlider && buttonsContainer) {
                 const hasOverflow = buttonsContainer.scrollWidth > buttonsContainer.offsetWidth;

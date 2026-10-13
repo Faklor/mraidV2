@@ -1,7 +1,7 @@
 class DashboardInfo extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -28,8 +28,7 @@ class DashboardInfo extends HTMLElement {
             }
         ];
 
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/dashboard/components/css/info.css">
+        this.innerHTML = `
             
             <section class="dashboard-info">
                 <div class="info-container">

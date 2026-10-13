@@ -1,7 +1,7 @@
 class ClientsSlider extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.currentSlide = 0;
     }
 
@@ -74,8 +74,8 @@ class ClientsSlider extends HTMLElement {
     }
 
     renderSlider() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/contact/components/css/clientsSlider.css">
+        this.innerHTML = `
+            
             
             <section class="clients-slider-section">
                 <h2 class="slider-heading">What our clients say</h2>

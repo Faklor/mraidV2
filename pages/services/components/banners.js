@@ -1,7 +1,7 @@
 class Banners extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
     }
 
     connectedCallback() {
@@ -9,8 +9,8 @@ class Banners extends HTMLElement {
     }
  
     render() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/services/components/css/banners.css">
+        this.innerHTML = `
+            
             
             <section class="banners-hero">
                 <!-- Блик в правом верхнем углу -->

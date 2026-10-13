@@ -1,7 +1,7 @@
 class DashboardPromo extends HTMLElement {
     constructor() {
         super();
-        this.attachShadow({ mode: 'open' });
+        // this.attachShadow({ mode: 'open' });
         this.animationFrame = null;
     }
 
@@ -18,8 +18,8 @@ class DashboardPromo extends HTMLElement {
     }
 
     render() {
-        this.shadowRoot.innerHTML = `
-            <link rel="stylesheet" href="pages/services/components/css/dashboardPromo.css">
+        this.innerHTML = `
+            
             
             <section class="dashboard-promo">
                 <div class="promo-content">
@@ -72,7 +72,7 @@ class DashboardPromo extends HTMLElement {
     }
 
     initVideoControls() {
-        const video = this.shadowRoot.querySelector('.promo-video');
+        const video = this.querySelector('.promo-video');
         
         // Клик по видео для play/pause
         video.addEventListener('click', () => {
@@ -96,10 +96,10 @@ class DashboardPromo extends HTMLElement {
     }
 
     startIconAnimation() {
-        const rectTL = this.shadowRoot.getElementById('rect-tl');
-        const rectTR = this.shadowRoot.getElementById('rect-tr');
-        const rectBL = this.shadowRoot.getElementById('rect-bl');
-        const rectBR = this.shadowRoot.getElementById('rect-br');
+        const rectTL = this.getElementById('rect-tl');
+        const rectTR = this.getElementById('rect-tr');
+        const rectBL = this.getElementById('rect-bl');
+        const rectBR = this.getElementById('rect-br');
 
         if (!rectTL || !rectTR || !rectBL || !rectBR) return;
 
