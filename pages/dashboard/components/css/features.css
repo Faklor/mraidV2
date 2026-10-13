@@ -1,38 +1,34 @@
 /* === СЕКЦИЯ FEATURES === */
-.dashboard-features {
+.df-section {
     padding: 40px 40px;
     background: #0D0D0F;
-    font-family: 'RobotoMedium';
+    font-family: 'RobotoMedium', sans-serif;
 }
 
-.features-heading {
+.df-heading {
     font-size: 2.5rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 48px;
-    
 }
 
 /* === ОСНОВНОЙ КОНТЕЙНЕР === */
-.features-container {
+.df-container {
     display: grid;
     grid-template-columns: 400px 1fr;
     gap: 20px;
-    align-items: start; /* ОДИНАКОВАЯ ВЫСОТА ОБЕИХ КОЛОНОК */
+    align-items: start;
 }
 
 /* === СПИСОК ФИЧ (ЛЕВАЯ КОЛОНКА) === */
-.features-list {
+.df-list {
     display: flex;
     flex-direction: column;
     gap: 16px;
-    height: 100%; 
-    /* align-self: stretch;  */
+    height: 100%;
 }
 
-/* Распределяем элементы списка равномерно по высоте */
-/* === Распределяем элементы списка равномерно по высоте === */
-.feature-item {
+.df-item {
     position: relative;
     flex: 1; 
     display: flex;
@@ -44,42 +40,37 @@
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-sizing: border-box; /* <-- ДОБАВЛЕНО: гарантирует, что padding и border не ломают размер */
+    box-sizing: border-box;
 }
 
-.feature-item:hover {
+.df-item:hover {
     background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(255,0,52,0.3) 100%);
     border-color: rgba(255, 255, 255, 0.15);
-    /* transform: translateX(4px); <-- УДАЛИ ЭТУ СТРОКУ ПОЛНОСТЬЮ */
 }
 
-.feature-item.active {
+.df-item.df-active {
     background: linear-gradient(135deg, rgba(0,0,0,0.3) 0%, rgba(255,0,52,0.3) 100%);
     border: 1px solid rgba(255, 0, 54, 0.4);
-    
-    
 }
 
 /* === КРАСНАЯ СТРЕЛКА МЕЖДУ БЛОКАМИ === */
-.feature-item.active::after {
+.df-item.df-active::after {
     content: '';
     position: absolute;
-    right: -20px; /* Сдвигаем ровно на ширину треугольника за границу карточки */
+    right: -20px;
     top: 50%;
     transform: translateY(-50%);
     width: 0;
     height: 0;
-    /* Рисуем треугольник, указывающий вправо, с помощью границ */
     border-top: 18px solid transparent;
     border-bottom: 18px solid transparent;
     border-left: 20px solid #FF0036; 
     z-index: 10;
     pointer-events: none;
-    animation: trianglePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    animation: df-trianglePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-/* Анимация плавного "выстреливания" треугольника */
-@keyframes trianglePop {
+@keyframes df-trianglePop {
     0% {
         opacity: 0;
         transform: translateY(-50%) translateX(-10px) scale(0.5);
@@ -90,13 +81,13 @@
     }
 }
 
-.feature-icon-wrapper {
+.df-icon-wrapper {
     width: 48px;
     height: 48px;
     flex-shrink: 0;
 }
 
-.feature-icon {
+.df-icon {
     width: 100%;
     height: 100%;
     object-fit: contain;
@@ -105,47 +96,45 @@
     transition: opacity 0.3s ease;
 }
 
-
-
-.feature-item.active .feature-icon {
+.df-item.df-active .df-icon {
     opacity: 1;
     filter: brightness(0) invert(37%) sepia(96%) saturate(7490%) hue-rotate(357deg) brightness(95%) contrast(101%);
 }
 
-.feature-text {
+.df-text {
     flex: 1;
 }
 
-.feature-title {
+.df-title {
     font-size: 1.1rem;
     font-weight: 300;
     color: #ffffff;
     margin: 0 0 4px;
 }
 
-.feature-subtitle {
+.df-subtitle {
     font-size: 0.85rem;
     color: #fff;
     margin: 0;
     line-height: 1.4;
 }
 
-.feature-item.active .feature-title {
+.df-item.df-active .df-title {
     color: #FF0036;
 }
 
 /* === ПРАВАЯ ПАНЕЛЬ (ТЕКСТ + ВИДЕО) === */
-.feature-panel {
+.df-panel {
     display: flex;
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     overflow: hidden;
-    height: 100%; /* ОДИНАКОВАЯ ВЫСОТА С ЛЕВОЙ КОЛОНКОЙ */
+    height: 100%;
 }
 
 /* === ТЕКСТОВЫЙ БЛОК === */
-.feature-content {
+.df-content {
     flex: 0 0 320px;
     padding: 40px 32px;
     border-right: 1px solid rgba(255, 255, 255, 0.08);
@@ -154,24 +143,47 @@
     justify-content: start;
 }
 
-.content-title {
+.df-content-header {
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.df-content-header.df-fade-out {
+    opacity: 0;
+    transform: translateY(-10px);
+}
+
+.df-content-header.df-fade-in {
+    animation: df-fadeInUp 0.3s ease forwards;
+}
+
+@keyframes df-fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+.df-content-title {
     font-size: 1.8rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 16px;
     line-height: 1.2;
-    font-family: 'RobotoLight';
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.content-description {
+.df-content-description {
     font-size: 1rem;
     color: #fff;
     line-height: 1.2;
     margin: 0 0 24px;
-    font-family: 'RobotoLight';
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.content-list {
+.df-content-list {
     list-style: none;
     padding: 0;
     margin: 0;
@@ -180,7 +192,7 @@
     gap: 12px;
 }
 
-.content-list li {
+.df-content-list li {
     display: flex;
     align-items: flex-start;
     gap: 12px;
@@ -190,38 +202,36 @@
     line-height: 1.4;
 }
 
-.content-list li svg {
+.df-content-list li svg {
     flex-shrink: 0;
     margin-top: 2px;
 }
 
 /* === БЛОК С ВИДЕО === */
-.video-wrapper {
+.df-video-wrapper {
     flex: 1;
     position: relative;
     background: #1a1a1a;
     min-width: 0;
-
-    aspect-ratio: 16 / 1; 
+    aspect-ratio: 16 / 9; /* Исправлено с 16/1 на 16/9 для нормального видео */
     max-height: 600px;  
 }
 
-.video-container {
+.df-video-container {
     position: relative;
     width: 100%;
     height: 100%;
     background-color: #000;
 }
 
-.feature-video {
+.df-video {
     width: 100%;
     height: 100%;
-    /* object-fit: cover; */
     display: block;
 }
 
 /* === КНОПКА PLAY === */
-.play-overlay {
+.df-play-overlay {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -235,28 +245,28 @@
     justify-content: center;
     cursor: pointer;
     opacity: 0;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.3s ease, transform 0.3s ease;
     z-index: 5;
 }
 
-.video-wrapper.paused .play-overlay {
+.df-video-wrapper.df-paused .df-play-overlay {
     opacity: 1;
 }
 
-.play-overlay:hover {
+.df-play-overlay:hover {
     background: #FF0036;
     transform: translate(-50%, -50%) scale(1.1);
 }
 
-.play-overlay svg {
+.df-play-overlay svg {
     width: 52px;
     height: 52px;
     fill: white;
-    margin-left: 0px;
+    margin-left: 4px; /* Небольшая коррекция для визуального центра треугольника */
 }
 
 /* === КОНТРОЛЫ ВИДЕО === */
-.video-controls {
+.df-video-controls {
     position: absolute;
     bottom: 0;
     left: 0;
@@ -268,18 +278,18 @@
     z-index: 10;
 }
 
-.video-wrapper:hover .video-controls {
+.df-video-wrapper:hover .df-video-controls {
     opacity: 1;
 }
 
-.control-bar {
+.df-control-bar {
     display: flex;
     align-items: center;
     gap: 12px;
     margin-bottom: 12px;
 }
 
-.progress-bar {
+.df-progress-bar {
     flex: 1;
     height: 4px;
     background: rgba(255, 255, 255, 0.2);
@@ -289,20 +299,20 @@
     overflow: hidden;
 }
 
-.progress-fill {
+.df-progress-fill {
     height: 100%;
     background: #FF0036;
     width: 0%;
     transition: width 0.1s linear;
 }
 
-.control-buttons {
+.df-control-buttons {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.control-btn {
+.df-control-btn {
     background: none;
     border: none;
     color: #ffffff;
@@ -317,17 +327,17 @@
     height: 36px;
 }
 
-.control-btn:hover {
+.df-control-btn:hover {
     background: rgba(255, 255, 255, 0.1);
     color: #FF0036;
 }
 
-.control-btn svg {
+.df-control-btn svg {
     width: 20px;
     height: 20px;
 }
 
-.time-display {
+.df-time-display {
     color: #ffffff;
     font-size: 0.85rem;
     font-family: monospace;
@@ -335,102 +345,78 @@
     text-align: right;
 }
 
-/* === АНИМАЦИЯ ПЛАВНОГО ПЕРЕКЛЮЧЕНИЯ КОНТЕНТА === */
-.content-header {
-    transition: opacity 0.2s ease, transform 0.2s ease;
-}
-
-.content-header.fade-out {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.content-header.fade-in {
-    animation: fadeInUp 0.3s ease forwards;
-}
-
-@keyframes fadeInUp {
-    0% {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
 /* === АДАПТАЦИЯ === */
 @media (max-width: 1200px) {
-    .features-container {
+    .df-container {
         grid-template-columns: 1fr;
     }
     
-    .feature-panel {
+    .df-panel {
         flex-direction: column;
     }
 
-     .feature-item.active::after {
+    .df-item.df-active::after {
         display: none !important;
     }
 
-    .feature-content {
+    .df-content {
         flex: none;
         border-right: none;
         border-bottom: 1px solid rgba(255, 255, 255, 0.08);
         padding: 32px;
     }
     
-    .video-wrapper {
+    .df-video-wrapper {
         min-height: 400px;
     }
 }
 
 @media (max-width: 768px) {
-    .dashboard-features {
+    .df-section {
         padding: 60px 20px;
     }
     
-    .features-heading {
+    .df-heading {
         font-size: 2rem;
     }
     
-    .features-list {
+    .df-list {
         flex-direction: row;
         flex-wrap: wrap;
     }
     
-    .feature-item {
+    .df-item {
         flex: 1;
         min-width: 200px;
     }
     
-    .feature-content {
+    .df-content {
         padding: 24px;
     }
     
-    .content-title {
+    .df-content-title {
         font-size: 1.4rem;
     }
     
-    .content-description {
+    .df-content-description {
         font-size: 0.9rem;
     }
     
-    .content-list li {
+    .df-content-list li {
         font-size: 0.85rem;
     }
     
-    .video-wrapper {
+    .df-video-wrapper {
         min-height: 250px;
     }
 }
 
 @media (max-width: 480px) {
-    .features-list {
+    .df-list {
         flex-direction: column;
     }
     
-    .feature-item {
+    .df-item {
         min-width: auto;
     }
 }

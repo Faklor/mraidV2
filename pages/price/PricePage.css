@@ -1,273 +1,242 @@
-/* === ОБЩИЙ КОНТЕЙНЕР ЦЕН (Заголовок + Карточки) === */
-.pricing-wrapper {
+/* === ОБЩИЙ КОНТЕЙНЕР ЦЕН === */
+.pc-wrapper {
     background: #0a0a0c;
-    padding: 80px 120px; /* Единый отступ для всего блока сверху, снизу, слева и справа */
+    padding: 60px 40px; /* Уменьшено для лучшего влезания */
     margin-bottom: 60px;
     font-family: 'RobotoMedium', sans-serif;
 }
 
 /* === ЗАГОЛОВОК СЕКЦИИ === */
-.pricing-header {
+.pc-header {
     text-align: center;
-    margin-bottom: 20px; /* Отступ от текста до начала карточек */
+    margin-bottom: 32px;
 }
 
-.pricing-title {
-    font-size: 2.5rem;
+.pc-title {
+    font-size: 2rem; /* Уменьшено с 2.5rem */
     font-weight: 700;
     color: #ffffff;
-    margin: 0 0 16px 0;
+    margin: 0 0 12px 0;
     line-height: 1.2;
 }
 
-.pricing-description {
-    font-size: 1.1rem;
+.pc-description {
+    font-size: 1rem; /* Уменьшено с 1.1rem */
     color: #888;
     line-height: 1.5;
     margin: 0 auto;
-    max-width:600px;
+    max-width: 600px;
 }
 
 /* === РЯД КАРТОЧЕК === */
-.price-cards-row {
+.pc-cards-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    /* Убрали лишний padding, так как он теперь есть у .pricing-wrapper */
+    gap: 16px; /* Чуть плотнее */
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 /* === КАРТОЧКА === */
-.price-card {
+.pc-card {
     position: relative;
     background: #141417;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 12px;
-    padding: 32px 24px;
+    padding: 24px 20px; /* Уменьшены внутренние отступы */
     display: flex;
     flex-direction: column;
-    /* transition: all 0.3s ease; */
-     transition: all 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: all 0.3s ease, transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-.price-card.animate-selection {
-    animation: cardSelectPulse 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+.pc-card.pc-animate-selection {
+    animation: pc-cardSelectPulse 1s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
 }
 
-@keyframes cardSelectPulse {
-    0% {
-        transform: scale(1);
-        /* box-shadow: 0 0 0 rgba(255, 0, 54, 0); */
-    }
-    50% {
-        transform: scale(1.04);
-        /* box-shadow: 0 0 40px rgba(255, 0, 54, 0.6); */
-    }
-    100% {
-        transform: scale(1);
-        /* box-shadow: 0 0 30px rgba(255, 0, 54, 0.5); */
-    }
+@keyframes pc-cardSelectPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
 }
 
-/* Когда любая карта выбрана, убираем popular стили со ВСЕХ карт */
-.price-cards-row:has(.selected-card) .price-card.popular {
+/* Когда любая карта выбрана, убираем popular стили */
+.pc-cards-row:has(.pc-selected-card) .pc-card.pc-popular {
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
     background: #141417 !important;
     box-shadow: none !important;
 }
 
-.price-cards-row:has(.selected-card) .popular-badge {
+.pc-cards-row:has(.pc-selected-card) .pc-popular-badge {
     display: none !important;
 }
 
-/* Выбранная карта всегда красная независимо от popular */
-
 /* === ИКОНКА КАРТОЧКИ === */
-.card-icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 0 10px;
+.pc-card-icon {
+    width: 45px; /* Чуть компактнее */
+    height: 45px;
+    margin: 0 0 12px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 
-.card-icon img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-}
-
 /* === ПОПУЛЯРНАЯ КАРТОЧКА === */
-.price-card.popular {
+.pc-card.pc-popular {
     border: 2px solid #FF0036;
-    background: #1f1f1f;
-    box-shadow: 0 0 30px rgba(255, 0, 54, 0.15);
+    background: #1a1a1e;
+    box-shadow: 0 0 25px rgba(255, 0, 54, 0.15);
 }
 
-.popular-badge {
+.pc-popular-badge {
     position: absolute;
-    top: -14px;
+    top: -12px;
     left: 50%;
     transform: translateX(-50%);
     background: #FF0036;
     color: #ffffff;
-    padding: 6px 16px;
-    border-radius: 5px;
-    font-size: 0.8rem;
+    padding: 4px 14px;
+    border-radius: 4px;
+    font-size: 0.75rem;
     font-weight: 600;
     white-space: nowrap;
 }
 
-/* === ЗАГОЛОВОК КАРТОЧКИ === */
-.card-title {
-    font-size: 1.2rem;
+/* === ЗАГОЛОВОК И ОПИСАНИЕ КАРТОЧКИ === */
+.pc-card-title {
+    font-size: 1.05rem; /* Уменьшено */
     font-weight: 700;
     color: #ffffff;
-    margin: 0 0 12px;
+    margin: 0 0 8px;
     line-height: 1.3;
     text-align: start;
 }
 
-/* === ОПИСАНИЕ === */
-.card-description {
-    font-size: 1.0rem;
-    color: #ffffff;
-    line-height: 1.3;
-    margin: 0 0 20px;
+.pc-card-description {
+    font-size: 0.9rem; /* Уменьшено */
+    color: #cccccc;
+    line-height: 1.4;
+    margin: 0 0 16px;
     text-align: start;
 }
 
-.card-subtitle {
-    font-size: 0.85rem;
+.pc-card-subtitle {
+    font-size: 0.8rem;
     color: #888;
     line-height: 1.4;
-    margin: 0 0 20px;
+    margin: 0 0 16px;
     font-style: italic;
     text-align: center;
 }
 
 /* === СПИСОК ФИЧ === */
-.card-features {
+.pc-card-features {
     list-style: none;
     padding: 0;
-    margin: 0 0 10px;
+    margin: 0 0 12px;
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 10px; /* Плотнее */
 }
 
-.card-features li {
+.pc-card-features li {
     display: flex;
     align-items: flex-start;
-    gap: 10px;
-    font-size: 0.85rem;
-    color: #c0c0c0;
+    gap: 8px;
+    font-size: 0.8rem; /* Уменьшено для компактности */
+    color: #b0b0b0;
     line-height: 1.4;
 }
 
-.price-feature-icon {
+.pc-feature-icon {
     flex-shrink: 0;
-    width: 15px;
-    height: 13px;
+    width: 14px;
+    height: 14px;
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 1px;
+    margin-top: 2px;
     color: #FF0034;
 }
 
-.price-feature-icon svg {
+.pc-feature-icon svg {
     width: 100%;
     height: 100%;
 }
 
 /* === ЦЕНА === */
-.card-price {
+.pc-card-price {
     display: flex;
     justify-content: space-between;
-    align-items: start;
+    align-items: center;
     gap: 4px;
-    padding-top: 16px;
+    padding-top: 12px;
     border-top: 1px solid rgba(255, 255, 255, 0.08);
-    margin-bottom: 20px;
+    margin-bottom: 16px;
 }
 
-.old-price {
-    font-size: 1rem;
+.pc-old-price {
+    font-size: 0.9rem;
     color: #666;
     text-decoration: line-through;
     font-weight: 500;
-    align-self: center;
 }
 
-.current-price {
+.pc-current-price {
     font-size: 1.1rem;
     font-weight: 700;
     color: #FF0034;
 }
 
-/* === КНОПКА ВЫБОРА === */
-.choose-button {
+/* === КНОПКИ === */
+.pc-choose-button {
     width: 100%;
-    padding: 14px 24px;
+    padding: 12px 20px; /* Чуть компактнее */
     background: transparent;
     border: 2px solid #FF0034;
     border-radius: 8px;
     color: #FF0034;
-    font-size: 0.8rem;
+    font-size: 0.85rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
     letter-spacing: 0.5px;
-    text-decoration: none;
     text-align: center;
-    display: inline-block;
     box-sizing: border-box;
 }
 
-.choose-button:hover {
+.pc-choose-button:hover {
     background: #FF0034;
     color: #ffffff;
     transform: translateY(-2px);
     box-shadow: 0 5px 20px rgba(255, 0, 52, 0.4);
 }
 
-.price-card.popular .choose-button {
+.pc-card.pc-popular .pc-choose-button {
     background: #FF0034;
     color: #ffffff;
 }
 
-.price-card.popular .choose-button:hover {
+.pc-card.pc-popular .pc-choose-button:hover {
     background: #ff1a44;
     box-shadow: 0 5px 25px rgba(255, 0, 52, 0.6);
 }
 
-/* === ВЫБРАННАЯ КАРТОЧКА === */
-/* .price-card.selected-card {
-    border-color: #FF0036;
-    background: #1a1a1e;
-    box-shadow: 0 0 20px rgba(255, 0, 54, 0.1);
-} */
- .price-card.selected-card {
+.pc-card.pc-selected-card {
     border: 2px solid #FF0036 !important;
     background: #1a1a1e !important;
     box-shadow: 0 0 30px rgba(255, 0, 54, 0.4) !important;
 }
 
-
-/* === КНОПКА "ВЫБРАНО" === */
-.selected-button {
+.pc-selected-button {
     width: 100%;
-    padding: 14px 24px;
+    padding: 12px 20px;
     background: #FF0036;
     border: 2px solid #FF0036;
     border-radius: 8px;
     color: #ffffff;
-    font-size: 1rem;
+    font-size: 0.9rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
     text-align: center;
     display: flex;
     align-items: center;
@@ -275,111 +244,84 @@
     gap: 8px;
     cursor: default;
     box-sizing: border-box;
-    transition: all 0.3s ease;
 }
 
-.selected-button svg {
-    width: 20px;
-    height: 20px;
+.pc-selected-button svg {
+    width: 18px;
+    height: 18px;
     color: #ffffff; 
 }
 
-/* === АДАПТАЦИЯ === */
-@media (max-width: 1440px) {
-    .pricing-wrapper {
-        padding: 60px 60px; /* Чуть меньше отступы на средних экранах */
-    }
-    .price-cards-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 768px) {
-    .pricing-wrapper {
-        padding: 40px 20px; /* Минимальные отступы на мобильных */
-        margin-bottom: 40px;
-    }
-    
-    .pricing-title {
-        font-size: 2rem;
-    }
-    
-    .pricing-header {
-        margin-bottom: 40px;
-    }
-
-    .price-cards-row {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-    
-    .price-card {
-        padding: 24px 20px;
-    }
-    
-    .card-icon {
-        width: 56px;
-        height: 56px;
-    }
-}
-
-
 /* === АНИМАЦИЯ SVG ИКОНОК === */
-.card-icon {
-    width: 50px;
-    height: 50px;
-    margin: 0 0 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.price-svg-icon {
+.pc-svg-icon {
     width: 100%;
     height: 100%;
-    overflow: visible; /* Важно для свечения */
+    overflow: visible;
 }
 
-
-.icon-draw,
-.icon-flow,
-.icon-flow-delay-1,
-.icon-flow-delay-2,
-.icon-flow-delay-3,
-.icon-bar-1,
-.icon-bar-2,
-.icon-bar-3 {
+.pc-icon-draw,
+.pc-icon-flow,
+.pc-icon-flow-delay-1,
+.pc-icon-flow-delay-2,
+.pc-icon-flow-delay-3,
+.pc-icon-bar-1,
+.pc-icon-bar-2,
+.pc-icon-bar-3 {
     fill: none;
     stroke-dasharray: 100, 10; 
-    animation: svg-flow 5s linear infinite alternate  ;
+    animation: pc-svg-flow 5s linear infinite alternate;
 }
 
-
-.icon-draw {
+.pc-icon-draw {
     stroke-dasharray: 100, 5;
     animation-duration: 10s;
 }
 
-.icon-flow-delay-1 { animation-delay: 0s; }
-.icon-flow-delay-2 { animation-delay: 0.5s; }
-.icon-flow-delay-3 { animation-delay: 1s; }
+.pc-icon-flow-delay-1 { animation-delay: 0s; }
+.pc-icon-flow-delay-2 { animation-delay: 0.5s; }
+.pc-icon-flow-delay-3 { animation-delay: 1s; }
 
-.icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
-.icon-bar-2 { animation-duration: 2.5s; }
-.icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
+.pc-icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
+.pc-icon-bar-2 { animation-duration: 2.5s; }
+.pc-icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
 
-@keyframes svg-flow {
-    from {
-        stroke-dashoffset: 0; 
+@keyframes pc-svg-flow {
+    from { stroke-dashoffset: 0; }
+    to { stroke-dashoffset: -50; }
+}
+
+/* === АДАПТАЦИЯ === */
+/* Переключаемся на 2 колонки раньше, чтобы карточки не сплющивались */
+@media (max-width: 1200px) {
+    .pc-wrapper {
+        padding: 50px 30px;
     }
-    to {
-        stroke-dashoffset: -50; /* Движение пунктира */
+    .pc-cards-row {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
     }
 }
 
-/* Дополнительное легкое свечение при наведении на карточку */
-.price-card:hover .price-svg-icon path,
-.price-card:hover .price-svg-icon rect {
-   
-    transition: all 0.3s ease;
+@media (max-width: 768px) {
+    .pc-wrapper {
+        padding: 40px 20px;
+        margin-bottom: 40px;
+    }
+    
+    .pc-title {
+        font-size: 1.75rem;
+    }
+    
+    .pc-header {
+        margin-bottom: 32px;
+    }
+
+    .pc-cards-row {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .pc-card {
+        padding: 24px 20px;
+    }
 }

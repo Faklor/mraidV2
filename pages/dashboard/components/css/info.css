@@ -1,16 +1,16 @@
 /* === СЕКЦИЯ INFO === */
-.dashboard-info {
+.di-section {
     padding: 0px 40px 20px;
     background: #0D0D0F;
     font-family: 'RobotoMedium', sans-serif;
 }
 
-.info-container {
+.di-container {
     width: 100%;
     margin: 0 auto;
 }
 
-.info-heading {
+.di-heading {
     font-size: 2rem;
     font-weight: 700;
     color: #ffffff;
@@ -19,14 +19,14 @@
 }
 
 /* === СЕТКА ФИЧ === */
-.features-grid {
+.di-features-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
     margin-bottom: 40px;
 }
 
-.feature-box {
+.di-feature-box {
     display: flex;
     align-items: flex-start;
     gap: 16px;
@@ -37,43 +37,41 @@
     transition: all 0.3s ease;
 }
 
-
-
-.feature-icon {
+.di-feature-icon {
     width: 58px;
     height: 58px;
     flex-shrink: 0;
     align-self: center;
 }
 
-.feature-icon img {
+.di-feature-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.feature-text {
+.di-feature-text {
     flex: 1;
 }
 
-.feature-title {
+.di-feature-title {
     font-size: 1.3rem;
     font-weight: 600;
     color: #ffffff;
     margin: 0 0 2px;
-    font-family: 'RobotoLight';
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.feature-description {
+.di-feature-description {
     font-size: 1rem;
     color: #d8d8d8;
     line-height: 1.2;
     margin: 0;
-    font-family: 'RobotoLight';
+    font-family: 'RobotoLight', sans-serif;
 }
 
 /* === CTA BANNER === */
-.cta-banner {
+.di-cta-banner {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -86,8 +84,7 @@
     overflow: hidden;
 }
 
-/* Фоновый эффект */
-.cta-banner::before {
+.di-cta-banner::before {
     content: '';
     position: absolute;
     top: 0;
@@ -98,48 +95,47 @@
     pointer-events: none;
 }
 
-.banner-content {
+.di-banner-content {
     display: flex;
     align-items: center;
     gap: 24px;
     flex: 1;
     position: relative;
     z-index: 1;
-    font-family: 'RobotoLight';
-
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.banner-icon {
+.di-banner-icon {
     width: 64px;
     height: 64px;
     flex-shrink: 0;
 }
 
-.banner-icon img {
+.di-banner-icon img {
     width: 100%;
     height: 100%;
     object-fit: contain;
 }
 
-.banner-text {
+.di-banner-text {
     flex: 1;
 }
 
-.banner-title {
+.di-banner-title {
     font-size: 1.8rem;
     font-weight: 700;
     color: #ffffff;
     margin: 0 0 8px;
 }
 
-.banner-description {
+.di-banner-description {
     font-size: 1.3rem;
     color: #fff;
     line-height: 1.6;
     margin: 0;
 }
 
-.banner-btn {
+.di-banner-btn {
     display: inline-flex;
     align-items: center;
     gap: 12px;
@@ -156,86 +152,84 @@
     z-index: 1;
 }
 
-
-
-.banner-btn svg {
+.di-banner-btn svg {
     transition: transform 0.3s ease;
 }
 
-.banner-btn:hover svg {
+.di-banner-btn:hover svg {
     transform: translateX(4px);
 }
 
 /* === АДАПТАЦИЯ === */
 @media (max-width: 1200px) {
-    .features-grid {
+    .di-features-grid {
         grid-template-columns: repeat(2, 1fr);
     }
 }
 
 @media (max-width: 768px) {
-    .dashboard-info {
+    .di-section {
         padding: 60px 20px;
     }
     
-    .info-heading {
+    .di-heading {
         font-size: 1.5rem;
     }
     
-    .features-grid {
+    .di-features-grid {
         grid-template-columns: 1fr;
         gap: 16px;
     }
     
-    .feature-box {
+    .di-feature-box {
         padding: 20px;
     }
     
-    .cta-banner {
+    .di-cta-banner {
         flex-direction: column;
         gap: 24px;
         padding: 24px;
     }
     
-    .banner-content {
+    .di-banner-content {
         flex-direction: column;
         text-align: center;
     }
     
-    .banner-icon {
+    .di-banner-icon {
         width: 56px;
         height: 56px;
     }
     
-    .banner-title {
+    .di-banner-title {
         font-size: 1.3rem;
     }
     
-    .banner-description {
+    .di-banner-description {
         font-size: 0.9rem;
     }
     
-    .banner-btn {
+    .di-banner-btn {
         width: 100%;
         justify-content: center;
     }
 }
 
 @media (max-width: 480px) {
-    .feature-box {
+    .di-feature-box {
         flex-direction: column;
     }
     
-    .feature-icon {
+    .di-feature-icon {
         width: 40px;
         height: 40px;
     }
     
-    .feature-title {
+    .di-feature-title {
         font-size: 1rem;
     }
     
-    .feature-description {
+    .di-feature-description {
         font-size: 0.85rem;
     }
 }

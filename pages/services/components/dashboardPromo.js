@@ -1,7 +1,6 @@
 class DashboardPromo extends HTMLElement {
     constructor() {
         super();
-        // this.attachShadow({ mode: 'open' });
         this.animationFrame = null;
     }
 
@@ -19,21 +18,15 @@ class DashboardPromo extends HTMLElement {
 
     render() {
         this.innerHTML = `
-            
-            
             <section class="dashboard-promo">
                 <div class="promo-content">
                     <div class="promo-text">
                         <div class="logo-wrapper">
                             <div class="animated-icon">
                                 <svg width="41" height="41" viewBox="0 0 41 41" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <!-- Левый верхний -->
                                     <rect id="rect-tl" x="4.5" y="4.5" width="13.6667" height="13.6667" stroke="#FF0034" stroke-width="3" stroke-linejoin="round" fill="none" rx="2"/>
-                                    <!-- Правый верхний -->
                                     <rect id="rect-tr" x="22.8333" y="4.5" width="13.6667" height="13.6667" stroke="#FF0034" stroke-width="3" stroke-linejoin="round" fill="none" rx="2"/>
-                                    <!-- Левый нижний -->
                                     <rect id="rect-bl" x="4.5" y="22.8333" width="13.6667" height="13.6667" stroke="#FF0034" stroke-width="3" stroke-linejoin="round" fill="none" rx="2"/>
-                                    <!-- Правый нижний -->
                                     <rect id="rect-br" x="22.8333" y="22.8333" width="13.6667" height="13.6667" stroke="#FF0034" stroke-width="3" stroke-linejoin="round" fill="none" rx="2"/>
                                 </svg>
                             </div>
@@ -47,7 +40,7 @@ class DashboardPromo extends HTMLElement {
                         
                         <p class="promo-description">
                             Our in-house editor allows you to create HTML5<br>
-                            banners quickly and easily -no coding required.
+                            banners quickly and easily - no coding required.
                         </p>
                         
                         <a href="https://dashboard.mraid.io/" class="promo-cta-btn">
@@ -60,7 +53,7 @@ class DashboardPromo extends HTMLElement {
 
                     <div class="promo-video-wrapper">
                         <div class="video-container">
-                            <video controls class="promo-video">
+                            <video controls class="promo-video" playsinline>
                                 <source src="assets/video/video1.mp4" type="video/mp4">
                                 Your browser does not support the video tag.
                             </video>
@@ -73,41 +66,29 @@ class DashboardPromo extends HTMLElement {
 
     initVideoControls() {
         const video = this.querySelector('.promo-video');
+        if (!video) return;
         
-        // Клик по видео для play/pause
         video.addEventListener('click', () => {
-            if (video.paused) {
-                video.play();
-            } else {
-                video.pause();
-            }
+            video.paused ? video.play() : video.pause();
         });
 
-        // Двойной клик для fullscreen
         video.addEventListener('dblclick', () => {
-            if (video.requestFullscreen) {
-                video.requestFullscreen();
-            } else if (video.webkitRequestFullscreen) {
-                video.webkitRequestFullscreen();
-            } else if (video.msRequestFullscreen) {
-                video.msRequestFullscreen();
-            }
+            if (video.requestFullscreen) video.requestFullscreen();
+            else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
         });
     }
 
     startIconAnimation() {
-        const rectTL = this.getElementById('rect-tl');
-        const rectTR = this.getElementById('rect-tr');
-        const rectBL = this.getElementById('rect-bl');
-        const rectBR = this.getElementById('rect-br');
+        // ИСПРАВЛЕНО: используем querySelector вместо несуществующего getElementById
+        const rectTL = this.querySelector('#rect-tl');
+        const rectTR = this.querySelector('#rect-tr');
+        const rectBL = this.querySelector('#rect-bl');
+        const rectBR = this.querySelector('#rect-br');
 
         if (!rectTL || !rectTR || !rectBL || !rectBR) return;
 
         const bigHeight = 13.6667;
         const smallHeight = 6.8333;
-        
-        // Магическое число: 4.5 (верхний отступ) + 13.6667 (макс. высота) + 4 (зазор) + 6.8333 (мин. высота) = 29.0
-        // Это гарантирует, что нижняя граница нижних блоков всегда зафиксирована, а зазор между ними и верхними блоками всегда ровно 4px.
         const fixedBottomY = 29.0; 
 
         let startTime = null;
@@ -117,38 +98,22 @@ class DashboardPromo extends HTMLElement {
             if (!startTime) startTime = timestamp;
             const elapsed = timestamp - startTime;
             const progress = (elapsed % duration) / duration;
-
-            // Плавная синусоидальная интерполяция от 0 до 1
             const t = (Math.sin(progress * Math.PI * 2 - Math.PI / 2) + 1) / 2;
 
-            // ==========================================
-            // ЛЕВАЯ СТОРОНА
-            // ==========================================
-            
-            // Левый Верхний: растет ВНИЗ от Y=4.5
             const tlHeight = smallHeight + (bigHeight - smallHeight) * t;
             rectTL.setAttribute('y', 4.5);
             rectTL.setAttribute('height', tlHeight);
 
-            // Левый Нижний: ужимается ВВЕРХ. Его нижняя граница всегда на fixedBottomY
             const blHeight = bigHeight - (bigHeight - smallHeight) * t;
-            const blY = fixedBottomY - blHeight; 
-            rectBL.setAttribute('y', blY);
+            rectBL.setAttribute('y', fixedBottomY - blHeight);
             rectBL.setAttribute('height', blHeight);
 
-            // ==========================================
-            // ПРАВАЯ СТОРОНА (Зеркальная анимация)
-            // ==========================================
-            
-            // Правый Верхний: начинает большим и ужимается ВНИЗ
             const trHeight = bigHeight - (bigHeight - smallHeight) * t;
             rectTR.setAttribute('y', 4.5);
             rectTR.setAttribute('height', trHeight);
 
-            // Правый Нижний: начинает маленьким и растет ВВЕРХ
             const brHeight = smallHeight + (bigHeight - smallHeight) * t;
-            const brY = fixedBottomY - brHeight;
-            rectBR.setAttribute('y', brY);
+            rectBR.setAttribute('y', fixedBottomY - brHeight);
             rectBR.setAttribute('height', brHeight);
 
             this.animationFrame = requestAnimationFrame(animate);
@@ -156,7 +121,5 @@ class DashboardPromo extends HTMLElement {
 
         this.animationFrame = requestAnimationFrame(animate);
     }
-
-    
 }
 customElements.define('dashboard-promo', DashboardPromo);

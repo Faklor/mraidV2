@@ -1,7 +1,6 @@
 class DashboardFeatures extends HTMLElement {
     constructor() {
         super();
-        // this.attachShadow({ mode: 'open' });
         this.activeFeature = 0;
     }
 
@@ -82,32 +81,31 @@ class DashboardFeatures extends HTMLElement {
         this.features = features;
 
         this.innerHTML = `
-            
-            <section class="dashboard-features">
-                <h2 class="features-heading">Powerful features</h2>
+            <section class="df-section">
+                <h2 class="df-heading">Powerful features</h2>
                 
-                <div class="features-container">
-                    <div class="features-list">
+                <div class="df-container">
+                    <div class="df-list">
                         ${features.map((feature, index) => `
-                            <div class="feature-item ${index === this.activeFeature ? 'active' : ''}" 
+                            <div class="df-item ${index === this.activeFeature ? 'df-active' : ''}" 
                                 data-index="${index}">
-                                <div class="feature-icon-wrapper">
-                                    <img src="${feature.icon}" alt="${feature.title}" class="feature-icon">
+                                <div class="df-icon-wrapper">
+                                    <img src="${feature.icon}" alt="${feature.title}" class="df-icon">
                                 </div>
-                                <div class="feature-text">
-                                    <h3 class="feature-title">${feature.title}</h3>
-                                    <p class="feature-subtitle">${feature.subtitle}</p>
+                                <div class="df-text">
+                                    <h3 class="df-title">${feature.title}</h3>
+                                    <p class="df-subtitle">${feature.subtitle}</p>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
 
-                    <div class="feature-panel">
-                        <div class="feature-content">
-                            <div class="content-header">
-                                <h3 class="content-title">${features[this.activeFeature].description}</h3>
-                                <p class="content-description">${features[this.activeFeature].details}</p>
-                                <ul class="content-list">
+                    <div class="df-panel">
+                        <div class="df-content">
+                            <div class="df-content-header">
+                                <h3 class="df-content-title">${features[this.activeFeature].description}</h3>
+                                <p class="df-content-description">${features[this.activeFeature].details}</p>
+                                <ul class="df-content-list">
                                     ${features[this.activeFeature].items.map(item => `
                                         <li>
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
@@ -120,40 +118,40 @@ class DashboardFeatures extends HTMLElement {
                             </div>
                         </div>
 
-                        <div class="video-wrapper paused">
-                            <div class="video-container">
-                                <video class="feature-video" 
+                        <div class="df-video-wrapper df-paused">
+                            <div class="df-video-container">
+                                <video class="df-video" 
                                     src="${features[this.activeFeature].video}" 
                                     loop 
                                     playsinline>
                                 </video>
                                 
-                                <div class="play-overlay">
+                                <div class="df-play-overlay">
                                     <svg viewBox="0 0 24 24">
                                         <path d="M8 5v14l11-7z"/>
                                     </svg>
                                 </div>
                                 
-                                <div class="video-controls">
-                                    <div class="control-bar">
-                                        <div class="progress-bar">
-                                            <div class="progress-fill"></div>
+                                <div class="df-video-controls">
+                                    <div class="df-control-bar">
+                                        <div class="df-progress-bar">
+                                            <div class="df-progress-fill"></div>
                                         </div>
-                                        <span class="time-display">0:00 / 0:00</span>
+                                        <span class="df-time-display">0:00 / 0:00</span>
                                     </div>
-                                    <div class="control-buttons">
-                                        <button class="control-btn play-pause-btn">
+                                    <div class="df-control-buttons">
+                                        <button class="df-control-btn df-play-pause-btn">
                                             <svg viewBox="0 0 24 24" fill="currentColor">
                                                 <path d="M8 5v14l11-7z"/>
                                             </svg>
                                         </button>
-                                        <button class="control-btn restart-btn">
+                                        <button class="df-control-btn df-restart-btn">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                                 <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/>
                                                 <path d="M3 3v5h5"/>
                                             </svg>
                                         </button>
-                                        <button class="control-btn fullscreen-btn">
+                                        <button class="df-control-btn df-fullscreen-btn">
                                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                 <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"/>
                                             </svg>
@@ -172,14 +170,14 @@ class DashboardFeatures extends HTMLElement {
     }
 
     initFeatures() {
-        const featureItems = this.querySelectorAll('.feature-item');
+        const featureItems = this.querySelectorAll('.df-item');
         
         featureItems.forEach((item) => {
-            item.addEventListener('click', (e) => {
+            item.addEventListener('click', () => {
                 const index = parseInt(item.dataset.index);
                 
-                featureItems.forEach(i => i.classList.remove('active'));
-                item.classList.add('active');
+                featureItems.forEach(i => i.classList.remove('df-active'));
+                item.classList.add('df-active');
                 
                 this.activeFeature = index;
                 
@@ -189,28 +187,23 @@ class DashboardFeatures extends HTMLElement {
         });
     }
 
-    // === ИСПРАВЛЕННОЕ ОБНОВЛЕНИЕ КОНТЕНТА ===
     updateContent() {
         const feature = this.features[this.activeFeature];
-        const contentHeader = this.querySelector('.content-header');
+        const contentHeader = this.querySelector('.df-content-header');
         
         if (!contentHeader) return;
 
-        // Добавляем класс для анимации исчезновения
-        contentHeader.classList.add('fade-out');
+        contentHeader.classList.add('df-fade-out');
 
-        // Ждём окончания анимации исчезновения
         setTimeout(() => {
-            // Обновляем только текст существующих элементов
-            const title = contentHeader.querySelector('.content-title');
-            const description = contentHeader.querySelector('.content-description');
-            const list = contentHeader.querySelector('.content-list');
+            const title = contentHeader.querySelector('.df-content-title');
+            const description = contentHeader.querySelector('.df-content-description');
+            const list = contentHeader.querySelector('.df-content-list');
 
             if (title) title.textContent = feature.description;
             if (description) description.textContent = feature.details;
 
             if (list) {
-                // Обновляем только текст в существующих li
                 const listItems = list.querySelectorAll('li span');
                 feature.items.forEach((item, index) => {
                     if (listItems[index]) {
@@ -219,23 +212,17 @@ class DashboardFeatures extends HTMLElement {
                 });
             }
 
-            // Убираем класс fade-out и добавляем fade-in
-            contentHeader.classList.remove('fade-out');
-            contentHeader.classList.add('fade-in');
+            contentHeader.classList.remove('df-fade-out');
+            contentHeader.classList.add('df-fade-in');
 
-            // Убираем fade-in после окончания анимации
             setTimeout(() => {
-                contentHeader.classList.remove('fade-in');
+                contentHeader.classList.remove('df-fade-in');
             }, 300);
         }, 200);
     }
 
     switchVideo() {
-        const video = this.querySelector('.feature-video');
-        const videoWrapper = this.querySelector('.video-wrapper');
-        const playOverlay = this.querySelector('.play-overlay');
-        const playPauseBtn = this.querySelector('.play-pause-btn');
-        
+        const video = this.querySelector('.df-video');
         if (video) {
             video.pause();
             video.src = this.features[this.activeFeature].video;
@@ -244,26 +231,26 @@ class DashboardFeatures extends HTMLElement {
     }
 
     initVideoControls() {
-        const video = this.querySelector('.feature-video');
-        const playPauseBtn = this.querySelector('.play-pause-btn');
-        const restartBtn = this.querySelector('.restart-btn');
-        const playOverlay = this.querySelector('.play-overlay');
-        const progressBar = this.querySelector('.progress-bar');
-        const progressFill = this.querySelector('.progress-fill');
-        const timeDisplay = this.querySelector('.time-display');
-        const videoWrapper = this.querySelector('.video-wrapper');
+        const video = this.querySelector('.df-video');
+        const playPauseBtn = this.querySelector('.df-play-pause-btn');
+        const restartBtn = this.querySelector('.df-restart-btn');
+        const playOverlay = this.querySelector('.df-play-overlay');
+        const progressBar = this.querySelector('.df-progress-bar');
+        const progressFill = this.querySelector('.df-progress-fill');
+        const timeDisplay = this.querySelector('.df-time-display');
+        const videoWrapper = this.querySelector('.df-video-wrapper');
 
         if (!video) return;
 
         const togglePlay = () => {
             if (video.paused) {
                 video.play();
-                videoWrapper.classList.remove('paused');
+                videoWrapper.classList.remove('df-paused');
                 playOverlay.style.display = 'none';
                 this.updatePlayButton(playPauseBtn, true);
             } else {
                 video.pause();
-                videoWrapper.classList.add('paused');
+                videoWrapper.classList.add('df-paused');
                 playOverlay.style.display = 'flex';
                 this.updatePlayButton(playPauseBtn, false);
             }
@@ -276,7 +263,7 @@ class DashboardFeatures extends HTMLElement {
         restartBtn.addEventListener('click', () => {
             video.currentTime = 0;
             video.play();
-            videoWrapper.classList.remove('paused');
+            videoWrapper.classList.remove('df-paused');
             playOverlay.style.display = 'none';
             this.updatePlayButton(playPauseBtn, true);
         });
@@ -300,25 +287,17 @@ class DashboardFeatures extends HTMLElement {
             }
         });
 
-        const fullscreenBtn = this.querySelector('.fullscreen-btn');
+        const fullscreenBtn = this.querySelector('.df-fullscreen-btn');
         if (fullscreenBtn) {
             fullscreenBtn.addEventListener('click', () => {
                 if (!document.fullscreenElement) {
-                    if (video.requestFullscreen) {
-                        video.requestFullscreen();
-                    } else if (video.webkitRequestFullscreen) {
-                        video.webkitRequestFullscreen();
-                    } else if (video.msRequestFullscreen) {
-                        video.msRequestFullscreen();
-                    }
+                    if (video.requestFullscreen) video.requestFullscreen();
+                    else if (video.webkitRequestFullscreen) video.webkitRequestFullscreen();
+                    else if (video.msRequestFullscreen) video.msRequestFullscreen();
                 } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
+                    if (document.exitFullscreen) document.exitFullscreen();
+                    else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+                    else if (document.msExitFullscreen) document.msExitFullscreen();
                 }
             });
         }
@@ -326,7 +305,6 @@ class DashboardFeatures extends HTMLElement {
 
     updatePlayButton(button, isPlaying) {
         if (!button) return;
-        
         if (isPlaying) {
             button.innerHTML = `
                 <svg viewBox="0 0 24 24" fill="currentColor">

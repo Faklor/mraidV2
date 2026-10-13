@@ -40,7 +40,7 @@ class FeaturesList extends HTMLElement {
             
             ${features.map(f => `
                 <!-- ДОБАВЛЕН КЛАСС has-tooltip, ЕСЛИ ЕСТЬ ФЛАГ -->
-                <div class="feature-item ${f.hasTooltip ? 'has-tooltip' : ''}">
+                <div class="home-feature-item ${f.hasTooltip ? 'has-tooltip' : ''}">
                     ${f.svg}
                     <span>${f.title}</span>
                     ${f.hasTooltip ? `

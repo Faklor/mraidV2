@@ -9,7 +9,7 @@
     }
 }
 
-.features-list {
+.home-features-list {
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -25,7 +25,7 @@
 }
 
 /* 1. БАЗОВЫЕ СТИЛИ ДЛЯ ВСЕХ БЛОКОВ */
-.feature-item {
+.home-feature-item {
     display: flex;
     align-items: center;
     gap: 12px; 
@@ -38,7 +38,7 @@
 }
 
 /* 2. СТИЛИ ДЛЯ ИНТЕРАКТИВНЫХ БЛОКОВ (с тултипом) */
-.feature-item.has-tooltip {
+.home-feature-item.has-tooltip {
     cursor: default; /* Убираем cursor: help с всего блока */
     transition: all 0.3s ease;
 }
@@ -46,20 +46,20 @@
 
 
 /* 3. ИКОНКА: плавает всегда */
-.feature-item > svg:first-child {
+.home-feature-item > svg:first-child {
     flex-shrink: 0;
     width: 25px;
     height: auto;
    
 }
 
-.feature-item.has-tooltip > svg:first-child {
+.home-feature-item.has-tooltip > svg:first-child {
     transition: transform 0.3s ease, filter 0.3s ease;
 }
 
 
 
-.feature-item span {
+.home-feature-item span {
     
     color: #ffffff;
      font-family: "RobotoLight";
@@ -128,8 +128,8 @@
 
 /* === МАГИЯ ЗДЕСЬ === */
 /* Показываем подсказку ТОЛЬКО если наведена мышь на иконку вопроса (~) ИЛИ на саму подсказку */
-.feature-item .tooltip-icon:hover ~ .tooltip-text,
-.feature-item .tooltip-text:hover {
+.home-feature-item .tooltip-icon:hover ~ .tooltip-text,
+.home-feature-item .tooltip-text:hover {
     opacity: 1;
     visibility: visible;
     transform: translateX(-50%) translateY(0);
@@ -137,15 +137,15 @@
 
 /* Адаптация для мобильных */
 @media (max-width: 768px) {
-    .feature-item {
+    .home-feature-item {
         padding: 14px 16px;
     }
     
-    .feature-item > svg:first-child {
+    .home-feature-item > svg:first-child {
         width: 24px;
     }
     
-    .feature-item span {
+    .home-feature-item span {
         font-size: 0.95rem;
     }
     

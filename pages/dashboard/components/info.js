@@ -29,38 +29,37 @@ class DashboardInfo extends HTMLElement {
         ];
 
         this.innerHTML = `
-            
-            <section class="dashboard-info">
-                <div class="info-container">
-                    <h2 class="info-heading">Built for marketers and agencies</h2>
+            <section class="di-section">
+                <div class="di-container">
+                    <h2 class="di-heading">Built for marketers and agencies</h2>
                     
-                    <div class="features-grid">
+                    <div class="di-features-grid">
                         ${features.map(feature => `
-                            <div class="feature-box">
-                                <div class="feature-icon">
+                            <div class="di-feature-box">
+                                <div class="di-feature-icon">
                                     <img src="${feature.icon}" alt="${feature.title}">
                                 </div>
-                                <div class="feature-text">
-                                    <h3 class="feature-title">${feature.title}</h3>
-                                    <p class="feature-description">${feature.description}</p>
+                                <div class="di-feature-text">
+                                    <h3 class="di-feature-title">${feature.title}</h3>
+                                    <p class="di-feature-description">${feature.description}</p>
                                 </div>
                             </div>
                         `).join('')}
                     </div>
 
-                    <div class="cta-banner">
-                        <div class="banner-content">
-                            <div class="banner-icon">
+                    <div class="di-cta-banner">
+                        <div class="di-banner-content">
+                            <div class="di-banner-icon">
                                 <img src="assets/img/dashboard/info/message.png" alt="Message">
                             </div>
-                            <div class="banner-text">
-                                <h3 class="banner-title">Get full access to the Dashboard</h3>
-                                <p class="banner-description">
+                            <div class="di-banner-text">
+                                <h3 class="di-banner-title">Get full access to the Dashboard</h3>
+                                <p class="di-banner-description">
                                     Start customizing playables for free and export production-ready builds in just a few clicks.
                                 </p>
                             </div>
                         </div>
-                        <a href="https://dashboard.mraid.io/" class="banner-btn">
+                        <a href="https://dashboard.mraid.io/" class="di-banner-btn">
                             Login in Dashboard
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                 <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>

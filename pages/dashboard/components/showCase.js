@@ -34,53 +34,50 @@ class DashboardShowcase extends HTMLElement {
         ];
 
         this.innerHTML = `
-            
-            
-            <section class="dashboard-showcase">
-                <div class="bg-looper-wrapper">
-                    
-                    <img src="assets/img/looper.png" alt="Network Background" class="looper-image">
+            <section class="ds-section">
+                <div class="ds-bg-wrapper">
+                    <img src="assets/img/looper.png" alt="Network Background" class="ds-looper-image">
                 </div>
 
-                <div class="showcase-content">
-                    <div class="showcase-header">
-                        <h1 class="showcase-title">
+                <div class="ds-content">
+                    <div class="ds-header">
+                        <h1 class="ds-title">
                             Creative<br>
-                            <span class="title-red">Dashboard</span>
+                            <span class="ds-title-red">Dashboard</span>
                         </h1>
-                        <p class="showcase-subtitle">
+                        <p class="ds-subtitle">
                             Build. Customize. Launch. Your playables, your way.
                         </p>
-                        <p class="showcase-description">
+                        <p class="ds-description">
                             All the tools you need to customize playables, preview in real time, 
                             and export production-ready builds for all major ad networks
                         </p>
-                        <div class="showcase-buttons">
-                            <a href="https://dashboard.mraid.io/" class="btn-primary">
+                        <div class="ds-buttons">
+                            <a href="https://dashboard.mraid.io/" class="ds-btn-primary">
                                 Login in Dashboard
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
                                     <path d="M5 12H19M19 12L12 5M19 12L12 19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                                 </svg>
                             </a>
-                            <button class="btn-secondary">See how it works</button>
+                            <button class="ds-btn-secondary">See how it works</button>
                         </div>
                     </div>
 
-                    <div class="showcase-image">
+                    <div class="ds-image">
                         <img src="assets/img/dashboard/main.png" alt="Dashboard on laptop">
                     </div>
                 </div>
 
-                <div class="features-section">
-                    <h2 class="features-title">Everything you need in one place</h2>
-                    <div class="features-grid">
+                <div class="ds-features-section">
+                    <h2 class="ds-features-title">Everything you need in one place</h2>
+                    <div class="ds-features-grid">
                         ${features.map(feature => `
-                            <div class="feature-card">
-                                <div class="feature-icon">
+                            <div class="ds-feature-card">
+                                <div class="ds-feature-icon">
                                     <img src="${feature.icon}" alt="${feature.title}">
                                 </div>
-                                <h3 class="feature-title">${feature.title}</h3>
-                                <p class="feature-description">${feature.description}</p>
+                                <h3 class="ds-feature-title">${feature.title}</h3>
+                                <p class="ds-feature-description">${feature.description}</p>
                             </div>
                         `).join('')}
                     </div>
@@ -88,8 +85,6 @@ class DashboardShowcase extends HTMLElement {
             </section>
         `;
     }
-
-    
 }
 
 customElements.define('dashboard-showcase', DashboardShowcase);

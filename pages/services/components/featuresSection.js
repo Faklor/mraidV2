@@ -1,16 +1,10 @@
 class FeaturesSection extends HTMLElement {
-    constructor() {
-        super();
-        // this.attachShadow({ mode: 'open' });
-    }
+    constructor() { super(); }
 
-    connectedCallback() {
-        this.render();
-    }
+    connectedCallback() { this.render(); }
 
     render() {
         this.innerHTML = `
-            
             <section class="features-section">
                 <div class="features-content">
                     <div class="features-text">
@@ -63,5 +57,4 @@ class FeaturesSection extends HTMLElement {
         `;
     }
 }
-
 customElements.define('features-section', FeaturesSection);

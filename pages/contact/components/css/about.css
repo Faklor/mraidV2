@@ -1,5 +1,5 @@
-/* === УТИЛИТЫ (на случай, если нет в global.css) === */
-.sr-only {
+/* === УТИЛИТЫ (локальные для компонента) === */
+.ac-sr-only {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -12,13 +12,13 @@
 }
 
 /* === СЕКЦИЯ CONTACT === */
-.about-contact {
+.ac-section {
     padding: 20px 40px;
     background: #0D0D0F;
     font-family: 'RobotoMedium', sans-serif;
 }
 
-.contact-container {
+.ac-container {
     width: 100%;
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -27,14 +27,14 @@
 }
 
 /* === ЛЕВАЯ ЧАСТЬ === */
-.contact-left {
+.ac-left {
     position: relative;
     display: flex;
     flex-direction: column;
     height: 100%;
 }
 
-.contact-title {
+.ac-title {
     font-size: 3.5rem;
     font-weight: 800;
     color: #ffffff;
@@ -43,20 +43,19 @@
     letter-spacing: -0.02em;
 }
 
-.title-red {
+.ac-title-red {
     color: #FF0036;
 }
 
-.contact-subtitle {
+.ac-subtitle {
     font-size: 1.2rem;
     color: #fff;
     line-height: 1.2;
     margin: 0 0 28px;
-     font-family: 'RobotoLight';
-
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.team-photo {
+.ac-team-photo {
     position: relative;
     width: 100%;
     border-radius: 5px;
@@ -65,7 +64,7 @@
     max-height: 480px;
 }
 
-.team-photo img {
+.ac-team-photo img {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -74,7 +73,7 @@
     transform-origin: center center;
 }
 
-.team-photo::after {
+.ac-team-photo::after {
     content: '';
     position: absolute;
     inset: 0;
@@ -84,13 +83,13 @@
 }
 
 /* === ПРАВАЯ ЧАСТЬ: ФОРМА === */
-.contact-right {
+.ac-right {
     position: relative;
     width: 100%;
     height: 100%;
 }
 
-.form-wrapper {
+.ac-form-wrapper {
     width: 100%;
     height: 100%;
     background: #111114;
@@ -100,10 +99,9 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    
 }
 
-.form-title {
+.ac-form-title {
     font-size: 2rem;
     font-weight: 600;
     color: #ffffff;
@@ -111,27 +109,27 @@
 }
 
 /* === ФОРМА === */
-.contact-form {
+.ac-form {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    font-family: 'RobotoLight';
+    font-family: 'RobotoLight', sans-serif;
 }
 
-.form-row {
+.ac-form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 14px;
 }
 
-.form-group {
+.ac-form-group {
     display: flex;
     flex-direction: column;
     min-width: 0;
 }
 
-.form-input,
-.form-textarea {
+.ac-input,
+.ac-textarea {
     width: 100%;
     box-sizing: border-box;
     padding: 13px 17px;
@@ -145,27 +143,27 @@
     outline: none;
 }
 
-.form-input::placeholder,
-.form-textarea::placeholder {
+.ac-input::placeholder,
+.ac-textarea::placeholder {
     color: #666;
 }
 
-.form-input:focus,
-.form-textarea:focus {
+.ac-input:focus,
+.ac-textarea:focus {
     border-color: #FF0036;
     background: #1e1e22;
 }
 
-.textarea-group {
+.ac-textarea-group {
     position: relative;
 }
 
-.form-textarea {
+.ac-textarea {
     min-height: 105px;
     resize: vertical;
 }
 
-.char-counter {
+.ac-char-counter {
     position: absolute;
     bottom: 10px;
     right: 14px;
@@ -174,7 +172,7 @@
     pointer-events: none;
 }
 
-.message-hint {
+.ac-message-hint {
     display: block;
     font-size: 0.8rem;
     color: #666;
@@ -182,28 +180,28 @@
 }
 
 /* === ОШИБКИ И УСПЕХ === */
-.form-error {
+.ac-form-error {
     color: #ff4444;
     font-size: 0.9rem;
     margin-bottom: 10px;
-    min-height: 20px; /* Предотвращает прыжок верстки */
+    min-height: 20px;
 }
 
-.form-thanks {
+.ac-form-thanks {
     text-align: center;
     padding: 40px 20px;
     color: #ffffff;
     font-size: 1.1rem;
     line-height: 1.5;
-    animation: fadeIn 0.5s ease-out;
+    animation: ac-fadeIn 0.5s ease-out;
 }
 
 /* === ЧЕКБОКС === */
-.form-checkbox {
-    margin-top: 2\5px;
+.ac-form-checkbox {
+    margin-top: 5px;
 }
 
-.checkbox-label {
+.ac-checkbox-label {
     display: flex;
     align-items: flex-start;
     gap: 11px;
@@ -211,11 +209,11 @@
     user-select: none;
 }
 
-.checkbox-label input[type="checkbox"] {
+.ac-checkbox-label input[type="checkbox"] {
     display: none;
 }
 
-.checkbox-custom {
+.ac-checkbox-custom {
     width: 21px;
     height: 21px;
     min-width: 21px;
@@ -229,12 +227,12 @@
     margin-top: 4px;
 }
 
-.checkbox-label input[type="checkbox"]:checked + .checkbox-custom {
+.ac-checkbox-label input[type="checkbox"]:checked + .ac-checkbox-custom {
     background: #FF0036;
     border-color: #FF0036;
 }
 
-.checkbox-label input[type="checkbox"]:checked + .checkbox-custom::after {
+.ac-checkbox-label input[type="checkbox"]:checked + .ac-checkbox-custom::after {
     content: '';
     width: 5px;
     height: 9px;
@@ -244,7 +242,7 @@
     margin-bottom: 2px;
 }
 
-.checkbox-text {
+.ac-checkbox-text {
     font-size: 0.9rem;
     color: #888;
     line-height: 1.4;
@@ -252,18 +250,18 @@
     margin-top: 5px;
 }
 
-.terms-link {
+.ac-terms-link {
     color: #ffffff;
     text-decoration: underline;
     transition: color 0.3s ease;
 }
 
-.terms-link:hover {
+.ac-terms-link:hover {
     color: #FF0036;
 }
 
 /* === КНОПКА ОТПРАВКИ === */
-.submit-btn {
+.ac-submit-btn {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -283,31 +281,31 @@
     margin-top: 5px;
 }
 
-.submit-btn:hover {
+.ac-submit-btn:hover {
     background: #cc002b;
     transform: translateY(-2px);
     box-shadow: 0 8px 24px rgba(255, 0, 54, 0.3);
 }
 
-.submit-btn:disabled {
+.ac-submit-btn:disabled {
     background: #666;
     cursor: not-allowed;
     transform: none;
     box-shadow: none;
 }
 
-.submit-btn svg {
+.ac-submit-btn svg {
     width: 22px;
     height: 22px;
     transition: transform 0.3s ease;
 }
 
-.submit-btn:hover:not(:disabled) svg {
+.ac-submit-btn:hover:not(:disabled) svg {
     transform: translateX(4px);
 }
 
 /* === РАЗДЕЛИТЕЛЬ === */
-.form-divider {
+.ac-form-divider {
     width: 100%;
     height: 1px;
     background: rgba(255, 255, 255, 0.1);
@@ -315,19 +313,19 @@
 }
 
 /* === ПРЯМОЙ КОНТАКТ === */
-.direct-contact {
+.ac-direct-contact {
     display: flex;
     flex-direction: column;
     gap: 9px;
 }
 
-.direct-title {
+.ac-direct-title {
     font-size: 0.93rem;
     color: #888;
     margin: 0 0 2px;
 }
 
-.direct-link {
+.ac-direct-link {
     display: flex;
     align-items: center;
     gap: 9px;
@@ -338,48 +336,55 @@
     word-break: break-all;
 }
 
-.direct-link:hover {
+.ac-direct-link:hover {
     color: #FF0036;
 }
 
-.direct-link svg {
+.ac-direct-link svg {
     flex-shrink: 0;
 }
 
 /* === БЛОК ВЫБРАННОГО ТАРИФА === */
-.selected-package {
+.ac-selected-package {
     background: rgba(255, 0, 54, 0.05);
     border: 1px solid rgba(255, 0, 54, 0.2);
     border-radius: 12px;
     padding: 20px;
     margin-bottom: 24px;
-    animation: fadeIn 0.4s ease-out;
+    animation: ac-fadeIn 0.4s ease-out;
 }
 
-.package-header {
+.ac-package-header {
     display: flex;
     align-items: center;
     gap: 16px;
 }
 
-.package-icon {
-    width: 48px;
-    height: 48px;
+.ac-package-icon {
+    width: 50px;
+    height: 50px;
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.package-icon img {
+.ac-package-icon .price-svg-icon {
     width: 100%;
     height: 100%;
-    object-fit: contain;
+    overflow: visible;
 }
 
-.package-info {
+.ac-package-icon img {
+    display: none;
+}
+
+.ac-package-info {
     flex: 1;
     min-width: 0;
 }
 
-.package-label {
+.ac-package-label {
     display: block;
     font-size: 0.75rem;
     color: #666;
@@ -388,28 +393,28 @@
     letter-spacing: 0.5px;
 }
 
-.package-name {
+.ac-package-name {
     font-size: 1rem;
-    font-weight: 600; /* Исправлено с 300 на 600 для читаемости */
+    font-weight: 600;
     color: #ffffff;
     margin: 0 0 4px;
     line-height: 1.3;
 }
 
-.package-price {
+.ac-package-price {
     font-size: 0.9rem;
     color: #FF0034;
-    font-weight: 600; /* Исправлено с 300 на 600 */
+    font-weight: 600;
 }
 
-.package-actions {
+.ac-package-actions {
     display: flex;
     gap: 8px;
     flex-shrink: 0;
 }
 
-.clear-package-btn,
-.change-package-btn {
+.ac-clear-btn,
+.ac-change-btn {
     padding: 8px 16px;
     background: transparent;
     border: 1px solid rgba(255, 255, 255, 0.2);
@@ -422,135 +427,114 @@
     white-space: nowrap;
 }
 
-.clear-package-btn:hover {
+.ac-clear-btn:hover {
     border-color: #ff4444;
     color: #ff4444;
     background: rgba(255, 68, 68, 0.05);
 }
 
-.change-package-btn:hover {
+.ac-change-btn:hover {
     border-color: #FF0034;
     color: #FF0034;
     background: rgba(255, 0, 54, 0.05);
 }
 
-@keyframes fadeIn {
+@keyframes ac-fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* === АНИМАЦИЯ SVG ИКОНОК === */
+.ac-package-icon .icon-draw,
+.ac-package-icon .icon-flow,
+.ac-package-icon .icon-flow-delay-1,
+.ac-package-icon .icon-flow-delay-2,
+.ac-package-icon .icon-flow-delay-3,
+.ac-package-icon .icon-bar-1,
+.ac-package-icon .icon-bar-2,
+.ac-package-icon .icon-bar-3 {
+    fill: none;
+    stroke-dasharray: 150, 10;
+    animation: ac-svg-flow 5s linear infinite;
+}
+
+.ac-package-icon .icon-draw {
+    stroke-dasharray: 100, 5;
+    animation-duration: 10s;
+}
+
+.ac-package-icon .icon-flow-delay-1 { animation-delay: 0s; }
+.ac-package-icon .icon-flow-delay-2 { animation-delay: 0.5s; }
+.ac-package-icon .icon-flow-delay-3 { animation-delay: 1s; }
+
+.ac-package-icon .icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
+.ac-package-icon .icon-bar-2 { animation-duration: 2.5s; }
+.ac-package-icon .icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
+
+@keyframes ac-svg-flow {
+    to {
+        stroke-dashoffset: -50;
+    }
+}
+
 /* === АДАПТАЦИЯ === */
 @media (max-width: 1200px) {
-    .contact-container {
+    .ac-container {
         grid-template-columns: 1fr;
         gap: 35px;
     }
-    .team-photo {
+    .ac-team-photo {
         max-height: 400px;
     }
 }
 
 @media (max-width: 768px) {
-    .about-contact {
+    .ac-section {
         padding: 50px 20px;
     }
-    .contact-title {
+    .ac-title {
         font-size: 2.2rem;
     }
-    .contact-subtitle {
+    .ac-subtitle {
         font-size: 1rem;
     }
-    .form-wrapper {
+    .ac-form-wrapper {
         padding: 24px;
     }
-    .form-title {
+    .ac-form-title {
         font-size: 1.5rem;
     }
-    .form-row {
+    .ac-form-row {
         grid-template-columns: 1fr;
     }
-    .team-photo {
+    .ac-team-photo {
         max-height: 300px;
     }
-    .package-header {
+    .ac-package-header {
         flex-wrap: wrap;
     }
-    .package-info {
+    .ac-package-info {
         width: 100%;
         margin-bottom: 12px;
     }
-    .package-actions {
+    .ac-package-actions {
         width: 100%;
     }
-    .clear-package-btn,
-    .change-package-btn {
+    .ac-clear-btn,
+    .ac-change-btn {
         flex: 1;
         text-align: center;
     }
 }
 
 @media (max-width: 480px) {
-    .contact-title {
+    .ac-title {
         font-size: 1.8rem;
     }
-    .form-wrapper {
+    .ac-form-wrapper {
         padding: 18px;
     }
-    .team-photo {
+    .ac-team-photo {
         max-height: 250px;
-    }
-}
-
-/* === ИКОНКА ВЫБРАННОГО ПАКЕТА (SVG с анимацией) === */
-.package-icon {
-    width: 50px;
-    height: 50px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.package-icon .price-svg-icon {
-    width: 100%;
-    height: 100%;
-    overflow: visible;
-}
-
-/* Убираем старые стили для img, если они были */
-.package-icon img {
-    display: none;
-}
-
-/* Анимация SVG иконок (та же, что в PriceCards) */
-.package-icon .icon-draw,
-.package-icon .icon-flow,
-.package-icon .icon-flow-delay-1,
-.package-icon .icon-flow-delay-2,
-.package-icon .icon-flow-delay-3,
-.package-icon .icon-bar-1,
-.package-icon .icon-bar-2,
-.package-icon .icon-bar-3 {
-    fill: none;
-    stroke-dasharray: 150, 10;
-    animation: svg-flow 5s linear infinite;
-}
-
-.package-icon .icon-draw {
-    stroke-dasharray: 100, 5;
-    animation-duration: 10s;
-}
-
-.package-icon .icon-flow-delay-1 { animation-delay: 0s; }
-.package-icon .icon-flow-delay-2 { animation-delay: 0.5s; }
-.package-icon .icon-flow-delay-3 { animation-delay: 1s; }
-
-.package-icon .icon-bar-1 { animation-duration: 2s; animation-direction: reverse; }
-.package-icon .icon-bar-2 { animation-duration: 2.5s; }
-.package-icon .icon-bar-3 { animation-duration: 3s; animation-direction: reverse; }
-
-@keyframes svg-flow {
-    to {
-        stroke-dashoffset: -50;
     }
 }
