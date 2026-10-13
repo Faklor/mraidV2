@@ -389,7 +389,7 @@
 
 
 @media (max-width: 1024px) {
-    .slider-header { flex-direction: column; gap: 16px; padding: 0 30px; }
+    .slider-header { flex-direction: column; gap: 16px; padding: 0 30px; text-align: center; align-items: center;}
     .header-right p { text-align: left; }
     
     .filter-section, .slider-container { padding: 0 30px; }

@@ -39,10 +39,48 @@
     font-weight: 400;
 }
 
-/* Планшеты: 3 колонки */
+@media (max-width: 1400px) {
+    /* .stats-grid {
+        grid-template-columns: repeat(6, 1fr);
+        
+    }
+
+    .stat-item:nth-child(-n+3) {
+        grid-column: span 2;
+    }
+        .stat-item:nth-child(4) {
+        grid-column: 2 / 4;
+    }
+
+    .stat-item:nth-child(5) {
+        grid-column: 4 / 6;
+    } */
+
+    .stats-grid {
+        gap:4px;
+    }
+    .stat-item {
+        border:none;
+    }
+}
+
+
+
 @media (max-width: 1024px) {
     .stats-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(6, 1fr);
+        
+    }
+
+    .stat-item:nth-child(-n+3) {
+        grid-column: span 2;
+    }
+    .stat-item:nth-child(4) {
+        grid-column: 2 / 4;
+    }
+
+    .stat-item:nth-child(5) {
+        grid-column: 4 / 6;
     }
 }
 
@@ -60,12 +98,18 @@
     .stat-label {
         font-size: 0.8rem;
     }
-}
 
-/* Очень маленькие экраны: 1 колонка */
-@media (max-width: 480px) {
-    .stats-grid {
-        grid-template-columns: 1fr;
+    .stat-item:nth-child(-n+3) {
+        grid-column: auto;
+    }
+    .stat-item:nth-child(4) {
+        grid-column: auto;
+    }
+
+    .stat-item:nth-child(5) {
+        grid-column:  auto;
     }
 }
+
+
 

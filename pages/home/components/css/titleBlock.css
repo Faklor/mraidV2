@@ -78,49 +78,33 @@
     transform: translateY(-2px);
 }
 
-/* === 480px: Маленькие мобильные === */
-@media (max-width: 480px) {
-    .hero-block h1 {
-        font-size: 28px;
-    }
-    
-    .hero-block p {
-        font-size: 16px;
-        margin-bottom: 32px;
-    }
-    
-    .buttons {
-        --btn-width: 100%;
-        --btn-height: 52px;
-        
-        flex-direction: column;
-        width: 100%;
-    }
-    
-    .btn {
-        width: 100%;
-        max-width: 100%;
-        padding: 0 24px;
-        justify-content: center;
-    }
-}
+
 
 /* === 768px: Планшеты портрет / Большие мобильные === */
 @media (min-width: 481px) and (max-width: 768px) {
     .hero-block h1 {
-        font-size: 36px;
+        font-size: 52px;
+         max-width: 600px;
+        margin:0px auto;
+        padding-bottom: 40px;
+        text-align: start;
     }
     
     .hero-block p {
         font-size: 18px;
+        max-width: 600px;
+        margin:0px auto;
+        text-align: start;
+        padding-bottom: 40px;
+
     }
     
     .buttons {
-        --btn-width: 100%;
-        --btn-height: 52px;
         
+        max-width: 600px;
+        margin:0 auto;
         flex-direction: column;
-        width: 100%;
+        
     }
     
     .btn {

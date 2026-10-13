@@ -34,9 +34,24 @@ header.scrolled {
 }
 
 /* Адаптация */
+@media (max-width: 1024px) {
+  header {
+    padding: 0 20px; /* Чуть больше воздуха по краям на мобильном */
+  }
+  
+  header.scrolled {
+    background-color: rgba(13, 13, 15, 0.95);
+  }
+
+  .header-actions{
+    margin-right: 10px;
+  }
+}
+
+
 @media (max-width: 768px) {
   header {
-    padding: 0 16px; /* Чуть больше воздуха по краям на мобильном */
+    padding: 0 40px; /* Чуть больше воздуха по краям на мобильном */
   }
   
   header.scrolled {

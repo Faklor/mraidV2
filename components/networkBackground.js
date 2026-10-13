@@ -64,7 +64,7 @@ class NetworkBackground extends HTMLElement {
             phonePosY: 12,
             phonePosZ: 65,
             phoneRotX: 0,
-            phoneRotY: -95,
+            phoneRotY: -90,
             phoneRotZ: 0,
             
             cameraOffsetX: 0.06,
@@ -1134,11 +1134,53 @@ class NetworkBackground extends HTMLElement {
 
     animatePhone(timestamp) {
         if (!this.phonePivot) return; 
-        
-        this.phonePivot.rotation.order = 'YXZ';
-        const t = timestamp * 0.01;
+
         const rad = Math.PI / 180;
         const c = this.config;
+
+        
+        if (window.innerWidth <= 1024 && window.innerWidth >= 768) {
+            this.phonePivot.rotation.set(
+                c.phoneRotX * rad,
+                c.phoneRotY * rad,
+                c.phoneRotZ * rad
+            );
+            this.phonePivot.position.x = 0; 
+
+            if (this.points) this.points.visible = true;
+            if (this.lines) this.lines.visible = true;
+            if (this.gridGlowLight) this.gridGlowLight.visible = true;
+            return; 
+        } 
+        else if (window.innerWidth <= 768) {
+             this.phonePivot.rotation.set(
+                c.phoneRotX * rad,
+                c.phoneRotY * rad,
+                c.phoneRotZ * rad
+            );
+            this.phonePivot.position.x = 0;
+            
+           
+            if (this.points) this.points.visible = false;
+            if (this.lines) this.lines.visible = false;
+            if (this.gridGlowLight) this.gridGlowLight.visible = false;
+            
+           
+            return; 
+        } 
+        else {
+
+             
+            this.phonePivot.position.set(c.phonePosX, c.phonePosY, c.phonePosZ);
+
+            if (this.points) this.points.visible = true;
+            if (this.lines) this.lines.visible = true;
+            if (this.gridGlowLight) this.gridGlowLight.visible = true;
+        }
+
+       
+        this.phonePivot.rotation.order = 'YXZ';
+        const t = timestamp * 0.01;
 
         let targetX, targetY, targetZ;
 

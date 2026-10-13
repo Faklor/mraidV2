@@ -195,11 +195,15 @@
     .slider-header h2 {
         font-size: 1.5rem;
     }
+
+    
 }
 
 @media (max-width: 768px) {
+   
     .slider-section {
         padding: 40px 0;
+        
     }
     
    
@@ -210,7 +214,8 @@
     
     .slider-header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
         gap: 16px;
+         text-align: center;
     }
 }

@@ -135,8 +135,20 @@
     transform: translateX(-50%) translateY(0);
 }
 
-/* Адаптация для мобильных */
+
+
+@media (max-width: 1400px) {
+   .home-features-list{
+        max-width: 460px;
+   }
+}
+
 @media (max-width: 768px) {
+    .home-features-list{
+        max-width: 760px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+   }
     .home-feature-item {
         padding: 14px 16px;
     }
