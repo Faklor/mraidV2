@@ -1,22 +1,5 @@
 
 @font-face {
-  font-family: 'Roboto Condensed';
-  src: url('assets/fonts/Roboto_Condensed-Light.ttf') format('truetype');
-  font-weight: 300; 
-  font-style: normal;
-  font-display: swap;
-}
-
-
-@font-face {
-  font-family: 'Roboto Condensed';
-  src: url('assets/fonts/Roboto_Condensed-Bold.ttf') format('truetype');
-  font-weight: 700; 
-  font-style: normal;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'RobotoLight';
   src: url('assets/fonts/Roboto-Light.ttf') format('truetype');
    font-display: swap;
@@ -170,11 +153,11 @@ main.preloader-active,
   }
 }
 
-/* На очень больших экранах (4K) */
+
 @media (min-width: 2560px) {
   .container {
-    max-width: 2560px; /* Увеличиваем макс. ширину для 4K */
-    padding: 0 0px;   /* Больше воздуха по бокам */
+    max-width:1920px; 
+    padding: 0 0px;   
   }
 }
 

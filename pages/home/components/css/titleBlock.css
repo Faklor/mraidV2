@@ -1,6 +1,6 @@
 /* === БАЗОВЫЕ СТИЛИ (мобильные по умолчанию) === */
 .hero-block h1 {
-    font-size: clamp(28px, 5vw, 52px);
+    font-size: 52px;
     font-weight: 800;
     line-height: 1.2;
     margin:0;
@@ -194,39 +194,3 @@
     }
 }
 
-/* === 1920px: FullHD с масштабом 100% (твой текущий дизайн) === */
-@media (min-width: 1751px) and (max-width: 2048px) {
-    .hero-block h1 {
-        font-size: 52px;
-    }
-    
-    .hero-block p {
-        font-size: 20px;
-    }
-    
-    .buttons {
-        --btn-width: 240px;
-        --btn-height: 56px;
-    }
-}
-
-/* === 2560px+: 2K/4K мониторы === */
-@media (min-width: 2049px) {
-    .hero-block h1 {
-        font-size: 64px;
-    }
-    
-    .hero-block p {
-        font-size: 24px;
-        max-width: 560px;
-    }
-    
-    .buttons {
-        --btn-width: 260px;
-        --btn-height: 60px;
-    }
-    
-    .btn {
-        font-size: 1.1rem;
-    }
-}
