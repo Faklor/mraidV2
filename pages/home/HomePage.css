@@ -216,7 +216,7 @@ top-playables-slider {
         top: 420px;
         left:5px;
        
-        height: 1800px;     /* Фиксированная высота "окна" */
+        height: 1400px;     /* Фиксированная высота "окна" */
         overflow: hidden;  /* Обрезаем всё, что выходит за границы */
         z-index: 0;
         
